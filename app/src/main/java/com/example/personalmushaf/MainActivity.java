@@ -2,7 +2,6 @@
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
@@ -12,7 +11,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
-import com.example.personalmushaf.navigationlistview.NavigationActivity;
+import com.example.personalmushaf.navigation.NavigationActivity;
 import com.example.personalmushaf.thirteenlinepage.ThirteenLinePagerAdapter;
 
  public class MainActivity extends AppCompatActivity {
@@ -21,7 +20,7 @@ import com.example.personalmushaf.thirteenlinepage.ThirteenLinePagerAdapter;
      private ViewPager pager;
      private FragmentPagerAdapter adapter;
      private Toolbar toolbar;
-     private Button button;
+     private Button toolbarButton;
 
 
      @Override
@@ -31,8 +30,16 @@ import com.example.personalmushaf.thirteenlinepage.ThirteenLinePagerAdapter;
         setContentView(R.layout.activity_main);
 
         toolbar = findViewById(R.id.toolbar);
-        button = findViewById(R.id.toolbar_button);
         setSupportActionBar(toolbar);
+        toolbarButton = findViewById(R.id.toolbar_button);
+        toolbarButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent goToNavigation = new Intent(getBaseContext(), NavigationActivity.class);
+
+                startActivity(goToNavigation);
+            }
+        });
         pager = findViewById(R.id.pager);
         adapter = new ThirteenLinePagerAdapter(getSupportFragmentManager());
         pager.setAdapter(adapter);
@@ -47,13 +54,5 @@ import com.example.personalmushaf.thirteenlinepage.ThirteenLinePagerAdapter;
          else
              actionBar.show();
     }
-
-    public void startNavigationActivity(View view) {
-        Intent intent = new Intent(this, NavigationActivity.class);
-
-        startActivity(intent);
-    }
-
-
 
 }
