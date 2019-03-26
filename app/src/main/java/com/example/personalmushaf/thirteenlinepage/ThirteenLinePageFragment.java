@@ -32,6 +32,10 @@ public class ThirteenLinePageFragment extends Fragment {
     }
 
 
+    public void hideActionBar(View view) {
+
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

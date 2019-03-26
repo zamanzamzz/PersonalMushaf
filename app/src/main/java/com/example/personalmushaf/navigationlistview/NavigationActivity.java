@@ -23,16 +23,16 @@ public class NavigationActivity extends AppCompatActivity {
         if (mExpandableListView != null) {
             ParentLevelAdapter parentLevelAdapter = new ParentLevelAdapter(this, listDataHeader);
             mExpandableListView.setAdapter(parentLevelAdapter);
-            // display only one expand item
-//            mExpandableListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
-//                int previousGroup = -1;
-//                @Override
-//                public void onGroupExpand(int groupPosition) {
-//                    if (groupPosition != previousGroup)
-//                        mExpandableListView.collapseGroup(previousGroup);
-//                    previousGroup = groupPosition;
-//                }
-//            });
+
+            mExpandableListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
+                int previousGroup = -1;
+                @Override
+                public void onGroupExpand(int groupPosition) {
+                    if (groupPosition != previousGroup)
+                        mExpandableListView.collapseGroup(previousGroup);
+                    previousGroup = groupPosition;
+                }
+            });
         }
     }
 }

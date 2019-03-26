@@ -1,6 +1,7 @@
 package com.example.personalmushaf.thirteenlinepage;
 
 import android.os.Bundle;
+import android.view.View;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
