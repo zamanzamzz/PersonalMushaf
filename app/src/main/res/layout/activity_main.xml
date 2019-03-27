@@ -19,28 +19,22 @@
         </androidx.viewpager.widget.ViewPager>
 
     </LinearLayout>
-
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="?attr/colorPrimary"
-        android:elevation="4dp"
-        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-        >
-        <LinearLayout
+        android:layout_height="wrap_content"
+        android:animateLayoutChanges="true"
+        android:id="@+id/toolbar_parent">
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:weightSum="1">
-            <Button
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:id="@+id/toolbar_button"
-                android:gravity="left"
-                />
-        </LinearLayout>
-    </androidx.appcompat.widget.Toolbar>
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            android:elevation="4dp"
+            android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+            >
+        </androidx.appcompat.widget.Toolbar>
+    </FrameLayout>
 
 
 </FrameLayout>

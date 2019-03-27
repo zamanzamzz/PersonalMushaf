@@ -1,30 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<TextView android:id="@+id/list_item_juz_name"
     android:layout_width="match_parent"
     android:layout_height="@dimen/list_item_height"
-    android:layout_marginBottom="8dp"
-    android:layout_marginTop="8dp"
-    android:background="@color/colorPrimary">
+    android:paddingLeft="@dimen/list_item_left_margin"
+    android:textSize="18sp"
+    android:gravity="center_vertical|start"
+    tools:text="Juz "
+    android:textColor="#FFF"
+    android:background="@color/colorPrimary"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" />
 
-    <TextView
-        android:id="@+id/list_item_juz_name"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginLeft="@dimen/list_item_left_margin"
-        android:gravity="center_vertical"
-        tools:text="Genre"
-        android:textColor="#FFF"
-        android:background="@color/colorPrimary"/>
-
-    <ImageView
-        android:id="@+id/list_item_juz_arrow"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical|start"
-        android:layout_marginLeft="@dimen/horizontal_margin"
-        android:src="@drawable/ic_arrow_down"
-        android:background="@color/colorPrimary"/>
-
-</FrameLayout>
 
