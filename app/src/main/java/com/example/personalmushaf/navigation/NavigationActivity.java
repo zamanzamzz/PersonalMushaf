@@ -31,16 +31,21 @@ public class NavigationActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
 
-        if (intent.getIntExtra("new page number", 0) != -1) {
-            data = getResources().getStringArray(R.array.juzz_descriptions);
+        int receivingType = intent.getIntExtra("type", 0);
+        int juzNumber = intent.getIntExtra("juz number", 0);
+
+        if (receivingType == 0) {
+            data = getResources().getStringArray(R.array.juz_descriptions);
             type = 0;
-        }
-        else {
-            data = getResources().getStringArray(R.array.juzz_one_content);
-            type = -1;
+        } else if (receivingType == 1) {
+            data = getResources().getStringArray(R.array.juz_content);
+            type = 1;
+        } else {
+            data = (QuranPageData.getInstance().RukuContentTitles)[juzNumber-1];
+            type = 2;
         }
 
-        adapter = new JuzAdapter(data, type);
+        adapter = new JuzAdapter(data, type, juzNumber);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
     }

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string-array name="juzz_descriptions">
+    <string-array name="juz_descriptions">
         <item>01 | 25 pages | الم</item>
         <item>02 | 28 pages | سيقول السفهاء</item>
         <item>03 | 28 pages | تلك الرسل</item>
@@ -32,14 +32,12 @@
         <item>29 | 32 pages | تبرك الذي</item>
         <item>30 | 30 pages | عم يتسائلون</item>
     </string-array>
-    <string-array name="juzz_one_content">
-        <item>Level 1.1.1</item>
-        <item>Level 1.1.2</item>
-        <item>Level 1.1.3</item>
-        <item>Level 1.1.4</item>
-        <item>Level 1.1.5</item>
-        <item>Level 1.1.6</item>
-        <item>Level 1.1.7</item>
-        <item>Level 1.1.8</item>
+    <string-array name="juz_content">
+        <item>=.== ===== | رُكوع‎</item>
+        <item>=.== ===== | First Page</item>
+        <item> Pages | الربع</item>
+        <item> Pages | النصف</item>
+        <item> Pages | الثلاثة</item>
+        <item> Pages | Last Page</item>
     </string-array>
 </resources>

@@ -6,21 +6,15 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.animation.ValueAnimator;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.animation.AccelerateInterpolator;
-import android.view.animation.DecelerateInterpolator;
-import android.widget.Button;
-import android.widget.FrameLayout;
 
 import com.example.personalmushaf.navigation.NavigationActivity;
+import com.example.personalmushaf.navigation.QuranPageData;
 import com.example.personalmushaf.thirteenlinepage.ThirteenLinePagerAdapter;
-import com.google.android.material.appbar.AppBarLayout;
+
 
 
  public class MainActivity extends AppCompatActivity {
@@ -71,11 +65,10 @@ import com.google.android.material.appbar.AppBarLayout;
          int id = item.getItemId();
 
          if (id == android.R.id.home) {
+
              Intent goToNavigation = new Intent(getBaseContext(), NavigationActivity.class);
 
              startActivity(goToNavigation);
-
-             finish();
 
              return true;
          }

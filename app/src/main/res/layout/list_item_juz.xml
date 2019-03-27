@@ -1,4 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
+<com.andexert.library.RippleView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="wrap_content"
+    android:layout_width="match_parent"
+    android:id="@+id/list_item_juz_ripple"
+    rv_centered="true"
+    >
 <TextView android:id="@+id/list_item_juz_name"
     android:layout_width="match_parent"
     android:layout_height="@dimen/list_item_height"
@@ -10,5 +17,6 @@
     android:background="@color/colorPrimary"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" />
+</com.andexert.library.RippleView>
 
 
