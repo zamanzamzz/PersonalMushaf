@@ -3,6 +3,8 @@ package com.example.personalmushaf.thirteenlinepage;
 import android.os.Bundle;
 import android.view.View;
 
+import com.example.personalmushaf.R;
+
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
@@ -24,13 +26,7 @@ public class ThirteenLinePagerAdapter extends FragmentPagerAdapter {
         String pageNum;
         int currentPageNumber = pageNumber - position;
 
-        if (currentPageNumber < 10)
-            pageNum = "00" + currentPageNumber;
-        else if (currentPageNumber < 100)
-            pageNum = "0" + currentPageNumber;
-        else
-            pageNum = Integer.toString(currentPageNumber);
-
+        pageNum = Integer.toString(currentPageNumber);
         Bundle bundle = new Bundle();
         bundle.putString("page_number", pageNum);
         thirteenLinePageFragment.setArguments(bundle);

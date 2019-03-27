@@ -51,6 +51,8 @@ public class ThirteenLinePageFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_page, container, false);
         imageView = view.findViewById(R.id.page);
+        int id = resources.getIdentifier("pg_" + getArguments().getString("page_number"),
+                "drawable", packageName);
         Picasso.get().load(resources.getIdentifier("pg_" + getArguments().getString("page_number"),
                 "drawable", packageName)).centerInside().fit().into(imageView);
         return view;
