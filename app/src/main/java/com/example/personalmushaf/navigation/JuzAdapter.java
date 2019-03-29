@@ -13,7 +13,7 @@ import com.example.personalmushaf.R;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-public class JuzAdapter extends RecyclerView.Adapter<JuzAdapter.MyViewHolder> {
+public class JuzAdapter extends RecyclerView.Adapter<JuzAdapter.JuzViewHolder> {
     private String[] mDataset;
     private int type;
     private int juz;
@@ -21,10 +21,10 @@ public class JuzAdapter extends RecyclerView.Adapter<JuzAdapter.MyViewHolder> {
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
     // you provide access to all the views for a data item in a view holder
-    public static class MyViewHolder extends RecyclerView.ViewHolder {
+    public static class JuzViewHolder extends RecyclerView.ViewHolder {
         // each data item is just a string in this case
         public RippleView rippleView;
-        public MyViewHolder(RippleView v) {
+        public JuzViewHolder(RippleView v) {
             super(v);
             rippleView = v;
         }
@@ -39,20 +39,20 @@ public class JuzAdapter extends RecyclerView.Adapter<JuzAdapter.MyViewHolder> {
 
     // Create new views (invoked by the layout manager)
     @Override
-    public JuzAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent,
-                                                     int viewType) {
+    public JuzViewHolder onCreateViewHolder(ViewGroup parent,
+                                            int viewType) {
         // create a new view
         RippleView v = (RippleView) LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.list_item_juz, parent, false);
 
 
-        MyViewHolder vh = new MyViewHolder(v);
+        JuzViewHolder vh = new JuzViewHolder(v);
         return vh;
     }
 
     // Replace the contents of a view (invoked by the layout manager)
     @Override
-    public void onBindViewHolder(final MyViewHolder holder, final int position) {
+    public void onBindViewHolder(final JuzViewHolder holder, final int position) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
 
@@ -115,6 +115,7 @@ public class JuzAdapter extends RecyclerView.Adapter<JuzAdapter.MyViewHolder> {
 
                         goToJuz.putExtra("new page number", QuranPageData.getInstance().JuzContentPageNumbers[juz-1][quarter]);
 
+                        goToJuz.putExtra("from", "NavigationActivity");
 
                         rippleView.setOnRippleCompleteListener(new RippleView.OnRippleCompleteListener() {
                             @Override
@@ -142,6 +143,8 @@ public class JuzAdapter extends RecyclerView.Adapter<JuzAdapter.MyViewHolder> {
                     }
                 } else if (type == 2) {
                     final Intent goToRukuAyah = new Intent(rippleView.getContext(), MainActivity.class);
+
+                    goToRukuAyah.putExtra("from", "NavigationActivity");
 
                     int ruku = holder.getAdapterPosition();
 
@@ -183,6 +186,8 @@ public class JuzAdapter extends RecyclerView.Adapter<JuzAdapter.MyViewHolder> {
 
                     final Intent goToJuz = new Intent(view.getContext(), MainActivity.class);
 
+                    goToJuz.putExtra("from", "NavigationActivity");
+
                     goToJuz.putExtra("type", 0);
 
                     goToJuz.putExtra("new page number", QuranPageData.getInstance().JuzContentPageNumbers[juzNumber-1][0]);
@@ -216,10 +221,11 @@ public class JuzAdapter extends RecyclerView.Adapter<JuzAdapter.MyViewHolder> {
     public int chooseQuarter(String text, View view) {
         String[] arrays = (view.getContext().getResources().getStringArray(R.array.juz_content));
 
-        text = text.substring(5);
-
         if (text.equals(arrays[1]))
             return 0;
+
+        text = text.substring(5);
+
         if (text.equals(arrays[2]))
             return 1;
         if (text.equals(arrays[3]))
