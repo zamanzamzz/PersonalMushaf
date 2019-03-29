@@ -37,6 +37,7 @@ import com.example.personalmushaf.thirteenlinepage.ThirteenLineDualAdapter;
 	 private Toolbar toolbar;
 	 private String currentOrientation;
 	 private int pageNumber;
+	 private int receivedPageNumber;
 
 
 	 @Override
@@ -65,8 +66,14 @@ import com.example.personalmushaf.thirteenlinepage.ThirteenLineDualAdapter;
 
         currentOrientation = getScreenOrientation(this);
 
-        if (from != null)
-            pageNumber = activityThatCalled.getIntExtra("new page number", 2);
+        receivedPageNumber = activityThatCalled.getIntExtra("new page number", 2);
+
+        if (from != null) {
+            if (savedInstanceState == null)
+                pageNumber = receivedPageNumber;
+            else if (receivedPageNumber != savedInstanceState.getInt("currentPage"))
+                pageNumber = savedInstanceState.getInt("currentPage");
+        }
         else if (pageNumber == 0 && savedInstanceState != null)
             pageNumber = savedInstanceState.getInt("currentPage");
         else

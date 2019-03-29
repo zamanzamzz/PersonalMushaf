@@ -113,6 +113,8 @@ public class JuzAdapter extends RecyclerView.Adapter<JuzAdapter.JuzViewHolder> {
 
                         goToJuz.putExtra("type", 1);
 
+                        goToJuz.putExtra("juz number", juz);
+
                         goToJuz.putExtra("new page number", QuranPageData.getInstance().JuzContentPageNumbers[juz-1][quarter]);
 
                         goToJuz.putExtra("from", "NavigationActivity");
