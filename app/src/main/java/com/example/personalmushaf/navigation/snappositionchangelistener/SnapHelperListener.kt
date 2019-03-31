@@ -1,4 +1,4 @@
-package com.example.personalmushaf
+package com.example.personalmushaf.navigation.snappositionchangelistener
 
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.SnapHelper

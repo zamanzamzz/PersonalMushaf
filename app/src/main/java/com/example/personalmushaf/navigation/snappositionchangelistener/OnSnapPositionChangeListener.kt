@@ -1,4 +1,4 @@
-package com.example.personalmushaf
+package com.example.personalmushaf.navigation.snappositionchangelistener
 
 interface OnSnapPositionChangeListener {
 

@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.Surface;
 import android.view.View;
@@ -21,8 +22,10 @@ import android.view.WindowManager;
 import com.example.personalmushaf.navigation.NavigationActivity;
 
 import com.example.personalmushaf.navigation.QuranPageData;
-import com.example.personalmushaf.thirteenlinepage.PageLayoutManager;
-import com.example.personalmushaf.thirteenlinepage.RecyclerViewExtKt;
+import com.example.personalmushaf.navigation.snappositionchangelistener.OnSnapPositionChangeListener;
+import com.example.personalmushaf.navigation.snappositionchangelistener.RecyclerViewExtKt;
+import com.example.personalmushaf.navigation.snappositionchangelistener.SnapOnScrollListener;
+import com.example.personalmushaf.navigation.PageLayoutManager;
 import com.example.personalmushaf.thirteenlinepage.ThirteenLineAdapter;
 import com.example.personalmushaf.thirteenlinepage.ThirteenLineDualAdapter;
 
@@ -34,9 +37,11 @@ import com.example.personalmushaf.thirteenlinepage.ThirteenLineDualAdapter;
 	 private RecyclerView dualPager;
 	 private ThirteenLineAdapter adapter;
 	 private ThirteenLineDualAdapter dualAdapter;
+	 private PageLayoutManager layoutManager;
 	 private Toolbar toolbar;
 	 private String currentOrientation;
 	 private int pageNumber;
+	 private int pagesTurned = 0;
 	 private int receivedPageNumber;
 
 
@@ -46,79 +51,23 @@ import com.example.personalmushaf.thirteenlinepage.ThirteenLineDualAdapter;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        toolbar = findViewById(R.id.toolbar);
-
-        setSupportActionBar(toolbar);
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.hide();
-
-        actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setHomeAsUpIndicator(R.drawable.ic_menu_black_24dp);
-        actionBar.setDisplayShowTitleEnabled(false);
-        actionBar.setHomeButtonEnabled(true);
+        setToolbar();
 
         Intent activityThatCalled = getIntent();
-
-
-        PageLayoutManager layoutManager = new PageLayoutManager(this, LinearLayoutManager.HORIZONTAL, true);
-
         String from = activityThatCalled.getStringExtra("from");
 
+        layoutManager = new PageLayoutManager(this, LinearLayoutManager.HORIZONTAL, true);
         currentOrientation = getScreenOrientation(this);
-
         receivedPageNumber = activityThatCalled.getIntExtra("new page number", 2);
 
-        if (from != null) {
-            if (savedInstanceState == null)
-                pageNumber = receivedPageNumber;
-            else if (receivedPageNumber != savedInstanceState.getInt("currentPage"))
-                pageNumber = savedInstanceState.getInt("currentPage");
-        }
-        else if (pageNumber == 0 && savedInstanceState != null)
-            pageNumber = savedInstanceState.getInt("currentPage");
-        else
-            pageNumber = 2;
+        setPage(from, savedInstanceState);
 
 
          if (currentOrientation.equals("portrait")) {
-             pager = findViewById(R.id.pager);
-             pager.setHasFixedSize(true);
-             adapter = new ThirteenLineAdapter(QuranPageData.getInstance().singlePageSets);
-             pager.setLayoutManager(layoutManager);
-             layoutManager.scrollToPosition(pageNumber-1);
-             layoutManager.setItemPrefetchEnabled(true);
-             pager.setAdapter(adapter);
-             pager.setItemViewCacheSize(10);
-             PagerSnapHelper snapHelper = new PagerSnapHelper();
-             RecyclerViewExtKt.attachSnapHelperWithListener(pager, snapHelper, SnapOnScrollListener.Behavior.NOTIFY_ON_SCROLL_STATE_IDLE, new OnSnapPositionChangeListener() {
-                 @Override
-                 public void onSnapPositionChange(int position) {
-                     pageNumber = position + 1;
-                 }
-             });
+             setSinglePagePager(layoutManager);
          }
         else {
-            int dualPageNumber;
-            if (pageNumber % 2 == 0)
-                dualPageNumber = pageNumber/2;
-            else
-                dualPageNumber = (pageNumber - 1)/2;
-
-             dualPager = findViewById(R.id.dualpager);
-             dualPager.setHasFixedSize(true);
-             dualAdapter = new ThirteenLineDualAdapter(QuranPageData.getInstance().dualPageSets);
-             dualPager.setLayoutManager(layoutManager);
-             layoutManager.scrollToPosition(dualPageNumber);
-             layoutManager.setItemPrefetchEnabled(true);
-             dualPager.setAdapter(dualAdapter);
-             dualPager.setItemViewCacheSize(10);
-             PagerSnapHelper snapHelper = new PagerSnapHelper();
-             RecyclerViewExtKt.attachSnapHelperWithListener(dualPager, snapHelper, SnapOnScrollListener.Behavior.NOTIFY_ON_SCROLL_STATE_IDLE, new OnSnapPositionChangeListener() {
-                 @Override
-                 public void onSnapPositionChange(int position) {
-                     pageNumber = position + 1;
-                 }
-             });
+            setDualPagePager(layoutManager);
          }
 	}
 
@@ -126,6 +75,7 @@ import com.example.personalmushaf.thirteenlinepage.ThirteenLineDualAdapter;
      public void onSaveInstanceState(Bundle outState) {
          super.onSaveInstanceState(outState);
          outState.putInt("currentPage", pageNumber);
+         outState.putInt("pagesTurned", pagesTurned);
      }
 
      public  void hideActionBar(View view) {
@@ -135,6 +85,8 @@ import com.example.personalmushaf.thirteenlinepage.ThirteenLineDualAdapter;
 		 else
 			 actionBar.show();
 	}
+
+
 
 	 @Override
 	 public boolean onOptionsItemSelected(MenuItem item) {
@@ -152,6 +104,8 @@ import com.example.personalmushaf.thirteenlinepage.ThirteenLineDualAdapter;
 		 return super.onOptionsItemSelected(item);
 	 }
 
+
+
 	 public String getScreenOrientation(Context context){
 		 final int screenOrientation = ((WindowManager) context.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getOrientation();
 		 switch (screenOrientation) {
@@ -166,5 +120,123 @@ import com.example.personalmushaf.thirteenlinepage.ThirteenLineDualAdapter;
 		 }
 	 }
 
+	 private void setToolbar() {
+         toolbar = findViewById(R.id.toolbar);
+
+         setSupportActionBar(toolbar);
+         ActionBar actionBar = getSupportActionBar();
+         actionBar.hide();
+
+         actionBar.setDisplayHomeAsUpEnabled(true);
+         actionBar.setHomeAsUpIndicator(R.drawable.ic_menu_black_24dp);
+         actionBar.setDisplayShowTitleEnabled(false);
+         actionBar.setHomeButtonEnabled(true);
+     }
+
+
+	private void setPage(String from, Bundle savedInstanceState) {
+        if (from != null) {
+            if (savedInstanceState == null)
+                pageNumber = receivedPageNumber;
+            else if (savedInstanceState.getInt("pagesTurned") != 0) {
+                pagesTurned = savedInstanceState.getInt("pagesTurned");
+                pageNumber = savedInstanceState.getInt("currentPage");
+            }
+            else
+                pageNumber = receivedPageNumber;
+        }
+        else if (pageNumber == 0 && savedInstanceState != null) {
+            pageNumber = savedInstanceState.getInt("currentPage");
+        }
+        else
+            pageNumber = 2;
+    }
+
+    private void setSinglePagePager(RecyclerView.LayoutManager layoutManager) {
+        pager = findViewById(R.id.pager);
+        pager.setHasFixedSize(true);
+        adapter = new ThirteenLineAdapter(QuranPageData.getInstance().singlePageSets);
+        pager.setLayoutManager(layoutManager);
+        layoutManager.scrollToPosition(pageNumber-1);
+        layoutManager.setItemPrefetchEnabled(true);
+        pager.setAdapter(adapter);
+        pager.setItemViewCacheSize(10);
+        PagerSnapHelper snapHelper = new PagerSnapHelper();
+        RecyclerViewExtKt.attachSnapHelperWithListener(pager, snapHelper, SnapOnScrollListener.Behavior.NOTIFY_ON_SCROLL_STATE_IDLE, new OnSnapPositionChangeListener() {
+            @Override
+            public void onSnapPositionChange(int position) {
+                pageNumber = position + 1;
+                pagesTurned++;
+            }
+        });
+    }
+
+    private void setDualPagePager(RecyclerView.LayoutManager layoutManager) {
+        int dualPageNumber;
+        if (pageNumber % 2 == 0)
+            dualPageNumber = pageNumber/2;
+        else
+            dualPageNumber = (pageNumber - 1)/2;
+
+        dualPager = findViewById(R.id.dualpager);
+        dualPager.setHasFixedSize(true);
+        dualAdapter = new ThirteenLineDualAdapter(QuranPageData.getInstance().dualPageSets);
+        dualPager.setLayoutManager(layoutManager);
+        layoutManager.scrollToPosition(dualPageNumber);
+        layoutManager.setItemPrefetchEnabled(true);
+        dualPager.setAdapter(dualAdapter);
+        dualPager.setItemViewCacheSize(10);
+        PagerSnapHelper snapHelper = new PagerSnapHelper();
+        RecyclerViewExtKt.attachSnapHelperWithListener(dualPager, snapHelper, SnapOnScrollListener.Behavior.NOTIFY_ON_SCROLL_STATE_IDLE, new OnSnapPositionChangeListener() {
+            @Override
+            public void onSnapPositionChange(int position) {
+                pageNumber = 2*position;
+                pagesTurned = pagesTurned + 2;
+            }
+        });
+
+
+    }
+
+     @Override
+     public boolean dispatchKeyEvent(KeyEvent event) {
+         int dualPageNumber;
+         int action = event.getAction();
+         int keyCode = event.getKeyCode();
+         switch (keyCode) {
+             case KeyEvent.KEYCODE_VOLUME_DOWN:
+                 if (action == KeyEvent.ACTION_DOWN && currentOrientation == "landscape" && pageNumber >= 2) {
+                     pageNumber--;
+
+                     if (pageNumber != 1)
+                        pageNumber--;
+
+                     if (pageNumber % 2 == 0)
+                         dualPageNumber = pageNumber/2;
+                     else
+                         dualPageNumber = (pageNumber - 1)/2;
+                     layoutManager.smoothScrollToPosition(dualPager, new RecyclerView.State(), dualPageNumber);
+                     return true;
+                 } else
+                     return super.dispatchKeyEvent(event);
+             case KeyEvent.KEYCODE_VOLUME_UP:
+                 if (action == KeyEvent.ACTION_DOWN && currentOrientation == "landscape" && pageNumber <= 847) {
+                     pageNumber++;
+
+                     if (pageNumber != 848)
+                        pageNumber++;
+                     if (pageNumber % 2 == 0)
+                         dualPageNumber = pageNumber/2;
+                     else
+                         dualPageNumber = (pageNumber - 1)/2;
+                     layoutManager.smoothScrollToPosition(dualPager, new RecyclerView.State(), dualPageNumber);
+                 return true;
+                 }
+                 else
+                     return super.dispatchKeyEvent(event);
+             default:
+                 return super.dispatchKeyEvent(event);
+         }
+     }
 
 }

@@ -1,4 +1,4 @@
-package com.example.personalmushaf.thirteenlinepage;
+package com.example.personalmushaf.navigation;
 
 import android.content.Context;
 

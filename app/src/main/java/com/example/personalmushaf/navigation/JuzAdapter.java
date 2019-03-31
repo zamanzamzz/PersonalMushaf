@@ -14,7 +14,7 @@ import com.example.personalmushaf.R;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class JuzAdapter extends RecyclerView.Adapter<JuzAdapter.JuzViewHolder> {
-    private String[] mDataset;
+    private String[] dataSet;
     private int type;
     private int juz;
 
@@ -30,9 +30,9 @@ public class JuzAdapter extends RecyclerView.Adapter<JuzAdapter.JuzViewHolder> {
         }
     }
 
-    // Provide a suitable constructor (depends on the kind of dataset)
+    // Provide a suitable constructor (depends on the kind of dataSet)
     public JuzAdapter(String[] myDataset, int type, int juz) {
-        mDataset = myDataset;
+        dataSet = myDataset;
         this.type = type;
         this.juz = juz;
     }
@@ -53,25 +53,16 @@ public class JuzAdapter extends RecyclerView.Adapter<JuzAdapter.JuzViewHolder> {
     // Replace the contents of a view (invoked by the layout manager)
     @Override
     public void onBindViewHolder(final JuzViewHolder holder, final int position) {
-        // - get element from your dataset at this position
+        // - get element from your dataSet at this position
         // - replace the contents of the view with that element
 
         TextView textView = (TextView) holder.rippleView.getChildAt(0);
-        textView.setText(mDataset[position]);
-
+        textView.setText(dataSet[position]);
         textView.setTextDirection(View.TEXT_DIRECTION_LTR);
 
-        if (type == 1 && position > 1) {
-            String textString = (QuranPageData.getInstance().JuzContentLengths)[juz - 1][position - 2];
-            textString += " " + mDataset[position];
-            textView.setText(textString);
-        }
+        prepJuzContentData(textView, position);
 
-
-        if (position % 2 == 0)
-            textView.setBackgroundColor(textView.getResources().getColor(R.color.colorPrimary));
-        else
-            textView.setBackgroundColor(textView.getResources().getColor(R.color.colorAccent));
+        alternateBackgroundColor(textView, position);
 
         holder.rippleView.setOnClickListener(new RippleView.OnClickListener() {
             @Override
@@ -79,91 +70,13 @@ public class JuzAdapter extends RecyclerView.Adapter<JuzAdapter.JuzViewHolder> {
                 RippleView rippleView = (RippleView) view;
                 rippleView.setRippleDuration(75);
                 rippleView.setFrameRate(10);
-                TextView textView = (TextView) rippleView.getChildAt(0);
-                CharSequence text = textView.getText();
-                int juzNumber;
 
                 if (type == 0) {
-                    String stringText = text.toString();
-
-                    juzNumber = Integer.valueOf(stringText.substring(0, 2));
-
-                    final Intent goToJuzContent = new Intent(view.getContext(), NavigationActivity.class);
-
-                    goToJuzContent.putExtra("type", 1);
-
-                    goToJuzContent.putExtra("juz number", juzNumber);
-
-                    rippleView.setOnRippleCompleteListener(new RippleView.OnRippleCompleteListener() {
-                        @Override
-                        public void onComplete(RippleView rippleView) {
-                            view.getContext().startActivity(goToJuzContent);
-                        }
-                        });
-
+                    juzToJuzContentProcedure(rippleView);
                 } else if (type == 1) {
-
-
-
-                    int quarter = chooseQuarter(text.toString(), view);
-
-                    if (quarter < 5) {
-
-                        final Intent goToJuz = new Intent(view.getContext(), MainActivity.class);
-
-                        goToJuz.putExtra("type", 1);
-
-                        goToJuz.putExtra("juz number", juz);
-
-                        goToJuz.putExtra("new page number", QuranPageData.getInstance().JuzContentPageNumbers[juz-1][quarter]);
-
-                        goToJuz.putExtra("from", "NavigationActivity");
-
-                        rippleView.setOnRippleCompleteListener(new RippleView.OnRippleCompleteListener() {
-                            @Override
-                            public void onComplete(RippleView rippleView) {
-                                view.getContext().startActivity(goToJuz);
-                                if (type == 1)
-                                    ((Activity) view.getContext()).finishAffinity();
-                            }
-                        });
-                    } else {
-                        final Intent goToRuku = new Intent(view.getContext(), NavigationActivity.class);
-
-                        goToRuku.putExtra("type", 2);
-
-                        goToRuku.putExtra("juz number", juz);
-
-                        rippleView.setOnRippleCompleteListener(new RippleView.OnRippleCompleteListener() {
-                            @Override
-                            public void onComplete(RippleView rippleView) {
-                                view.getContext().startActivity(goToRuku);
-                                if (type == 2)
-                                    ((Activity) view.getContext()).finishAffinity();
-                            }
-                        });
-                    }
+                    juzContentProcedure(rippleView, position);
                 } else if (type == 2) {
-                    final Intent goToRukuAyah = new Intent(rippleView.getContext(), MainActivity.class);
-
-                    goToRukuAyah.putExtra("from", "NavigationActivity");
-
-                    int ruku = holder.getAdapterPosition();
-
-                    int pageNumber = (QuranPageData.getInstance().RukuContentPageNumbers)[juz-1][ruku];
-
-                    goToRukuAyah.putExtra("type", 2);
-                    goToRukuAyah.putExtra("juz number", juz);
-                    goToRukuAyah.putExtra("new page number", pageNumber);
-
-                    rippleView.setOnRippleCompleteListener(new RippleView.OnRippleCompleteListener() {
-                        @Override
-                        public void onComplete(RippleView rippleView) {
-                            view.getContext().startActivity(goToRukuAyah);
-                            if (type == 2)
-                                ((Activity) view.getContext()).finishAffinity();
-                        }
-                    });
+                    rukuContentToPage(rippleView, holder.getAdapterPosition());
 
                 }
 
@@ -177,47 +90,17 @@ public class JuzAdapter extends RecyclerView.Adapter<JuzAdapter.JuzViewHolder> {
                 rippleView.setRippleDuration(75);
                 rippleView.setFrameRate(10);
 
-                TextView textView = (TextView) rippleView.getChildAt(0);
-                CharSequence text = textView.getText();
-                int juzNumber;
-
-                if (type == 0) {
-                    String stringText = text.toString();
-
-                    juzNumber = Integer.valueOf(stringText.substring(0, 2));
-
-                    final Intent goToJuz = new Intent(view.getContext(), MainActivity.class);
-
-                    goToJuz.putExtra("from", "NavigationActivity");
-
-                    goToJuz.putExtra("type", 0);
-
-                    goToJuz.putExtra("new page number", QuranPageData.getInstance().JuzContentPageNumbers[juzNumber-1][0]);
-
-
-
-
-                    rippleView.setOnRippleCompleteListener(new RippleView.OnRippleCompleteListener() {
-                        @Override
-                        public void onComplete(RippleView rippleView) {
-                            view.getContext().startActivity(goToJuz);
-
-                            ((Activity) view.getContext()).finish();
-                        }
-                    });
-                    return true;
-                }
-
-                return false;
+                return juzContentToPage(rippleView);
             }
         });
 
     }
 
-    // Return the size of your dataset (invoked by the layout manager)
+
+    // Return the size of your dataSet (invoked by the layout manager)
     @Override
     public int getItemCount() {
-        return mDataset.length;
+        return dataSet.length;
     }
 
     public int chooseQuarter(String text, View view) {
@@ -239,5 +122,136 @@ public class JuzAdapter extends RecyclerView.Adapter<JuzAdapter.JuzViewHolder> {
 
         return 5;
     }
+
+
+    private void alternateBackgroundColor(TextView textView, int position) {
+        if (position % 2 == 0)
+            textView.setBackgroundColor(textView.getResources().getColor(R.color.colorPrimary));
+        else
+            textView.setBackgroundColor(textView.getResources().getColor(R.color.colorAccent));
+    }
+
+    private void juzToJuzContentProcedure(RippleView rippleView) {
+        TextView textView = (TextView) rippleView.getChildAt(0);
+        CharSequence text = textView.getText();
+        String stringText = text.toString();
+
+        int selectedJuz = Integer.valueOf(stringText.substring(0, 2));
+
+        final Intent goToJuzContent = new Intent(textView.getContext(), NavigationActivity.class);
+
+        goToJuzContent.putExtra("type", 1);
+
+        goToJuzContent.putExtra("juz number", selectedJuz);
+
+        rippleView.setOnRippleCompleteListener(new RippleView.OnRippleCompleteListener() {
+            @Override
+            public void onComplete(RippleView rippleView) {
+                rippleView.getContext().startActivity(goToJuzContent);
+            }
+        });
+    }
+
+
+    private void prepJuzContentData(TextView textView, int position) {
+        if (type == 1 && position > 1) {
+            String textString = (QuranPageData.getInstance().JuzContentLengths)[juz - 1][position - 2];
+            textString += " " + dataSet[position];
+            textView.setText(textString);
+        }
+    }
+
+    private void juzContentProcedure(RippleView rippleView, int position) {
+        TextView textView = (TextView) rippleView.getChildAt(0);
+        CharSequence text = textView.getText();
+
+        int quarter = chooseQuarter(text.toString(), textView);
+
+        if (quarter < 5) {
+
+            final Intent goToJuz = new Intent(textView.getContext(), MainActivity.class);
+
+            goToJuz.putExtra("type", 1);
+
+            goToJuz.putExtra("juz number", juz);
+
+            goToJuz.putExtra("new page number", QuranPageData.getInstance().JuzContentPageNumbers[juz-1][quarter]);
+
+            goToJuz.putExtra("from", "NavigationActivity");
+
+            rippleView.setOnRippleCompleteListener(new RippleView.OnRippleCompleteListener() {
+                @Override
+                public void onComplete(RippleView rippleView) {
+                    rippleView.getContext().startActivity(goToJuz);
+                    ((Activity) rippleView.getContext()).finishAffinity();
+                }
+            });
+        } else {
+            final Intent goToRuku = new Intent(textView.getContext(), NavigationActivity.class);
+
+            goToRuku.putExtra("type", 2);
+
+            goToRuku.putExtra("juz number", juz);
+
+            rippleView.setOnRippleCompleteListener(new RippleView.OnRippleCompleteListener() {
+                @Override
+                public void onComplete(RippleView rippleView) {
+                    rippleView.getContext().startActivity(goToRuku);
+                    if (type == 2)
+                        ((Activity) rippleView.getContext()).finishAffinity();
+                }
+            });
+        }
+    }
+
+    private void rukuContentToPage(RippleView rippleView, int selectedRuku) {
+        final Intent goToRukuAyah = new Intent(rippleView.getContext(), MainActivity.class);
+
+        goToRukuAyah.putExtra("from", "NavigationActivity");
+
+        int pageNumber = (QuranPageData.getInstance().RukuContentPageNumbers)[juz-1][selectedRuku];
+
+        goToRukuAyah.putExtra("type", 2);
+        goToRukuAyah.putExtra("juz number", juz);
+        goToRukuAyah.putExtra("new page number", pageNumber);
+
+        rippleView.setOnRippleCompleteListener(new RippleView.OnRippleCompleteListener() {
+            @Override
+            public void onComplete(RippleView rippleView) {
+                rippleView.getContext().startActivity(goToRukuAyah);
+                ((Activity) rippleView.getContext()).finishAffinity();
+            }
+        });
+    }
+
+    private boolean juzContentToPage(RippleView rippleView) {
+        if (type == 0) {
+            CharSequence text = ((TextView) rippleView.getChildAt(0)).getText();
+            String stringText = text.toString();
+
+            int juzNumber = Integer.valueOf(stringText.substring(0, 2));
+
+            final Intent goToJuz = new Intent(rippleView.getContext(), MainActivity.class);
+
+            goToJuz.putExtra("from", "NavigationActivity");
+
+            goToJuz.putExtra("type", 0);
+
+            goToJuz.putExtra("new page number", QuranPageData.getInstance().JuzContentPageNumbers[juzNumber-1][0]);
+
+            rippleView.setOnRippleCompleteListener(new RippleView.OnRippleCompleteListener() {
+                @Override
+                public void onComplete(RippleView rippleView) {
+                    rippleView.getContext().startActivity(goToJuz);
+
+                    ((Activity) rippleView.getContext()).finish();
+                }
+            });
+            return true;
+        }
+
+        return false;
+    }
+
 }
 

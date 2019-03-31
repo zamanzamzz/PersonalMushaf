@@ -1,9 +1,7 @@
-package com.example.personalmushaf.thirteenlinepage
+package com.example.personalmushaf.navigation.snappositionchangelistener
 
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.SnapHelper
-import com.example.personalmushaf.OnSnapPositionChangeListener
-import com.example.personalmushaf.SnapOnScrollListener
 
 fun RecyclerView.attachSnapHelperWithListener(
         snapHelper: SnapHelper,

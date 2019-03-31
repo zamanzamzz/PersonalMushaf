@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class ThirteenLineDualAdapter extends RecyclerView.Adapter<ThirteenLineDualAdapter.ThirteenLineDualViewHolder> {
 
-    private int[][] myDataset;
+    private int[][] dataSet;
 
     public static class ThirteenLineDualViewHolder extends RecyclerView.ViewHolder {
         // each data item is just a string in this case
@@ -24,8 +24,8 @@ public class ThirteenLineDualAdapter extends RecyclerView.Adapter<ThirteenLineDu
         }
     }
 
-    public ThirteenLineDualAdapter(int[][] myDataset) {
-        this.myDataset = myDataset;
+    public ThirteenLineDualAdapter(int[][] dataSet) {
+        this.dataSet = dataSet;
     }
 
     @Override
@@ -73,7 +73,7 @@ public class ThirteenLineDualAdapter extends RecyclerView.Adapter<ThirteenLineDu
 
     @Override
     public int getItemCount() {
-        return myDataset.length;
+        return dataSet.length;
     }
 
 
