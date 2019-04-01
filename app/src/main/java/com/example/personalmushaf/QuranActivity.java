@@ -56,10 +56,6 @@ import com.example.personalmushaf.thirteenlinepage.ThirteenLineDualAdapter;
         Intent activityThatCalled = getIntent();
         String from = activityThatCalled.getStringExtra("from");
 
-        DisplayMetrics displayMetrics = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-        int width = displayMetrics.widthPixels;
-
         layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, true);
         currentOrientation = getScreenOrientation(this);
         receivedPageNumber = activityThatCalled.getIntExtra("new page number", 2);

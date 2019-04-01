@@ -3,10 +3,10 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_height="wrap_content"
     android:layout_width="match_parent"
-    android:id="@+id/list_item_juz_ripple"
+    android:id="@+id/list_item_ripple"
     rv_centered="true"
     >
-<TextView android:id="@+id/list_item_juz_name"
+<TextView android:id="@+id/list_item_name"
     android:layout_width="match_parent"
     android:layout_height="@dimen/list_item_height"
     android:paddingLeft="@dimen/list_item_left_margin"

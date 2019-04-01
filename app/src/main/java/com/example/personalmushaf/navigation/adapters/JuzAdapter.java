@@ -1,4 +1,4 @@
-package com.example.personalmushaf.navigation;
+package com.example.personalmushaf.navigation.adapters;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -10,6 +10,8 @@ import android.widget.TextView;
 import com.andexert.library.RippleView;
 import com.example.personalmushaf.QuranActivity;
 import com.example.personalmushaf.R;
+import com.example.personalmushaf.navigation.NavigationActivity;
+import com.example.personalmushaf.navigation.QuranPageData;
 
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -43,7 +45,7 @@ public class JuzAdapter extends RecyclerView.Adapter<JuzAdapter.JuzViewHolder> {
                                             int viewType) {
         // create a new view
         RippleView v = (RippleView) LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.list_item_juz, parent, false);
+                .inflate(R.layout.list_item, parent, false);
 
 
         JuzViewHolder vh = new JuzViewHolder(v);
@@ -74,7 +76,7 @@ public class JuzAdapter extends RecyclerView.Adapter<JuzAdapter.JuzViewHolder> {
                 } else if (type == 1) {
                     juzContentProcedure(rippleView, position);
                 } else if (type == 2) {
-                    rukuContentToPage(rippleView, holder.getAdapterPosition());
+                    rukuContentToPage(rippleView, position);
 
                 }
 

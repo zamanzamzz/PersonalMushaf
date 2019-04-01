@@ -4,22 +4,27 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.example.personalmushaf.R;
+import com.example.personalmushaf.navigation.adapters.JuzAdapter;
+import com.example.personalmushaf.navigation.adapters.ViewPagerAdapter;
+import com.example.personalmushaf.navigation.fragments.JuzFragment;
+import com.example.personalmushaf.navigation.fragments.SurahFragment;
+import com.google.android.material.tabs.TabLayout;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentPagerAdapter;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
 
 public class NavigationActivity extends AppCompatActivity {
 
     Toolbar navigationToolber;
-    JuzAdapter adapter;
+    TabLayout tabLayout;
+    ViewPager viewPager;
+    ViewPagerAdapter viewPagerAdapter;
+    JuzAdapter juzAdapter;
+    JuzFragment juzFragment;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -30,39 +35,24 @@ public class NavigationActivity extends AppCompatActivity {
         setSupportActionBar(navigationToolber);
         ActionBar actionBar = getSupportActionBar();
 
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
-        recyclerView.setHasFixedSize(true);
-
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-
-        String[] data;
-        int type;
-
         Intent intent = getIntent();
 
         int receivingType = intent.getIntExtra("type", 0);
         int juzNumber = intent.getIntExtra("juz number", 0);
 
-        if (receivingType == 0) {
-            data = QuranPageData.getInstance().juzTitles;
-            actionBar.hide();
-            type = 0;
-        } else if (receivingType == 1) {
-            data = QuranPageData.getInstance().juzContentTitles[juzNumber-1];
-            actionBar.show();
-            actionBar.setTitle("Chapter " + Integer.toString(juzNumber));
-            type = 1;
-        } else {
-            data = (QuranPageData.getInstance().rukuContentTitles)[juzNumber-1];
-            actionBar.show();
-            actionBar.setTitle("Chapter " + Integer.toString(juzNumber));
-            type = 2;
+        juzFragment = new JuzFragment();
+        Bundle juzArguments = new Bundle();
+        juzArguments.putInt("type", receivingType);
+        juzArguments.putInt("juz number", juzNumber);
+        juzFragment.setArguments(juzArguments);
 
-        }
-
-        adapter = new JuzAdapter(data, type, juzNumber);
-        recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setAdapter(adapter);
+        tabLayout = findViewById(R.id.tab_layout);
+        viewPager = findViewById(R.id.viewpager);
+        viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
+        viewPagerAdapter.addFragment(juzFragment, "Juz");
+        viewPagerAdapter.addFragment(new SurahFragment(), "Surah");
+        viewPager.setAdapter(viewPagerAdapter);
+        tabLayout.setupWithViewPager(viewPager);
     }
 
 
