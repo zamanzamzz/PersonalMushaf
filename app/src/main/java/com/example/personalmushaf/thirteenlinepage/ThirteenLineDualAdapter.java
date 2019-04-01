@@ -5,9 +5,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import com.bumptech.glide.Glide;
 import com.example.personalmushaf.R;
 import com.example.personalmushaf.navigation.QuranPageData;
-import com.squareup.picasso.Picasso;
 
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -51,11 +51,11 @@ public class ThirteenLineDualAdapter extends RecyclerView.Adapter<ThirteenLineDu
             int id2 = imageView.getResources().getIdentifier("pg_" + QuranPageData.getInstance().dualPageSets[position][1]
                     , "drawable", imageView.getContext().getPackageName());
 
-            Picasso.get().load(id2).centerInside().fit().into(imageView);
+            Glide.with(imageView.getContext()).load(id2).centerInside().into(imageView);
 
             imageView = (ImageView) holder.linearLayout.getChildAt(1);
 
-            Picasso.get().load(id1).centerInside().fit().into(imageView);
+            Glide.with(imageView.getContext()).load(id1).centerInside().into(imageView);
         } else {
             ImageView imageView;
             if (position == 424)
@@ -66,7 +66,7 @@ public class ThirteenLineDualAdapter extends RecyclerView.Adapter<ThirteenLineDu
             int id1 = imageView.getResources().getIdentifier("pg_" + QuranPageData.getInstance().dualPageSets[position][0]
                     , "drawable", imageView.getContext().getPackageName());
 
-            Picasso.get().load(id1).centerInside().fit().into(imageView);
+            Glide.with(imageView.getContext()).load(id1).centerInside().into(imageView);
         }
     }
 

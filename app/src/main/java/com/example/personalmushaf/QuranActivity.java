@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.Surface;
@@ -25,19 +26,18 @@ import com.example.personalmushaf.navigation.QuranPageData;
 import com.example.personalmushaf.navigation.snappositionchangelistener.OnSnapPositionChangeListener;
 import com.example.personalmushaf.navigation.snappositionchangelistener.RecyclerViewExtKt;
 import com.example.personalmushaf.navigation.snappositionchangelistener.SnapOnScrollListener;
-import com.example.personalmushaf.navigation.PageLayoutManager;
 import com.example.personalmushaf.thirteenlinepage.ThirteenLineAdapter;
 import com.example.personalmushaf.thirteenlinepage.ThirteenLineDualAdapter;
 
 
- public class MainActivity extends AppCompatActivity {
+ public class QuranActivity extends AppCompatActivity {
 
 
 	 private RecyclerView pager;
 	 private RecyclerView dualPager;
 	 private ThirteenLineAdapter adapter;
 	 private ThirteenLineDualAdapter dualAdapter;
-	 private PageLayoutManager layoutManager;
+	 private LinearLayoutManager layoutManager;
 	 private Toolbar toolbar;
 	 private String currentOrientation;
 	 private int pageNumber;
@@ -56,7 +56,11 @@ import com.example.personalmushaf.thirteenlinepage.ThirteenLineDualAdapter;
         Intent activityThatCalled = getIntent();
         String from = activityThatCalled.getStringExtra("from");
 
-        layoutManager = new PageLayoutManager(this, LinearLayoutManager.HORIZONTAL, true);
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        int width = displayMetrics.widthPixels;
+
+        layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, true);
         currentOrientation = getScreenOrientation(this);
         receivedPageNumber = activityThatCalled.getIntExtra("new page number", 2);
 
@@ -71,6 +75,8 @@ import com.example.personalmushaf.thirteenlinepage.ThirteenLineDualAdapter;
          }
 	}
 
+
+
      @Override
      public void onSaveInstanceState(Bundle outState) {
          super.onSaveInstanceState(outState);
@@ -78,12 +84,16 @@ import com.example.personalmushaf.thirteenlinepage.ThirteenLineDualAdapter;
          outState.putInt("pagesTurned", pagesTurned);
      }
 
-     public  void hideActionBar(View view) {
+     public  void setImmersive(View view) {
 		 ActionBar actionBar = getSupportActionBar();
-		 if (actionBar.isShowing())
+		 if (actionBar.isShowing()) {
 			 actionBar.hide();
-		 else
+			 hideSystemUI();
+		 }
+		 else {
 			 actionBar.show();
+             showSystemUI();
+		 }
 	}
 
 
@@ -104,9 +114,25 @@ import com.example.personalmushaf.thirteenlinepage.ThirteenLineDualAdapter;
 		 return super.onOptionsItemSelected(item);
 	 }
 
+     private void hideSystemUI() {
+         getWindow().getDecorView().setSystemUiVisibility(
+                 View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                         | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                         | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                         | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION // hide nav bar
+                         | View.SYSTEM_UI_FLAG_FULLSCREEN // hide status bar
+                         | View.SYSTEM_UI_FLAG_IMMERSIVE);
+     }
+
+     private void showSystemUI() {
+         getWindow().getDecorView().setSystemUiVisibility(
+                 View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                         | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                         | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
+     }
 
 
-	 public String getScreenOrientation(Context context){
+     public String getScreenOrientation(Context context){
 		 final int screenOrientation = ((WindowManager) context.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getOrientation();
 		 switch (screenOrientation) {
 			 case Surface.ROTATION_0:
@@ -125,7 +151,7 @@ import com.example.personalmushaf.thirteenlinepage.ThirteenLineDualAdapter;
 
          setSupportActionBar(toolbar);
          ActionBar actionBar = getSupportActionBar();
-         actionBar.hide();
+         setImmersive(new View(this));
 
          actionBar.setDisplayHomeAsUpEnabled(true);
          actionBar.setHomeAsUpIndicator(R.drawable.ic_menu_black_24dp);

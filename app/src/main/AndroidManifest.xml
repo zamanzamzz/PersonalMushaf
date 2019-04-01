@@ -13,17 +13,17 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".MainActivity"
+            android:name=".QuranActivity"
             android:theme="@style/AppTheme.NoActionBar"
             android:taskAffinity=".main">
+        </activity>
+        <activity android:name=".navigation.NavigationActivity"
+            android:taskAffinity=".navigation">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-        <activity android:name=".navigation.NavigationActivity"
-            android:taskAffinity=".navigation">
         </activity>
     </application>
 

@@ -9,15 +9,17 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
+import androidx.viewpager.widget.ViewPager;
 
 
 public class NavigationActivity extends AppCompatActivity {
 
-    public JuzAdapter adapter;
     Toolbar navigationToolber;
+    JuzAdapter adapter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -42,19 +44,20 @@ public class NavigationActivity extends AppCompatActivity {
         int juzNumber = intent.getIntExtra("juz number", 0);
 
         if (receivingType == 0) {
-            data = getResources().getStringArray(R.array.juz_descriptions);
+            data = QuranPageData.getInstance().juzTitles;
             actionBar.hide();
             type = 0;
         } else if (receivingType == 1) {
-            data = getResources().getStringArray(R.array.juz_content);
+            data = QuranPageData.getInstance().juzContentTitles[juzNumber-1];
             actionBar.show();
             actionBar.setTitle("Chapter " + Integer.toString(juzNumber));
             type = 1;
         } else {
-            data = (QuranPageData.getInstance().RukuContentTitles)[juzNumber-1];
+            data = (QuranPageData.getInstance().rukuContentTitles)[juzNumber-1];
             actionBar.show();
             actionBar.setTitle("Chapter " + Integer.toString(juzNumber));
             type = 2;
+
         }
 
         adapter = new JuzAdapter(data, type, juzNumber);

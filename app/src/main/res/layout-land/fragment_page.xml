@@ -4,7 +4,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity"
+    tools:context=".QuranActivity"
     android:orientation="horizontal">
 
     <ImageView
@@ -12,7 +12,7 @@
         android:layout_height="match_parent"
         android:id="@+id/page1"
         android:layout_weight="1"
-        android:onClick="hideActionBar"
+        android:onClick="setImmersive"
         />
 
     <ImageView
@@ -20,7 +20,7 @@
         android:layout_height="match_parent"
         android:id="@+id/page2"
         android:layout_weight="1"
-        android:onClick="hideActionBar"
+        android:onClick="setImmersive"
         />
 
 </LinearLayout>

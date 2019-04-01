@@ -7,9 +7,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 
+import com.bumptech.glide.Glide;
 import com.example.personalmushaf.R;
 import com.example.personalmushaf.navigation.QuranPageData;
-import com.squareup.picasso.Picasso;
 
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -49,7 +49,7 @@ public class ThirteenLineAdapter extends RecyclerView.Adapter<ThirteenLineAdapte
         int id = imageView.getResources().getIdentifier("pg_" + QuranPageData.getInstance().singlePageSets[position]
                 , "drawable", imageView.getContext().getPackageName());
 
-        Picasso.get().load(id).centerInside().fit().into(imageView);
+        Glide.with(imageView.getContext()).load(id).centerInside().into(imageView);
     }
 
 
