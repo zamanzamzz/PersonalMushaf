@@ -1,4 +1,4 @@
-package com.example.personalmushaf.navigation.fragments;
+package com.example.personalmushaf.navigation.tabs.juztab;
 
 
 import android.os.Bundle;
@@ -14,7 +14,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.personalmushaf.R;
-import com.example.personalmushaf.navigation.adapters.JuzAdapter;
 import com.example.personalmushaf.navigation.QuranPageData;
 
 
@@ -26,8 +25,6 @@ public class JuzFragment extends Fragment {
     private View v;
     private RecyclerView juzRecyclerView;
     private JuzAdapter adapter;
-    private int type;
-    private int juzNumber;
     private String[] dataSet;
     private ActionBar actionBar;
 
@@ -39,29 +36,18 @@ public class JuzFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        v = inflater.inflate(R.layout.fragment_juz, container, false);
+        v = inflater.inflate(R.layout.fragment_tab, container, false);
 
-        type = getArguments().getInt("type");
-        juzNumber = getArguments().getInt("juz number");
         actionBar = ((AppCompatActivity)getActivity()).getSupportActionBar();
 
-        if (type == 0) {
-            dataSet = QuranPageData.getInstance().juzTitles;
-            actionBar.setTitle("Qur'an Contents");
+        dataSet = QuranPageData.getInstance().juzTitles;
+        actionBar.setTitle("Qur'an Contents");
 
-        } else if (type == 1) {
-            dataSet = QuranPageData.getInstance().juzContentTitles[juzNumber-1];
-            actionBar.setTitle("Chapter " + QuranPageData.getInstance().juzTitles[juzNumber-1]);
 
-        } else {
-            dataSet = (QuranPageData.getInstance().rukuContentTitles)[juzNumber-1];
-            actionBar.setTitle("Chapter " + QuranPageData.getInstance().juzTitles[juzNumber-1]);
-        }
-
-        juzRecyclerView = (RecyclerView) v.findViewById(R.id.juz_recycler_view);
+        juzRecyclerView = (RecyclerView) v.findViewById(R.id.tab_recycler_view);
         juzRecyclerView.setHasFixedSize(true);
         LinearLayoutManager juzLayoutManager = new LinearLayoutManager(getContext());
-        adapter = new JuzAdapter(dataSet, type, juzNumber);
+        adapter = new JuzAdapter(dataSet);
 
         juzRecyclerView.setAdapter(adapter);
         juzRecyclerView.setLayoutManager(juzLayoutManager);

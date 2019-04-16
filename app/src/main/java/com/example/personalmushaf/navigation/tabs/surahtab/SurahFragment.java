@@ -1,4 +1,4 @@
-package com.example.personalmushaf.navigation.fragments;
+package com.example.personalmushaf.navigation.tabs.surahtab;
 
 
 import android.os.Bundle;
@@ -13,7 +13,6 @@ import android.view.ViewGroup;
 
 import com.example.personalmushaf.R;
 import com.example.personalmushaf.navigation.QuranPageData;
-import com.example.personalmushaf.navigation.adapters.SurahAdapter;
 
 
 /**
@@ -33,21 +32,21 @@ public class SurahFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        int type = getArguments().getInt("type");
+
         int juzNumber = getArguments().getInt("juz number");
         String[] dataSet;
 
-        if (type == 0) {
+        if (juzNumber < 0) {
             dataSet = QuranPageData.getInstance().surahNames;
         } else {
             dataSet = QuranPageData.getInstance().getSurahInJuzTitles[juzNumber-1];
         }
 
-        v = inflater.inflate(R.layout.fragment_surah, container, false);
-        surahRecyclerView = (RecyclerView) v.findViewById(R.id.surah_recycler_view);
+        v = inflater.inflate(R.layout.fragment_tab, container, false);
+        surahRecyclerView = (RecyclerView) v.findViewById(R.id.tab_recycler_view);
         surahRecyclerView.setHasFixedSize(true);
         LinearLayoutManager surahLayoutManager = new LinearLayoutManager(getContext());
-        adapter = new SurahAdapter(dataSet, type, juzNumber);
+        adapter = new SurahAdapter(dataSet, juzNumber);
         surahRecyclerView.setAdapter(adapter);
         surahRecyclerView.setLayoutManager(surahLayoutManager);
 

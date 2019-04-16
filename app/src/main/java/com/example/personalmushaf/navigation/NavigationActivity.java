@@ -4,14 +4,13 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.example.personalmushaf.R;
-import com.example.personalmushaf.navigation.adapters.JuzAdapter;
-import com.example.personalmushaf.navigation.adapters.ViewPagerAdapter;
-import com.example.personalmushaf.navigation.fragments.JuzFragment;
-import com.example.personalmushaf.navigation.fragments.SurahFragment;
+import com.example.personalmushaf.navigation.tabs.juztab.JuzFragment;
+import com.example.personalmushaf.navigation.tabs.juzquartertab.JuzQuarterFragment;
+import com.example.personalmushaf.navigation.tabs.rukucontenttab.RukuContentFragment;
+import com.example.personalmushaf.navigation.tabs.surahtab.SurahFragment;
 import com.google.android.material.tabs.TabLayout;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.viewpager.widget.ViewPager;
@@ -23,8 +22,9 @@ public class NavigationActivity extends AppCompatActivity {
     TabLayout tabLayout;
     ViewPager viewPager;
     ViewPagerAdapter viewPagerAdapter;
-    JuzAdapter juzAdapter;
     JuzFragment juzFragment;
+    JuzQuarterFragment juzQuarterFragment;
+    RukuContentFragment rukuContentFragment;
     SurahFragment surahFragment;
 
     @Override
@@ -34,26 +34,48 @@ public class NavigationActivity extends AppCompatActivity {
 
         navigationToolber = findViewById(R.id.navigation_toolbar);
         setSupportActionBar(navigationToolber);
-        ActionBar actionBar = getSupportActionBar();
 
         Intent intent = getIntent();
 
-        int receivingType = intent.getIntExtra("type", 0);
-        int juzNumber = intent.getIntExtra("juz number", 0);
-
-        juzFragment = new JuzFragment();
-        surahFragment = new SurahFragment();
-        Bundle arguments = new Bundle();
-        arguments.putInt("type", receivingType);
-        arguments.putInt("juz number", juzNumber);
-        juzFragment.setArguments(arguments);
-        surahFragment.setArguments(arguments);
+        int juzNumber = intent.getIntExtra("juz number", -1);
 
         tabLayout = findViewById(R.id.tab_layout);
         viewPager = findViewById(R.id.viewpager);
         viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
-        viewPagerAdapter.addFragment(juzFragment, "Juz");
-        viewPagerAdapter.addFragment(surahFragment, "Surah");
+
+        if (juzNumber < 0) {
+            getSupportActionBar().setTitle("Qur'an Contents");
+
+            juzFragment = new JuzFragment();
+            surahFragment = new SurahFragment();
+
+            Bundle arguments = new Bundle();
+            arguments.putInt("juz number", juzNumber);
+
+            juzFragment.setArguments(arguments);
+            surahFragment.setArguments(arguments);
+
+            viewPagerAdapter.addFragment(juzFragment, "Juz");
+            viewPagerAdapter.addFragment(surahFragment, "Surah");
+        } else {
+            getSupportActionBar().setTitle("Chapter " + QuranPageData.getInstance().juzTitles[juzNumber-1]);
+
+            juzQuarterFragment = new JuzQuarterFragment();
+            rukuContentFragment = new RukuContentFragment();
+            surahFragment = new SurahFragment();
+
+            Bundle arguments = new Bundle();
+            arguments.putInt("juz number", juzNumber);
+
+            juzQuarterFragment.setArguments(arguments);
+            rukuContentFragment.setArguments(arguments);
+            surahFragment.setArguments(arguments);
+
+            viewPagerAdapter.addFragment(juzQuarterFragment, "Quarter");
+            viewPagerAdapter.addFragment(rukuContentFragment, "Ruku");
+            viewPagerAdapter.addFragment(surahFragment, "Surah");
+        }
+
         viewPager.setAdapter(viewPagerAdapter);
         tabLayout.setupWithViewPager(viewPager);
     }

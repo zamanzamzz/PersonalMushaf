@@ -1,4 +1,4 @@
-package com.example.personalmushaf.navigation.adapters;
+package com.example.personalmushaf.navigation;
 
 import java.util.ArrayList;
 import java.util.List;

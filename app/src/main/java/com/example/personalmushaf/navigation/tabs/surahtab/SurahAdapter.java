@@ -1,4 +1,4 @@
-package com.example.personalmushaf.navigation.adapters;
+package com.example.personalmushaf.navigation.tabs.surahtab;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -17,7 +17,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class SurahAdapter extends RecyclerView.Adapter<SurahAdapter.SurahViewHolder> {
     private String[] dataSet;
-    int type;
     int juzNumber;
 
     public static class SurahViewHolder extends RecyclerView.ViewHolder {
@@ -30,9 +29,8 @@ public class SurahAdapter extends RecyclerView.Adapter<SurahAdapter.SurahViewHol
     }
 
     // Provide a suitable constructor (depends on the kind of dataSet)
-    public SurahAdapter(String[] myDataset, int type, int juzNumber) {
+    public SurahAdapter(String[] myDataset, int juzNumber) {
         dataSet = myDataset;
-        this.type = type;
         this.juzNumber = juzNumber;
     }
 
@@ -64,9 +62,9 @@ public class SurahAdapter extends RecyclerView.Adapter<SurahAdapter.SurahViewHol
                 rippleView.setRippleDuration(75);
                 rippleView.setFrameRate(10);
 
-                int pageNumber = QuranPageData.getInstance().surahPageNumbers[position];
+                int pageNumber;
 
-                if (type == 0)
+                if (juzNumber < 0)
                     pageNumber = QuranPageData.getInstance().surahPageNumbers[position];
                 else
                     pageNumber = QuranPageData.getInstance().getSurahInJuzPageNumbers[juzNumber-1][position];

@@ -1,4 +1,4 @@
-package com.example.personalmushaf.navigation.adapters;
+package com.example.personalmushaf.navigation.tabs.juztab;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -17,8 +17,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class JuzAdapter extends RecyclerView.Adapter<JuzAdapter.JuzViewHolder> {
     private String[] dataSet;
-    private int type;
-    private int juz;
 
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
@@ -33,16 +31,13 @@ public class JuzAdapter extends RecyclerView.Adapter<JuzAdapter.JuzViewHolder> {
     }
 
     // Provide a suitable constructor (depends on the kind of dataSet)
-    public JuzAdapter(String[] myDataset, int type, int juz) {
+    public JuzAdapter(String[] myDataset) {
         dataSet = myDataset;
-        this.type = type;
-        this.juz = juz;
     }
 
     // Create new views (invoked by the layout manager)
     @Override
-    public JuzViewHolder onCreateViewHolder(ViewGroup parent,
-                                            int viewType) {
+    public JuzViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         // create a new view
         RippleView v = (RippleView) LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.list_item, parent, false);
@@ -70,15 +65,7 @@ public class JuzAdapter extends RecyclerView.Adapter<JuzAdapter.JuzViewHolder> {
                 RippleView rippleView = (RippleView) view;
                 rippleView.setRippleDuration(75);
                 rippleView.setFrameRate(10);
-
-                if (type == 0) {
-                    juzToJuzContentProcedure(rippleView);
-                } else if (type == 1) {
-                    juzContentProcedure(rippleView, position);
-                } else if (type == 2) {
-                    rukuContentToPage(rippleView, position);
-
-                }
+                juzToJuzContentProcedure(rippleView);
 
             }
         });
@@ -90,7 +77,7 @@ public class JuzAdapter extends RecyclerView.Adapter<JuzAdapter.JuzViewHolder> {
                 rippleView.setRippleDuration(75);
                 rippleView.setFrameRate(10);
 
-                return juzContentToPage(rippleView);
+                return juzToPage(rippleView);
             }
         });
 
@@ -120,8 +107,6 @@ public class JuzAdapter extends RecyclerView.Adapter<JuzAdapter.JuzViewHolder> {
 
         final Intent goToJuzContent = new Intent(textView.getContext(), NavigationActivity.class);
 
-        goToJuzContent.putExtra("type", 1);
-
         goToJuzContent.putExtra("juz number", selectedJuz);
 
         rippleView.setOnRippleCompleteListener(new RippleView.OnRippleCompleteListener() {
@@ -133,92 +118,29 @@ public class JuzAdapter extends RecyclerView.Adapter<JuzAdapter.JuzViewHolder> {
     }
 
 
-    private void juzContentProcedure(RippleView rippleView, int position) {
-        TextView textView = (TextView) rippleView.getChildAt(0);
-        CharSequence text = textView.getText();
 
-        if (position > 0) {
+    private boolean juzToPage(RippleView rippleView) {
+        CharSequence text = ((TextView) rippleView.getChildAt(0)).getText();
+        String stringText = text.toString();
 
-            final Intent goToJuz = new Intent(textView.getContext(), QuranActivity.class);
+        int juzNumber = Integer.valueOf(stringText.substring(0, 2));
 
-            goToJuz.putExtra("type", 1);
+        final Intent goToJuz = new Intent(rippleView.getContext(), QuranActivity.class);
 
-            goToJuz.putExtra("juz number", juz);
+        goToJuz.putExtra("from", "NavigationActivity");
 
-            goToJuz.putExtra("new page number", QuranPageData.getInstance().juzContentPageNumbers[juz-1][position-1]);
 
-            goToJuz.putExtra("from", "NavigationActivity");
-
-            rippleView.setOnRippleCompleteListener(new RippleView.OnRippleCompleteListener() {
-                @Override
-                public void onComplete(RippleView rippleView) {
-                    rippleView.getContext().startActivity(goToJuz);
-                    ((Activity) rippleView.getContext()).finishAffinity();
-                }
-            });
-        } else {
-            final Intent goToRuku = new Intent(textView.getContext(), NavigationActivity.class);
-
-            goToRuku.putExtra("type", 2);
-
-            goToRuku.putExtra("juz number", juz);
-
-            rippleView.setOnRippleCompleteListener(new RippleView.OnRippleCompleteListener() {
-                @Override
-                public void onComplete(RippleView rippleView) {
-                    rippleView.getContext().startActivity(goToRuku);
-                }
-            });
-        }
-    }
-
-    private void rukuContentToPage(RippleView rippleView, int selectedRuku) {
-        final Intent goToRukuAyah = new Intent(rippleView.getContext(), QuranActivity.class);
-
-        goToRukuAyah.putExtra("from", "NavigationActivity");
-
-        int pageNumber = (QuranPageData.getInstance().rukuContentPageNumbers)[juz-1][selectedRuku];
-
-        goToRukuAyah.putExtra("type", 2);
-        goToRukuAyah.putExtra("juz number", juz);
-        goToRukuAyah.putExtra("new page number", pageNumber);
+        goToJuz.putExtra("new page number", QuranPageData.getInstance().juzContentPageNumbers[juzNumber-1][0]);
 
         rippleView.setOnRippleCompleteListener(new RippleView.OnRippleCompleteListener() {
             @Override
             public void onComplete(RippleView rippleView) {
-                rippleView.getContext().startActivity(goToRukuAyah);
-                ((Activity) rippleView.getContext()).finishAffinity();
+                rippleView.getContext().startActivity(goToJuz);
+
+                ((Activity) rippleView.getContext()).finish();
             }
         });
-    }
-
-    private boolean juzContentToPage(RippleView rippleView) {
-        if (type == 0) {
-            CharSequence text = ((TextView) rippleView.getChildAt(0)).getText();
-            String stringText = text.toString();
-
-            int juzNumber = Integer.valueOf(stringText.substring(0, 2));
-
-            final Intent goToJuz = new Intent(rippleView.getContext(), QuranActivity.class);
-
-            goToJuz.putExtra("from", "NavigationActivity");
-
-            goToJuz.putExtra("type", 0);
-
-            goToJuz.putExtra("new page number", QuranPageData.getInstance().juzContentPageNumbers[juzNumber-1][0]);
-
-            rippleView.setOnRippleCompleteListener(new RippleView.OnRippleCompleteListener() {
-                @Override
-                public void onComplete(RippleView rippleView) {
-                    rippleView.getContext().startActivity(goToJuz);
-
-                    ((Activity) rippleView.getContext()).finish();
-                }
-            });
-            return true;
-        }
-
-        return false;
+        return true;
     }
 
 }
