@@ -17,6 +17,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class SurahAdapter extends RecyclerView.Adapter<SurahAdapter.SurahViewHolder> {
     private String[] dataSet;
+    int type;
+    int juzNumber;
 
     public static class SurahViewHolder extends RecyclerView.ViewHolder {
         // each data item is just a string in this case
@@ -28,8 +30,10 @@ public class SurahAdapter extends RecyclerView.Adapter<SurahAdapter.SurahViewHol
     }
 
     // Provide a suitable constructor (depends on the kind of dataSet)
-    public SurahAdapter(String[] myDataset) {
+    public SurahAdapter(String[] myDataset, int type, int juzNumber) {
         dataSet = myDataset;
+        this.type = type;
+        this.juzNumber = juzNumber;
     }
 
     // Create new views (invoked by the layout manager)
@@ -61,6 +65,11 @@ public class SurahAdapter extends RecyclerView.Adapter<SurahAdapter.SurahViewHol
                 rippleView.setFrameRate(10);
 
                 int pageNumber = QuranPageData.getInstance().surahPageNumbers[position];
+
+                if (type == 0)
+                    pageNumber = QuranPageData.getInstance().surahPageNumbers[position];
+                else
+                    pageNumber = QuranPageData.getInstance().getSurahInJuzPageNumbers[juzNumber-1][position];
 
                 final Intent goToSurah = new Intent(textView.getContext(), QuranActivity.class);
 

@@ -51,11 +51,11 @@ public class JuzFragment extends Fragment {
 
         } else if (type == 1) {
             dataSet = QuranPageData.getInstance().juzContentTitles[juzNumber-1];
-            actionBar.setTitle("Chapter " + Integer.toString(juzNumber));
+            actionBar.setTitle("Chapter " + QuranPageData.getInstance().juzTitles[juzNumber-1]);
 
         } else {
             dataSet = (QuranPageData.getInstance().rukuContentTitles)[juzNumber-1];
-            actionBar.setTitle("Chapter " + Integer.toString(juzNumber));
+            actionBar.setTitle("Chapter " + QuranPageData.getInstance().juzTitles[juzNumber-1]);
         }
 
         juzRecyclerView = (RecyclerView) v.findViewById(R.id.juz_recycler_view);

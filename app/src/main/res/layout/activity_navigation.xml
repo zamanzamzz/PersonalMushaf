@@ -22,6 +22,7 @@
         android:background="@color/colorAccent"
         app:tabMode="fixed"
         app:tabGravity="fill"
+        app:tabMaxWidth="0dp"
         app:tabIndicatorColor="#FFF"
         android:id="@+id/tab_layout"
         app:tabTextColor="#FFF"

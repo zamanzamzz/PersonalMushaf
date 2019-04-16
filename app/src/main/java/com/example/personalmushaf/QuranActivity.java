@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.DisplayMetrics;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.Surface;
@@ -49,7 +48,7 @@ import com.example.personalmushaf.thirteenlinepage.ThirteenLineDualAdapter;
 
 	 protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_quran);
 
         setToolbar();
 

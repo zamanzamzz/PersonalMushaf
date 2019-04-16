@@ -167,7 +167,6 @@ public class JuzAdapter extends RecyclerView.Adapter<JuzAdapter.JuzViewHolder> {
                 @Override
                 public void onComplete(RippleView rippleView) {
                     rippleView.getContext().startActivity(goToRuku);
-                    ((Activity) rippleView.getContext()).finishAffinity();
                 }
             });
         }

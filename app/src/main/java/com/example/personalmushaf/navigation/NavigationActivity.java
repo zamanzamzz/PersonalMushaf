@@ -25,6 +25,7 @@ public class NavigationActivity extends AppCompatActivity {
     ViewPagerAdapter viewPagerAdapter;
     JuzAdapter juzAdapter;
     JuzFragment juzFragment;
+    SurahFragment surahFragment;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -41,16 +42,18 @@ public class NavigationActivity extends AppCompatActivity {
         int juzNumber = intent.getIntExtra("juz number", 0);
 
         juzFragment = new JuzFragment();
-        Bundle juzArguments = new Bundle();
-        juzArguments.putInt("type", receivingType);
-        juzArguments.putInt("juz number", juzNumber);
-        juzFragment.setArguments(juzArguments);
+        surahFragment = new SurahFragment();
+        Bundle arguments = new Bundle();
+        arguments.putInt("type", receivingType);
+        arguments.putInt("juz number", juzNumber);
+        juzFragment.setArguments(arguments);
+        surahFragment.setArguments(arguments);
 
         tabLayout = findViewById(R.id.tab_layout);
         viewPager = findViewById(R.id.viewpager);
         viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
         viewPagerAdapter.addFragment(juzFragment, "Juz");
-        viewPagerAdapter.addFragment(new SurahFragment(), "Surah");
+        viewPagerAdapter.addFragment(surahFragment, "Surah");
         viewPager.setAdapter(viewPagerAdapter);
         tabLayout.setupWithViewPager(viewPager);
     }
