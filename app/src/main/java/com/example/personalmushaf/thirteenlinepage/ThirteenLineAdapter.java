@@ -9,7 +9,7 @@ import android.widget.LinearLayout;
 
 import com.bumptech.glide.Glide;
 import com.example.personalmushaf.R;
-import com.example.personalmushaf.navigation.QuranPageData;
+import com.example.personalmushaf.navigation.ThirteenLinePageData;
 
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -46,7 +46,7 @@ public class ThirteenLineAdapter extends RecyclerView.Adapter<ThirteenLineAdapte
     public void onBindViewHolder(ThirteenLineViewHolder holder, int position) {
         ImageView imageView = (ImageView) holder.linearLayout.getChildAt(0);
 
-        int id = imageView.getResources().getIdentifier("pg_" + QuranPageData.getInstance().singlePageSets[position]
+        int id = imageView.getResources().getIdentifier("pg_" + ThirteenLinePageData.getInstance().singlePageSets[position]
                 , "drawable", imageView.getContext().getPackageName());
 
         Glide.with(imageView.getContext()).load(id).centerInside().into(imageView);

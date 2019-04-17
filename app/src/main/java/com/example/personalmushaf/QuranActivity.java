@@ -21,7 +21,7 @@ import android.view.WindowManager;
 
 import com.example.personalmushaf.navigation.NavigationActivity;
 
-import com.example.personalmushaf.navigation.QuranPageData;
+import com.example.personalmushaf.navigation.ThirteenLinePageData;
 import com.example.personalmushaf.navigation.snappositionchangelistener.OnSnapPositionChangeListener;
 import com.example.personalmushaf.navigation.snappositionchangelistener.RecyclerViewExtKt;
 import com.example.personalmushaf.navigation.snappositionchangelistener.SnapOnScrollListener;
@@ -43,8 +43,7 @@ import com.example.personalmushaf.thirteenlinepage.ThirteenLineDualAdapter;
 	 private int pagesTurned = 0;
 	 private int receivedPageNumber;
 
-
-	 @Override
+     @Override
 
 	 protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -176,7 +175,7 @@ import com.example.personalmushaf.thirteenlinepage.ThirteenLineDualAdapter;
     private void setSinglePagePager(RecyclerView.LayoutManager layoutManager) {
         pager = findViewById(R.id.pager);
         pager.setHasFixedSize(true);
-        adapter = new ThirteenLineAdapter(QuranPageData.getInstance().singlePageSets);
+        adapter = new ThirteenLineAdapter(ThirteenLinePageData.getInstance().singlePageSets);
         pager.setLayoutManager(layoutManager);
         layoutManager.scrollToPosition(pageNumber-1);
         layoutManager.setItemPrefetchEnabled(true);
@@ -201,7 +200,7 @@ import com.example.personalmushaf.thirteenlinepage.ThirteenLineDualAdapter;
 
         dualPager = findViewById(R.id.dualpager);
         dualPager.setHasFixedSize(true);
-        dualAdapter = new ThirteenLineDualAdapter(QuranPageData.getInstance().dualPageSets);
+        dualAdapter = new ThirteenLineDualAdapter(ThirteenLinePageData.getInstance().dualPageSets);
         dualPager.setLayoutManager(layoutManager);
         layoutManager.scrollToPosition(dualPageNumber);
         layoutManager.setItemPrefetchEnabled(true);

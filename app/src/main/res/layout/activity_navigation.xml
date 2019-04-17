@@ -14,6 +14,31 @@
         app:titleTextColor="#FFF"
         android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:id="@+id/juz_title_toolbar"
+                android:textColor="#FFF"
+                android:textSize="20sp"
+                android:gravity="center_vertical|start"
+                android:textDirection="ltr"
+                />
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="match_parent"
+                android:textSize="24sp"
+                android:paddingRight="10dp"
+                android:id="@+id/juz_start_toolbar"
+                android:textColor="#FFF"
+                android:gravity="center_vertical|end"
+                android:textDirection="ltr"
+                />
+        </LinearLayout>
+
     </androidx.appcompat.widget.Toolbar>
 
     <com.google.android.material.tabs.TabLayout

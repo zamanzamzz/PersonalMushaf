@@ -13,7 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.personalmushaf.R;
-import com.example.personalmushaf.navigation.QuranPageData;
+import com.example.personalmushaf.navigation.ThirteenLinePageData;
 
 
 /**
@@ -24,7 +24,7 @@ public class JuzQuarterFragment extends Fragment {
     private View v;
     private RecyclerView juzRecyclerView;
     private JuzQuarterAdapter adapter;
-    private String[] dataSet;
+    private String[][] dataSet;
     private ActionBar actionBar;
     private int juzNumber;
 
@@ -40,7 +40,7 @@ public class JuzQuarterFragment extends Fragment {
 
         juzNumber = getArguments().getInt("juz number");
 
-        dataSet = QuranPageData.getInstance().juzContentTitles[juzNumber-1];
+        dataSet = ThirteenLinePageData.getInstance().juzQuarterInfo[juzNumber-1];
 
         juzRecyclerView = (RecyclerView) v.findViewById(R.id.tab_recycler_view);
         juzRecyclerView.setHasFixedSize(true);

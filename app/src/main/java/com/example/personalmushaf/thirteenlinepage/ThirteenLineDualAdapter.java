@@ -7,7 +7,7 @@ import android.widget.LinearLayout;
 
 import com.bumptech.glide.Glide;
 import com.example.personalmushaf.R;
-import com.example.personalmushaf.navigation.QuranPageData;
+import com.example.personalmushaf.navigation.ThirteenLinePageData;
 
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -45,10 +45,10 @@ public class ThirteenLineDualAdapter extends RecyclerView.Adapter<ThirteenLineDu
         if (position != 0 && position != 424) {
             ImageView imageView = (ImageView) holder.linearLayout.getChildAt(0);
 
-            int id1 = imageView.getResources().getIdentifier("pg_" + QuranPageData.getInstance().dualPageSets[position][0]
+            int id1 = imageView.getResources().getIdentifier("pg_" + ThirteenLinePageData.getInstance().dualPageSets[position][0]
                         , "drawable", imageView.getContext().getPackageName());
 
-            int id2 = imageView.getResources().getIdentifier("pg_" + QuranPageData.getInstance().dualPageSets[position][1]
+            int id2 = imageView.getResources().getIdentifier("pg_" + ThirteenLinePageData.getInstance().dualPageSets[position][1]
                     , "drawable", imageView.getContext().getPackageName());
 
             Glide.with(imageView.getContext()).load(id2).centerInside().into(imageView);
@@ -63,7 +63,7 @@ public class ThirteenLineDualAdapter extends RecyclerView.Adapter<ThirteenLineDu
             else
                 imageView = (ImageView) holder.linearLayout.getChildAt(0);
 
-            int id1 = imageView.getResources().getIdentifier("pg_" + QuranPageData.getInstance().dualPageSets[position][0]
+            int id1 = imageView.getResources().getIdentifier("pg_" + ThirteenLinePageData.getInstance().dualPageSets[position][0]
                     , "drawable", imageView.getContext().getPackageName());
 
             Glide.with(imageView.getContext()).load(id1).centerInside().into(imageView);

@@ -2,20 +2,24 @@ package com.example.personalmushaf.navigation.tabs.juzquartertab;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.andexert.library.RippleView;
+import com.bumptech.glide.Glide;
 import com.example.personalmushaf.QuranActivity;
 import com.example.personalmushaf.R;
-import com.example.personalmushaf.navigation.QuranPageData;
+import com.example.personalmushaf.navigation.ThirteenLinePageData;
 
 import androidx.recyclerview.widget.RecyclerView;
 
 public class JuzQuarterAdapter extends RecyclerView.Adapter<JuzQuarterAdapter.JuzViewHolder> {
-    private String[] dataSet;
+    private String[][] dataSet;
     private int juz;
 
     // Provide a reference to the views for each data item
@@ -31,7 +35,7 @@ public class JuzQuarterAdapter extends RecyclerView.Adapter<JuzQuarterAdapter.Ju
     }
 
     // Provide a suitable constructor (depends on the kind of dataSet)
-    public JuzQuarterAdapter(String[] myDataset, int juz) {
+    public JuzQuarterAdapter(String[][] myDataset, int juz) {
         dataSet = myDataset;
         this.juz = juz;
     }
@@ -42,7 +46,7 @@ public class JuzQuarterAdapter extends RecyclerView.Adapter<JuzQuarterAdapter.Ju
                                             int viewType) {
         // create a new view
         RippleView v = (RippleView) LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.list_item, parent, false);
+                .inflate(R.layout.list_item_juz_quarter, parent, false);
 
 
         JuzViewHolder vh = new JuzViewHolder(v);
@@ -55,11 +59,36 @@ public class JuzQuarterAdapter extends RecyclerView.Adapter<JuzQuarterAdapter.Ju
         // - get element from your dataSet at this position
         // - replace the contents of the view with that element
 
-        TextView textView = (TextView) holder.rippleView.getChildAt(0);
-        textView.setText(dataSet[position]);
-        textView.setTextDirection(View.TEXT_DIRECTION_LTR);
+        LinearLayout layout = (LinearLayout) holder.rippleView.getChildAt(0);
 
-        alternateBackgroundColor(textView, position);
+        ImageView quarterImage = (ImageView) layout.getChildAt(0);
+
+        int id = quarterImage.getResources().getIdentifier("quarter_" + position,
+                    "drawable", quarterImage.getContext().getPackageName());
+
+        Glide.with(layout.getContext()).load(id).into(quarterImage);
+
+        TextView quarterLength = (TextView) ((LinearLayout) layout.getChildAt(1)).getChildAt(0);
+        TextView quarterPageNumber = (TextView) ((LinearLayout) layout.getChildAt(1)).getChildAt(1);
+        TextView quarterType = (TextView) layout.getChildAt(2);
+
+        String[] juzContentInfo = dataSet[position];
+
+        String length;
+
+        if (position != 0)
+            length = juzContentInfo[0] + " pages";
+        else
+            length = "";
+
+        quarterLength.setText(length);
+        quarterPageNumber.setText(juzContentInfo[1]);
+        quarterType.setText(ThirteenLinePageData.getInstance().juzQuarterType[position]);
+
+        if (position == 0 || position == 4)
+            quarterType.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18f);
+
+        alternateBackgroundColor(layout, position);
 
         holder.rippleView.setOnClickListener(new RippleView.OnClickListener() {
             @Override
@@ -83,20 +112,18 @@ public class JuzQuarterAdapter extends RecyclerView.Adapter<JuzQuarterAdapter.Ju
     }
 
 
-    private void alternateBackgroundColor(TextView textView, int position) {
+    private void alternateBackgroundColor(LinearLayout layout, int position) {
         if (position % 2 == 0)
-            textView.setBackgroundColor(textView.getResources().getColor(R.color.colorPrimary));
+            layout.setBackgroundColor(layout.getResources().getColor(R.color.colorPrimary));
         else
-            textView.setBackgroundColor(textView.getResources().getColor(R.color.colorAccent));
+            layout.setBackgroundColor(layout.getResources().getColor(R.color.colorAccent));
     }
 
 
     private void juzContentProcedure(RippleView rippleView, int position) {
-        TextView textView = (TextView) rippleView.getChildAt(0);
+        final Intent goToJuz = new Intent(rippleView.getContext(), QuranActivity.class);
 
-        final Intent goToJuz = new Intent(textView.getContext(), QuranActivity.class);
-
-        goToJuz.putExtra("new page number", QuranPageData.getInstance().juzContentPageNumbers[juz-1][position]);
+        goToJuz.putExtra("new page number", Integer.valueOf(dataSet[position][1]));
 
         goToJuz.putExtra("from", "NavigationActivity");
 

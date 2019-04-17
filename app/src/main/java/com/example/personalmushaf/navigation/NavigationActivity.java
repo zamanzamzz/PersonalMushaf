@@ -2,6 +2,7 @@ package com.example.personalmushaf.navigation;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.TextView;
 
 import com.example.personalmushaf.R;
 import com.example.personalmushaf.navigation.tabs.juztab.JuzFragment;
@@ -34,6 +35,8 @@ public class NavigationActivity extends AppCompatActivity {
 
         navigationToolber = findViewById(R.id.navigation_toolbar);
         setSupportActionBar(navigationToolber);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+
 
         Intent intent = getIntent();
 
@@ -44,7 +47,8 @@ public class NavigationActivity extends AppCompatActivity {
         viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
 
         if (juzNumber < 0) {
-            getSupportActionBar().setTitle("Qur'an Contents");
+            TextView title = (TextView) findViewById(R.id.juz_title_toolbar);
+            title.setText("Qur'an Contents");
 
             juzFragment = new JuzFragment();
             surahFragment = new SurahFragment();
@@ -58,7 +62,14 @@ public class NavigationActivity extends AppCompatActivity {
             viewPagerAdapter.addFragment(juzFragment, "Juz");
             viewPagerAdapter.addFragment(surahFragment, "Surah");
         } else {
-            getSupportActionBar().setTitle("Chapter " + QuranPageData.getInstance().juzTitles[juzNumber-1]);
+            String title = ThirteenLinePageData.getInstance().juzInfo[juzNumber-1][0] + "  | " +
+                    ThirteenLinePageData.getInstance().juzInfo[juzNumber-1][1] + " pages";
+            TextView juzTitle = (TextView) findViewById(R.id.juz_title_toolbar);
+            juzTitle.setText(title);
+
+            TextView juzStart = findViewById(R.id.juz_start_toolbar);
+
+            juzStart.setText(ThirteenLinePageData.getInstance().juzInfo[juzNumber-1][2]);
 
             juzQuarterFragment = new JuzQuarterFragment();
             rukuContentFragment = new RukuContentFragment();

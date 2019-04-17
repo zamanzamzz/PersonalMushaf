@@ -5,18 +5,18 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.andexert.library.RippleView;
 import com.example.personalmushaf.QuranActivity;
 import com.example.personalmushaf.R;
-import com.example.personalmushaf.navigation.QuranPageData;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class SurahAdapter extends RecyclerView.Adapter<SurahAdapter.SurahViewHolder> {
-    private String[] dataSet;
+    private String[][] dataSet;
     int juzNumber;
 
     public static class SurahViewHolder extends RecyclerView.ViewHolder {
@@ -29,7 +29,7 @@ public class SurahAdapter extends RecyclerView.Adapter<SurahAdapter.SurahViewHol
     }
 
     // Provide a suitable constructor (depends on the kind of dataSet)
-    public SurahAdapter(String[] myDataset, int juzNumber) {
+    public SurahAdapter(String[][] myDataset, int juzNumber) {
         dataSet = myDataset;
         this.juzNumber = juzNumber;
     }
@@ -40,7 +40,7 @@ public class SurahAdapter extends RecyclerView.Adapter<SurahAdapter.SurahViewHol
                                               int viewType) {
         // create a new view
         RippleView v = (RippleView) LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.list_item, parent, false);
+                .inflate(R.layout.list_item_surah, parent, false);
 
 
         SurahViewHolder vh = new SurahViewHolder(v);
@@ -49,11 +49,21 @@ public class SurahAdapter extends RecyclerView.Adapter<SurahAdapter.SurahViewHol
 
     @Override
     public void onBindViewHolder(final @NonNull SurahViewHolder holder, final int position) {
-        final TextView textView = (TextView) holder.rippleView.getChildAt(0);
-        textView.setText(dataSet[position]);
-        textView.setTextDirection(View.TEXT_DIRECTION_LTR);
+        LinearLayout layout = (LinearLayout) holder.rippleView.getChildAt(0);
 
-        alternateBackgroundColor(textView, position);
+        TextView surahNumber = (TextView) layout.getChildAt(0);
+        TextView surahPageNumber = (TextView) ((LinearLayout) layout.getChildAt(1)).getChildAt(1);
+        TextView surahOrigin = (TextView) ((LinearLayout) layout.getChildAt(1)).getChildAt(0);
+        TextView surahStart = (TextView) layout.getChildAt(2);
+
+        final String[] surahInfo = dataSet[position];
+
+        surahStart.setText(surahInfo[0]);
+        surahPageNumber.setText(surahInfo[1]);
+        surahNumber.setText(surahInfo[2]);
+        surahOrigin.setText(surahInfo[3]);
+
+        alternateBackgroundColor(layout, position);
 
         holder.rippleView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -62,14 +72,9 @@ public class SurahAdapter extends RecyclerView.Adapter<SurahAdapter.SurahViewHol
                 rippleView.setRippleDuration(75);
                 rippleView.setFrameRate(10);
 
-                int pageNumber;
+                int pageNumber = Integer.valueOf(surahInfo[1]);
 
-                if (juzNumber < 0)
-                    pageNumber = QuranPageData.getInstance().surahPageNumbers[position];
-                else
-                    pageNumber = QuranPageData.getInstance().getSurahInJuzPageNumbers[juzNumber-1][position];
-
-                final Intent goToSurah = new Intent(textView.getContext(), QuranActivity.class);
+                final Intent goToSurah = new Intent(rippleView.getContext(), QuranActivity.class);
 
                 goToSurah.putExtra("new page number", pageNumber);
 
@@ -91,10 +96,10 @@ public class SurahAdapter extends RecyclerView.Adapter<SurahAdapter.SurahViewHol
         return dataSet.length;
     }
 
-    private void alternateBackgroundColor(TextView textView, int position) {
+    private void alternateBackgroundColor(LinearLayout layout, int position) {
         if (position % 2 == 0)
-            textView.setBackgroundColor(textView.getResources().getColor(R.color.colorPrimary));
+            layout.setBackgroundColor(layout.getResources().getColor(R.color.colorPrimary));
         else
-            textView.setBackgroundColor(textView.getResources().getColor(R.color.colorAccent));
+            layout.setBackgroundColor(layout.getResources().getColor(R.color.colorAccent));
     }
 }

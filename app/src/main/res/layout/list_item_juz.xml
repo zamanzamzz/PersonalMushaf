@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.andexert.library.RippleView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="@dimen/list_item_height"
+    android:layout_width="match_parent"
+    android:id="@+id/list_item_ripple"
+    rv_centered="true"
+    >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <TextView android:id="@+id/juz_name"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:paddingLeft="@dimen/list_item_left_margin"
+            android:textSize="26sp"
+            android:gravity="center_vertical|start"
+            tools:text="Juz "
+            android:textColor="#FFF"
+            android:textDirection="ltr"
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView android:id="@+id/juz_length"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="@dimen/list_item_left_margin"
+                android:paddingTop="6dp"
+                android:textSize="18sp"
+                android:gravity="top|start"
+                tools:text="Juz "
+                android:textColor="#FFF"
+                android:textDirection="ltr"
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools" />
+
+            <TextView android:id="@+id/juz_page_number"
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:paddingLeft="@dimen/list_item_left_margin"
+                android:paddingBottom="8dp"
+                android:textSize="12sp"
+                android:gravity="bottom|start"
+                tools:text="Juz "
+                android:textColor="#FFF"
+                android:textDirection="ltr"
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools" />
+
+        </LinearLayout>
+
+        <TextView android:id="@+id/juz_start"
+            android:layout_width="fill_parent"
+            android:layout_height="match_parent"
+            android:paddingLeft="@dimen/list_item_left_margin"
+            android:paddingRight="@dimen/list_item_left_margin"
+            android:textSize="26sp"
+            android:gravity="center_vertical|start"
+            tools:text="Juz "
+            android:textColor="#FFF"
+            android:textDirection="rtl"
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools" />
+
+    </LinearLayout>
+</com.andexert.library.RippleView>

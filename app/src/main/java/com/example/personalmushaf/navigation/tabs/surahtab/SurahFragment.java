@@ -12,7 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.personalmushaf.R;
-import com.example.personalmushaf.navigation.QuranPageData;
+import com.example.personalmushaf.navigation.ThirteenLinePageData;
 
 
 /**
@@ -34,12 +34,12 @@ public class SurahFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         int juzNumber = getArguments().getInt("juz number");
-        String[] dataSet;
+        String[][] dataSet;
 
         if (juzNumber < 0) {
-            dataSet = QuranPageData.getInstance().surahNames;
+            dataSet = ThirteenLinePageData.getInstance().surahInfo;
         } else {
-            dataSet = QuranPageData.getInstance().getSurahInJuzTitles[juzNumber-1];
+            dataSet = ThirteenLinePageData.getInstance().surahInJuzInfo[juzNumber-1];
         }
 
         v = inflater.inflate(R.layout.fragment_tab, container, false);

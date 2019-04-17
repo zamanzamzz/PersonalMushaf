@@ -10,7 +10,7 @@ import android.widget.TextView;
 import com.andexert.library.RippleView;
 import com.example.personalmushaf.QuranActivity;
 import com.example.personalmushaf.R;
-import com.example.personalmushaf.navigation.QuranPageData;
+import com.example.personalmushaf.navigation.ThirteenLinePageData;
 
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -95,7 +95,7 @@ public class RukuContentAdapter extends RecyclerView.Adapter<RukuContentAdapter.
 
         goToRukuAyah.putExtra("from", "NavigationActivity");
 
-        int pageNumber = (QuranPageData.getInstance().rukuContentPageNumbers)[juz-1][selectedRuku];
+        int pageNumber = (ThirteenLinePageData.getInstance().rukuContentPageNumbers)[juz-1][selectedRuku];
 
         goToRukuAyah.putExtra("new page number", pageNumber);
 
