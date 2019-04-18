@@ -33,7 +33,6 @@
                 android:paddingTop="6dp"
                 android:textSize="18sp"
                 android:gravity="top|start"
-                tools:text="Juz "
                 android:textColor="#FFF"
                 android:textDirection="ltr"
                 xmlns:android="http://schemas.android.com/apk/res/android"

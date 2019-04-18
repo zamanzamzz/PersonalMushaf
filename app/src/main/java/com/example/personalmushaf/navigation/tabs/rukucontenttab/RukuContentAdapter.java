@@ -117,7 +117,7 @@ public class RukuContentAdapter extends RecyclerView.Adapter<RukuContentAdapter.
 
         goToRukuAyah.putExtra("from", "NavigationActivity");
 
-        int pageNumber = Integer.valueOf(dataSet[selectedRuku][3]);
+        int pageNumber = Integer.valueOf(dataSet[selectedRuku][4]);
 
         goToRukuAyah.putExtra("new page number", pageNumber);
 
