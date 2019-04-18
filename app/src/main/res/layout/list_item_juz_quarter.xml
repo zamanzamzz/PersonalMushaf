@@ -26,19 +26,19 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <TextView android:id="@+id/juz_length"
+            <TextView android:id="@+id/quarter_length"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingLeft="@dimen/list_item_left_margin"
                 android:paddingTop="6dp"
-                android:textSize="18sp"
+                android:textSize="14sp"
                 android:gravity="top|start"
                 android:textColor="#FFF"
                 android:textDirection="ltr"
                 xmlns:android="http://schemas.android.com/apk/res/android"
                 xmlns:tools="http://schemas.android.com/tools" />
 
-            <TextView android:id="@+id/juz_page_number"
+            <TextView android:id="@+id/quarter_page_number"
                 android:layout_width="wrap_content"
                 android:layout_height="fill_parent"
                 android:paddingLeft="@dimen/list_item_left_margin"
@@ -53,12 +53,12 @@
 
         </LinearLayout>
 
-        <TextView android:id="@+id/juz_start"
+        <TextView android:id="@+id/quarter_type"
             android:layout_width="fill_parent"
             android:layout_height="match_parent"
             android:paddingLeft="@dimen/list_item_left_margin"
             android:paddingRight="@dimen/list_item_left_margin"
-            android:textSize="26sp"
+            android:textSize="18sp"
             android:gravity="center_vertical|start"
             tools:text="Juz "
             android:textColor="#FFF"

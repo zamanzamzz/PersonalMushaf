@@ -78,9 +78,6 @@ public class RukuContentAdapter extends RecyclerView.Adapter<RukuContentAdapter.
         rukuPageNumber.setText(rukuInfo[4]);
         rukuType.setText(rukuInfo[5]);
 
-        if (rukuInfo[5].equals("First Page") || rukuInfo[5].equals("Last Page"))
-            rukuType.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18f);
-
         alternateBackgroundColor(layout, position);
 
         holder.rippleView.setOnClickListener(new RippleView.OnClickListener() {

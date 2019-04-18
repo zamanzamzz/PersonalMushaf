@@ -67,6 +67,21 @@ import com.example.personalmushaf.thirteenlinepage.ThirteenLineDualAdapter;
         else {
             setDualPagePager(layoutManager);
          }
+
+         View decorView = getWindow().getDecorView();
+         decorView.setOnSystemUiVisibilityChangeListener
+                 (new View.OnSystemUiVisibilityChangeListener() {
+                     @Override
+                     public void onSystemUiVisibilityChange(int visibility) {
+                         if ((visibility & View.SYSTEM_UI_FLAG_FULLSCREEN) == 0) {
+                             getSupportActionBar().show();
+                         } else {
+                             getSupportActionBar().hide();
+                         }
+                     }
+                 });
+
+         hideSystemUI();
 	}
 
 
@@ -77,18 +92,6 @@ import com.example.personalmushaf.thirteenlinepage.ThirteenLineDualAdapter;
          outState.putInt("currentPage", pageNumber);
          outState.putInt("pagesTurned", pagesTurned);
      }
-
-     public  void setImmersive(View view) {
-		 ActionBar actionBar = getSupportActionBar();
-		 if (actionBar.isShowing()) {
-			 actionBar.hide();
-			 hideSystemUI();
-		 }
-		 else {
-			 actionBar.show();
-             showSystemUI();
-		 }
-	}
 
 
 
@@ -125,6 +128,15 @@ import com.example.personalmushaf.thirteenlinepage.ThirteenLineDualAdapter;
                          | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
      }
 
+     public void setImmersive(View view) {
+         if (getWindow().getDecorView().getSystemUiVisibility() == (View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                 | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                 | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN))
+             hideSystemUI();
+         else
+             showSystemUI();
+     }
+
 
      public String getScreenOrientation(Context context){
 		 final int screenOrientation = ((WindowManager) context.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getOrientation();
@@ -145,12 +157,12 @@ import com.example.personalmushaf.thirteenlinepage.ThirteenLineDualAdapter;
 
          setSupportActionBar(toolbar);
          ActionBar actionBar = getSupportActionBar();
-         setImmersive(new View(this));
 
          actionBar.setDisplayHomeAsUpEnabled(true);
          actionBar.setHomeAsUpIndicator(R.drawable.ic_menu_black_24dp);
          actionBar.setDisplayShowTitleEnabled(false);
          actionBar.setHomeButtonEnabled(true);
+         actionBar.hide();
      }
 
 

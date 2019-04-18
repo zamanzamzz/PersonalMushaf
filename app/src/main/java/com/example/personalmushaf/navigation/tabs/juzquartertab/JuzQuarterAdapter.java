@@ -83,8 +83,6 @@ public class JuzQuarterAdapter extends RecyclerView.Adapter<JuzQuarterAdapter.Ju
         quarterPageNumber.setText(juzContentInfo[1]);
         quarterType.setText(ThirteenLinePageData.getInstance().juzQuarterType[position]);
 
-        if (position == 0 || position == 4)
-            quarterType.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18f);
 
         alternateBackgroundColor(layout, position);
 
