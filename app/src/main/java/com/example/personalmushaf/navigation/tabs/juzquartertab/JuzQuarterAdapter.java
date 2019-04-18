@@ -20,7 +20,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class JuzQuarterAdapter extends RecyclerView.Adapter<JuzQuarterAdapter.JuzViewHolder> {
     private String[][] dataSet;
-    private int juz;
 
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
@@ -35,9 +34,8 @@ public class JuzQuarterAdapter extends RecyclerView.Adapter<JuzQuarterAdapter.Ju
     }
 
     // Provide a suitable constructor (depends on the kind of dataSet)
-    public JuzQuarterAdapter(String[][] myDataset, int juz) {
+    public JuzQuarterAdapter(String[][] myDataset) {
         dataSet = myDataset;
-        this.juz = juz;
     }
 
     // Create new views (invoked by the layout manager)

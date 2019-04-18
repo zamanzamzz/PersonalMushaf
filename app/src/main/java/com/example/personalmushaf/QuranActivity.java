@@ -205,7 +205,7 @@ import com.example.personalmushaf.thirteenlinepage.ThirteenLineDualAdapter;
         layoutManager.scrollToPosition(dualPageNumber);
         layoutManager.setItemPrefetchEnabled(true);
         dualPager.setAdapter(dualAdapter);
-        dualPager.setItemViewCacheSize(10);
+        dualPager.setItemViewCacheSize(3);
         PagerSnapHelper snapHelper = new PagerSnapHelper();
         RecyclerViewExtKt.attachSnapHelperWithListener(dualPager, snapHelper, SnapOnScrollListener.Behavior.NOTIFY_ON_SCROLL_STATE_IDLE, new OnSnapPositionChangeListener() {
             @Override

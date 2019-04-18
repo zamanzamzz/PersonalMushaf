@@ -31,7 +31,7 @@
                 android:layout_width="fill_parent"
                 android:layout_height="match_parent"
                 android:textSize="24sp"
-                android:paddingRight="10dp"
+                android:paddingRight="@dimen/list_item_left_margin"
                 android:id="@+id/juz_start_toolbar"
                 android:textColor="#FFF"
                 android:gravity="center_vertical|end"

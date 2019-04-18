@@ -2,9 +2,11 @@ package com.example.personalmushaf.navigation.tabs.rukucontenttab;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.andexert.library.RippleView;
@@ -15,8 +17,7 @@ import com.example.personalmushaf.navigation.ThirteenLinePageData;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class RukuContentAdapter extends RecyclerView.Adapter<RukuContentAdapter.JuzViewHolder> {
-    private String[] dataSet;
-    private int juz;
+    private String[][] dataSet;
 
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
@@ -31,9 +32,8 @@ public class RukuContentAdapter extends RecyclerView.Adapter<RukuContentAdapter.
     }
 
     // Provide a suitable constructor (depends on the kind of dataSet)
-    public RukuContentAdapter(String[] myDataset, int juz) {
+    public RukuContentAdapter(String[][] myDataset) {
         dataSet = myDataset;
-        this.juz = juz;
     }
 
     // Create new views (invoked by the layout manager)
@@ -42,7 +42,7 @@ public class RukuContentAdapter extends RecyclerView.Adapter<RukuContentAdapter.
                                             int viewType) {
         // create a new view
         RippleView v = (RippleView) LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.list_item, parent, false);
+                .inflate(R.layout.list_item_ruku_content, parent, false);
 
 
         JuzViewHolder vh = new JuzViewHolder(v);
@@ -55,11 +55,33 @@ public class RukuContentAdapter extends RecyclerView.Adapter<RukuContentAdapter.
         // - get element from your dataSet at this position
         // - replace the contents of the view with that element
 
-        TextView textView = (TextView) holder.rippleView.getChildAt(0);
-        textView.setText(dataSet[position]);
-        textView.setTextDirection(View.TEXT_DIRECTION_LTR);
+        LinearLayout layout = (LinearLayout) holder.rippleView.getChildAt(0);
 
-        alternateBackgroundColor(textView, position);
+        TextView rukuNumber = (TextView) layout.getChildAt(0);
+        TextView rukuPageNumber = (TextView) ((LinearLayout) layout.getChildAt(1)).getChildAt(1);
+        TextView ayahRange = (TextView) ((LinearLayout) layout.getChildAt(1)).getChildAt(0);
+        TextView rukuType = (TextView) layout.getChildAt(2);
+
+        String[] rukuInfo = dataSet[position];
+
+        String range;
+
+        if (!rukuInfo[2].equals("") && !rukuInfo[3].equals(""))
+            range = rukuInfo[1] + ":" + rukuInfo[2] + " - " + rukuInfo[1] + ":" + rukuInfo[3];
+        else if (rukuInfo[2].equals(""))
+            range = rukuInfo[1] + ":" + rukuInfo[3];
+        else
+            range = rukuInfo[1] + ":" + rukuInfo[2];
+
+        rukuNumber.setText(rukuInfo[0]);
+        ayahRange.setText(range);
+        rukuPageNumber.setText(rukuInfo[4]);
+        rukuType.setText(rukuInfo[5]);
+
+        if (rukuInfo[5].equals("First Page") || rukuInfo[5].equals("Last Page"))
+            rukuType.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18f);
+
+        alternateBackgroundColor(layout, position);
 
         holder.rippleView.setOnClickListener(new RippleView.OnClickListener() {
             @Override
@@ -81,11 +103,11 @@ public class RukuContentAdapter extends RecyclerView.Adapter<RukuContentAdapter.
     }
 
 
-    private void alternateBackgroundColor(TextView textView, int position) {
+    private void alternateBackgroundColor(LinearLayout layout, int position) {
         if (position % 2 == 0)
-            textView.setBackgroundColor(textView.getResources().getColor(R.color.colorPrimary));
+            layout.setBackgroundColor(layout.getResources().getColor(R.color.colorPrimary));
         else
-            textView.setBackgroundColor(textView.getResources().getColor(R.color.colorAccent));
+            layout.setBackgroundColor(layout.getResources().getColor(R.color.colorAccent));
     }
 
 
@@ -95,7 +117,7 @@ public class RukuContentAdapter extends RecyclerView.Adapter<RukuContentAdapter.
 
         goToRukuAyah.putExtra("from", "NavigationActivity");
 
-        int pageNumber = (ThirteenLinePageData.getInstance().rukuContentPageNumbers)[juz-1][selectedRuku];
+        int pageNumber = Integer.valueOf(dataSet[selectedRuku][3]);
 
         goToRukuAyah.putExtra("new page number", pageNumber);
 

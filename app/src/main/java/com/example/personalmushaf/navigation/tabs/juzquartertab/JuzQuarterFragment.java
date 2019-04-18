@@ -45,7 +45,7 @@ public class JuzQuarterFragment extends Fragment {
         juzRecyclerView = (RecyclerView) v.findViewById(R.id.tab_recycler_view);
         juzRecyclerView.setHasFixedSize(true);
         LinearLayoutManager juzLayoutManager = new LinearLayoutManager(getContext());
-        adapter = new JuzQuarterAdapter(dataSet, juzNumber);
+        adapter = new JuzQuarterAdapter(dataSet);
 
         juzRecyclerView.setAdapter(adapter);
         juzRecyclerView.setLayoutManager(juzLayoutManager);

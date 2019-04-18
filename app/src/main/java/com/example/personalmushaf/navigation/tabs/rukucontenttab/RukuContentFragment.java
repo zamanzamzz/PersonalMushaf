@@ -24,7 +24,7 @@ public class RukuContentFragment extends Fragment {
     private View v;
     private RecyclerView juzRecyclerView;
     private RukuContentAdapter adapter;
-    private String[] dataSet;
+    private String[][] dataSet;
     private ActionBar actionBar;
     private int juzNumber;
 
@@ -40,12 +40,12 @@ public class RukuContentFragment extends Fragment {
 
         juzNumber = getArguments().getInt("juz number");
 
-        dataSet = ThirteenLinePageData.getInstance().rukuContentTitles[juzNumber-1];
+        dataSet = ThirteenLinePageData.getInstance().rukuContentInfo[juzNumber-1];
 
         juzRecyclerView = (RecyclerView) v.findViewById(R.id.tab_recycler_view);
         juzRecyclerView.setHasFixedSize(true);
         LinearLayoutManager juzLayoutManager = new LinearLayoutManager(getContext());
-        adapter = new RukuContentAdapter(dataSet, juzNumber);
+        adapter = new RukuContentAdapter(dataSet);
 
         juzRecyclerView.setAdapter(adapter);
         juzRecyclerView.setLayoutManager(juzLayoutManager);
