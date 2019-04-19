@@ -93,9 +93,13 @@ import com.example.personalmushaf.thirteenlinepage.ThirteenLineDualAdapter;
          outState.putInt("pagesTurned", pagesTurned);
      }
 
+     @Override
+     protected void onResume() {
+         super.onResume();
+         hideSystemUI();
+     }
 
-
-	 @Override
+     @Override
 	 public boolean onOptionsItemSelected(MenuItem item) {
 		 int id = item.getItemId();
 
