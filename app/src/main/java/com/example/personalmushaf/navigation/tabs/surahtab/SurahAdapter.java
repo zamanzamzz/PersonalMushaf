@@ -84,7 +84,6 @@ public class SurahAdapter extends RecyclerView.Adapter<SurahAdapter.SurahViewHol
                     @Override
                     public void onComplete(RippleView rippleView) {
                         rippleView.getContext().startActivity(goToSurah);
-                        ((Activity) rippleView.getContext()).finishAffinity();
                     }
                 });
             }

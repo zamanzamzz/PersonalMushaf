@@ -19,6 +19,7 @@ import android.view.View;
 import android.view.WindowManager;
 
 
+import com.bumptech.glide.Glide;
 import com.example.personalmushaf.navigation.NavigationActivity;
 
 import com.example.personalmushaf.navigation.ThirteenLinePageData;
@@ -105,15 +106,34 @@ import com.example.personalmushaf.thirteenlinepage.ThirteenLineDualAdapter;
 
 		 if (id == android.R.id.home) {
 
-			 Intent goToNavigation = new Intent(getBaseContext(), NavigationActivity.class);
+		     if (dualPager != null)
+		        dualPager.getRecycledViewPool().clear();
 
-			 startActivity(goToNavigation);
+		     if (pager != null)
+		        pager.getRecycledViewPool().clear();
+
+             Glide.get(this).clearMemory();
+
+			 finish();
 
 			 return true;
 		 }
 
 		 return super.onOptionsItemSelected(item);
 	 }
+
+     @Override
+     public void onBackPressed() {
+         if (dualPager != null)
+             dualPager.getRecycledViewPool().clear();
+
+         if (pager != null)
+             pager.getRecycledViewPool().clear();
+
+         Glide.get(this).clearMemory();
+
+         finish();
+     }
 
      private void hideSystemUI() {
          getWindow().getDecorView().setSystemUiVisibility(
@@ -129,13 +149,15 @@ import com.example.personalmushaf.thirteenlinepage.ThirteenLineDualAdapter;
          getWindow().getDecorView().setSystemUiVisibility(
                  View.SYSTEM_UI_FLAG_LAYOUT_STABLE
                          | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                         | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
+                         | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                         | View.SYSTEM_UI_FLAG_VISIBLE);
      }
 
      public void setImmersive(View view) {
          if (getWindow().getDecorView().getSystemUiVisibility() == (View.SYSTEM_UI_FLAG_LAYOUT_STABLE
                  | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                 | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN))
+                 | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                 | View.SYSTEM_UI_FLAG_VISIBLE))
              hideSystemUI();
          else
              showSystemUI();
@@ -163,7 +185,7 @@ import com.example.personalmushaf.thirteenlinepage.ThirteenLineDualAdapter;
          ActionBar actionBar = getSupportActionBar();
 
          actionBar.setDisplayHomeAsUpEnabled(true);
-         actionBar.setHomeAsUpIndicator(R.drawable.ic_menu_black_24dp);
+         actionBar.setHomeAsUpIndicator(R.drawable.ic_keyboard_backspace_black_24dp);
          actionBar.setDisplayShowTitleEnabled(false);
          actionBar.setHomeButtonEnabled(true);
          actionBar.hide();

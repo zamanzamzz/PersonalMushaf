@@ -127,7 +127,6 @@ public class JuzQuarterAdapter extends RecyclerView.Adapter<JuzQuarterAdapter.Ju
             @Override
             public void onComplete(RippleView rippleView) {
                 rippleView.getContext().startActivity(goToJuz);
-                ((Activity) rippleView.getContext()).finishAffinity();
             }
         });
     }

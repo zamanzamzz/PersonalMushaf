@@ -139,8 +139,6 @@ public class JuzAdapter extends RecyclerView.Adapter<JuzAdapter.JuzViewHolder> {
             @Override
             public void onComplete(RippleView rippleView) {
                 rippleView.getContext().startActivity(goToJuz);
-
-                ((Activity) rippleView.getContext()).finish();
             }
         });
         return true;

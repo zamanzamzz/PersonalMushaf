@@ -122,7 +122,6 @@ public class RukuContentAdapter extends RecyclerView.Adapter<RukuContentAdapter.
             @Override
             public void onComplete(RippleView rippleView) {
                 rippleView.getContext().startActivity(goToRukuAyah);
-                ((Activity) rippleView.getContext()).finishAffinity();
             }
         });
     }
