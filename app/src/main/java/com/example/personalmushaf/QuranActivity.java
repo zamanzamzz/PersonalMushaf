@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.MenuItem;
@@ -103,6 +104,7 @@ import com.example.personalmushaf.thirteenlinepage.ThirteenLineDualAdapter;
      @Override
 	 public boolean onOptionsItemSelected(MenuItem item) {
 		 int id = item.getItemId();
+		 final Context context = this;
 
 		 if (id == android.R.id.home) {
 
@@ -114,6 +116,13 @@ import com.example.personalmushaf.thirteenlinepage.ThirteenLineDualAdapter;
 
              Glide.get(this).clearMemory();
 
+             AsyncTask.execute(new Runnable() {
+                 @Override
+                 public void run() {
+                     Glide.get(context).clearDiskCache();
+                 }
+             });
+
 			 finish();
 
 			 return true;
@@ -124,6 +133,8 @@ import com.example.personalmushaf.thirteenlinepage.ThirteenLineDualAdapter;
 
      @Override
      public void onBackPressed() {
+         final Context context = this;
+
          if (dualPager != null)
              dualPager.getRecycledViewPool().clear();
 
@@ -131,6 +142,13 @@ import com.example.personalmushaf.thirteenlinepage.ThirteenLineDualAdapter;
              pager.getRecycledViewPool().clear();
 
          Glide.get(this).clearMemory();
+
+         AsyncTask.execute(new Runnable() {
+             @Override
+             public void run() {
+                 Glide.get(context).clearDiskCache();
+             }
+         });
 
          finish();
      }
