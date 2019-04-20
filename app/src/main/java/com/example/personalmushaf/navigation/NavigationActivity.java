@@ -2,6 +2,7 @@ package com.example.personalmushaf.navigation;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.widget.TextView;
 
 import com.example.personalmushaf.R;
@@ -67,6 +68,11 @@ public class NavigationActivity extends AppCompatActivity {
             TextView juzTitle = (TextView) findViewById(R.id.juz_title_toolbar);
             juzTitle.setText(title);
 
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_keyboard_backspace_black_24dp);
+            getSupportActionBar().setDisplayShowTitleEnabled(false);
+            getSupportActionBar().setHomeButtonEnabled(true);
+
             TextView juzStart = findViewById(R.id.juz_start_toolbar);
 
             juzStart.setText(ThirteenLinePageData.getInstance().juzInfo[juzNumber-1][2]);
@@ -89,6 +95,20 @@ public class NavigationActivity extends AppCompatActivity {
 
         viewPager.setAdapter(viewPagerAdapter);
         tabLayout.setupWithViewPager(viewPager);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == android.R.id.home) {
+
+            finish();
+
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
 
