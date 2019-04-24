@@ -168,15 +168,13 @@ import com.example.personalmushaf.thirteenlinepage.ThirteenLineDualAdapter;
          getWindow().getDecorView().setSystemUiVisibility(
                  View.SYSTEM_UI_FLAG_LAYOUT_STABLE
                          | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                         | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                         | View.SYSTEM_UI_FLAG_VISIBLE);
+                         | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
      }
 
      public void setImmersive(View view) {
          if (getWindow().getDecorView().getSystemUiVisibility() == (View.SYSTEM_UI_FLAG_LAYOUT_STABLE
                  | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                 | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                 | View.SYSTEM_UI_FLAG_VISIBLE))
+                 | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN))
              hideSystemUI();
          else
              showSystemUI();
