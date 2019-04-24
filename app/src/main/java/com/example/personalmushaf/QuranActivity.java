@@ -3,6 +3,7 @@
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.PagerSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
@@ -18,6 +19,8 @@ import android.view.MenuItem;
 import android.view.Surface;
 import android.view.View;
 
+import android.view.ViewGroup;
+import android.view.WindowInsets;
 import android.view.WindowManager;
 
 
@@ -78,11 +81,14 @@ import com.example.personalmushaf.thirteenlinepage.ThirteenLineDualAdapter;
                      public void onSystemUiVisibilityChange(int visibility) {
                          if ((visibility & View.SYSTEM_UI_FLAG_FULLSCREEN) == 0) {
                              getSupportActionBar().show();
+                             getWindow().addFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
                          } else {
                              getSupportActionBar().hide();
+                             getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
                          }
                      }
                  });
+
 
          hideSystemUI();
 	}
@@ -197,6 +203,9 @@ import com.example.personalmushaf.thirteenlinepage.ThirteenLineDualAdapter;
 
 	 private void setToolbar() {
          toolbar = findViewById(R.id.toolbar);
+         ViewGroup.LayoutParams params = toolbar.getLayoutParams();
+         params.height = params.height + getStatusBarHeight();
+         toolbar.setPadding(0,getStatusBarHeight(),0,0);
 
          setSupportActionBar(toolbar);
          ActionBar actionBar = getSupportActionBar();
@@ -314,4 +323,13 @@ import com.example.personalmushaf.thirteenlinepage.ThirteenLineDualAdapter;
          }
      }
 
-}
+     public int getStatusBarHeight() {
+         int result = 0;
+         int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
+         if (resourceId > 0) {
+             result = getResources().getDimensionPixelSize(resourceId);
+         }
+         return result;
+     }
+
+ }

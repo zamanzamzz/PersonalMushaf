@@ -14,7 +14,7 @@
         android:theme="@style/AppTheme.Launcher">
         <activity
             android:name=".QuranActivity"
-            android:theme="@style/AppTheme.NoActionBar"
+            android:theme="@style/AppTheme.NoActionBar.FullScreen"
             android:taskAffinity=".main">
         </activity>
         <activity android:name=".navigation.NavigationActivity"
