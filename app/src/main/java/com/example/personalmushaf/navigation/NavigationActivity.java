@@ -15,6 +15,7 @@ import com.google.android.material.tabs.TabLayout;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 import androidx.viewpager.widget.ViewPager;
 
 
@@ -38,7 +39,6 @@ public class NavigationActivity extends AppCompatActivity {
         navigationToolber = findViewById(R.id.navigation_toolbar);
         setSupportActionBar(navigationToolber);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
-
 
         Intent intent = getIntent();
 
