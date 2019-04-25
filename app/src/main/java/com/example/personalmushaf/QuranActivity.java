@@ -211,7 +211,7 @@ import com.example.personalmushaf.thirteenlinepage.ThirteenLineDualAdapter;
              pageNumber = receivedPageNumber;
              pagesTurned = 0;
          }
-         else if (savedInstanceState.getInt("pagesTurned") != 0) {
+         else {
              pagesTurned = savedInstanceState.getInt("pagesTurned");
              pageNumber = savedInstanceState.getInt("currentPage");
          }
