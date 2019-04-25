@@ -18,7 +18,6 @@ public class ThirteenLineAdapter extends RecyclerView.Adapter<ThirteenLineAdapte
     private int[] dataSet;
 
     public static class ThirteenLineViewHolder extends RecyclerView.ViewHolder {
-        // each data item is just a string in this case
         public LinearLayout linearLayout;
         public ThirteenLineViewHolder(LinearLayout v) {
             super(v);
@@ -33,7 +32,7 @@ public class ThirteenLineAdapter extends RecyclerView.Adapter<ThirteenLineAdapte
     @Override
     public ThirteenLineViewHolder onCreateViewHolder(ViewGroup parent,
                                             int viewType) {
-        // create a new view
+
         LinearLayout v = (LinearLayout) LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.fragment_page, parent, false);
 
@@ -46,7 +45,7 @@ public class ThirteenLineAdapter extends RecyclerView.Adapter<ThirteenLineAdapte
     public void onBindViewHolder(ThirteenLineViewHolder holder, int position) {
         ImageView imageView = (ImageView) holder.linearLayout.getChildAt(0);
 
-        int id = imageView.getResources().getIdentifier("pg_" + ThirteenLinePageData.getInstance().singlePageSets[position]
+        int id = imageView.getResources().getIdentifier("pg_" + ThirteenLinePageData.singlePageSets[position]
                 , "drawable", imageView.getContext().getPackageName());
 
         Glide.with(imageView.getContext()).load(id).centerInside().into(imageView);

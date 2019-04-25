@@ -40,7 +40,7 @@ public class JuzFragment extends Fragment {
 
         actionBar = ((AppCompatActivity)getActivity()).getSupportActionBar();
 
-        dataSet = ThirteenLinePageData.getInstance().juzInfo;
+        dataSet = ThirteenLinePageData.juzInfo;
         actionBar.setTitle("Qur'an Contents");
 
 

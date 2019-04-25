@@ -1,8 +1,6 @@
 package com.example.personalmushaf.navigation.tabs.rukucontenttab;
 
-import android.app.Activity;
 import android.content.Intent;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,18 +10,13 @@ import android.widget.TextView;
 import com.andexert.library.RippleView;
 import com.example.personalmushaf.QuranActivity;
 import com.example.personalmushaf.R;
-import com.example.personalmushaf.navigation.ThirteenLinePageData;
 
 import androidx.recyclerview.widget.RecyclerView;
 
 public class RukuContentAdapter extends RecyclerView.Adapter<RukuContentAdapter.JuzViewHolder> {
     private String[][] dataSet;
 
-    // Provide a reference to the views for each data item
-    // Complex data items may need more than one view per item, and
-    // you provide access to all the views for a data item in a view holder
     public static class JuzViewHolder extends RecyclerView.ViewHolder {
-        // each data item is just a string in this case
         public RippleView rippleView;
         public JuzViewHolder(RippleView v) {
             super(v);
@@ -31,16 +24,13 @@ public class RukuContentAdapter extends RecyclerView.Adapter<RukuContentAdapter.
         }
     }
 
-    // Provide a suitable constructor (depends on the kind of dataSet)
-    public RukuContentAdapter(String[][] myDataset) {
-        dataSet = myDataset;
+    public RukuContentAdapter(String[][] myDataSet) {
+        dataSet = myDataSet;
     }
 
-    // Create new views (invoked by the layout manager)
     @Override
     public JuzViewHolder onCreateViewHolder(ViewGroup parent,
                                             int viewType) {
-        // create a new view
         RippleView v = (RippleView) LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.list_item_ruku_content, parent, false);
 
@@ -49,11 +39,8 @@ public class RukuContentAdapter extends RecyclerView.Adapter<RukuContentAdapter.
         return vh;
     }
 
-    // Replace the contents of a view (invoked by the layout manager)
     @Override
     public void onBindViewHolder(final JuzViewHolder holder, final int position) {
-        // - get element from your dataSet at this position
-        // - replace the contents of the view with that element
 
         LinearLayout layout = (LinearLayout) holder.rippleView.getChildAt(0);
 
@@ -92,8 +79,6 @@ public class RukuContentAdapter extends RecyclerView.Adapter<RukuContentAdapter.
 
     }
 
-
-    // Return the size of your dataSet (invoked by the layout manager)
     @Override
     public int getItemCount() {
         return dataSet.length;

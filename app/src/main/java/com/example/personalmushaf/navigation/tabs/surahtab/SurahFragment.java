@@ -37,9 +37,9 @@ public class SurahFragment extends Fragment {
         String[][] dataSet;
 
         if (juzNumber < 0) {
-            dataSet = ThirteenLinePageData.getInstance().surahInfo;
+            dataSet = ThirteenLinePageData.surahInfo;
         } else {
-            dataSet = ThirteenLinePageData.getInstance().surahInJuzInfo[juzNumber-1];
+            dataSet = ThirteenLinePageData.surahInJuzInfo[juzNumber-1];
         }
 
         v = inflater.inflate(R.layout.fragment_tab, container, false);

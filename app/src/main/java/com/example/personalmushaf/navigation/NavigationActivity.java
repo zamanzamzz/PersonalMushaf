@@ -15,13 +15,12 @@ import com.google.android.material.tabs.TabLayout;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.content.ContextCompat;
 import androidx.viewpager.widget.ViewPager;
 
 
 public class NavigationActivity extends AppCompatActivity {
 
-    Toolbar navigationToolber;
+    Toolbar navigationToolbar;
     TabLayout tabLayout;
     ViewPager viewPager;
     ViewPagerAdapter viewPagerAdapter;
@@ -36,8 +35,8 @@ public class NavigationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_navigation);
 
-        navigationToolber = findViewById(R.id.navigation_toolbar);
-        setSupportActionBar(navigationToolber);
+        navigationToolbar = findViewById(R.id.navigation_toolbar);
+        setSupportActionBar(navigationToolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         Intent intent = getIntent();
@@ -49,7 +48,7 @@ public class NavigationActivity extends AppCompatActivity {
         viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
 
         if (juzNumber < 0) {
-            TextView title = (TextView) findViewById(R.id.juz_title_toolbar);
+            TextView title = findViewById(R.id.juz_title_toolbar);
             title.setText("Qur'an Contents");
 
             juzFragment = new JuzFragment();
@@ -64,9 +63,9 @@ public class NavigationActivity extends AppCompatActivity {
             viewPagerAdapter.addFragment(juzFragment, "Juz");
             viewPagerAdapter.addFragment(surahFragment, "Surah");
         } else {
-            String title = ThirteenLinePageData.getInstance().juzInfo[juzNumber-1][0] + "  | " +
-                    ThirteenLinePageData.getInstance().juzInfo[juzNumber-1][1] + " pages";
-            TextView juzTitle = (TextView) findViewById(R.id.juz_title_toolbar);
+            String title = ThirteenLinePageData.juzInfo[juzNumber-1][0] + "  | " +
+                    ThirteenLinePageData.juzInfo[juzNumber-1][1] + " pages";
+            TextView juzTitle = findViewById(R.id.juz_title_toolbar);
             juzTitle.setText(title);
 
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -76,7 +75,7 @@ public class NavigationActivity extends AppCompatActivity {
 
             TextView juzStart = findViewById(R.id.juz_start_toolbar);
 
-            juzStart.setText(ThirteenLinePageData.getInstance().juzInfo[juzNumber-1][2]);
+            juzStart.setText(ThirteenLinePageData.juzInfo[juzNumber-1][2]);
 
             juzQuarterFragment = new JuzQuarterFragment();
             rukuContentFragment = new RukuContentFragment();

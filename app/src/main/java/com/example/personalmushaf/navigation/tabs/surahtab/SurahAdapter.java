@@ -1,6 +1,5 @@
 package com.example.personalmushaf.navigation.tabs.surahtab;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,7 +19,6 @@ public class SurahAdapter extends RecyclerView.Adapter<SurahAdapter.SurahViewHol
     int juzNumber;
 
     public static class SurahViewHolder extends RecyclerView.ViewHolder {
-        // each data item is just a string in this case
         public RippleView rippleView;
         public SurahViewHolder(RippleView v) {
             super(v);
@@ -28,13 +26,11 @@ public class SurahAdapter extends RecyclerView.Adapter<SurahAdapter.SurahViewHol
         }
     }
 
-    // Provide a suitable constructor (depends on the kind of dataSet)
-    public SurahAdapter(String[][] myDataset, int juzNumber) {
-        dataSet = myDataset;
+    public SurahAdapter(String[][] myDataSet, int juzNumber) {
+        dataSet = myDataSet;
         this.juzNumber = juzNumber;
     }
 
-    // Create new views (invoked by the layout manager)
     @Override
     public SurahViewHolder onCreateViewHolder(ViewGroup parent,
                                               int viewType) {
