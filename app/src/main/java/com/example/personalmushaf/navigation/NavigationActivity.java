@@ -1,11 +1,18 @@
 package com.example.personalmushaf.navigation;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.TextView;
 
 import com.example.personalmushaf.R;
+import com.example.personalmushaf.SettingsActivity;
 import com.example.personalmushaf.navigation.tabs.juztab.JuzFragment;
 import com.example.personalmushaf.navigation.tabs.juzquartertab.JuzQuarterFragment;
 import com.example.personalmushaf.navigation.tabs.rukucontenttab.RukuContentFragment;
@@ -15,11 +22,14 @@ import com.google.android.material.tabs.TabLayout;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.viewpager.widget.ViewPager;
 
 
 public class NavigationActivity extends AppCompatActivity {
 
+    private static final int  REQUEST_READ_EXTERNAL_STORAGE = 111;
     Toolbar navigationToolbar;
     TabLayout tabLayout;
     ViewPager viewPager;
@@ -28,6 +38,8 @@ public class NavigationActivity extends AppCompatActivity {
     JuzQuarterFragment juzQuarterFragment;
     RukuContentFragment rukuContentFragment;
     SurahFragment surahFragment;
+    SharedPreferences preferences;
+    String mushafVersion;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -39,6 +51,9 @@ public class NavigationActivity extends AppCompatActivity {
         setSupportActionBar(navigationToolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
+        preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        mushafVersion = preferences.getString("mushaf", "madani_15_line");
+
         Intent intent = getIntent();
 
         int juzNumber = intent.getIntExtra("juz number", -1);
@@ -46,6 +61,14 @@ public class NavigationActivity extends AppCompatActivity {
         tabLayout = findViewById(R.id.tab_layout);
         viewPager = findViewById(R.id.viewpager);
         viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
+
+        boolean hasPermissionLocation = (ContextCompat.checkSelfPermission(getApplicationContext(),
+                Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED);
+        if (!hasPermissionLocation) {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                    REQUEST_READ_EXTERNAL_STORAGE);
+        }
 
         if (juzNumber < 0) {
             TextView title = findViewById(R.id.juz_title_toolbar);
@@ -63,8 +86,15 @@ public class NavigationActivity extends AppCompatActivity {
             viewPagerAdapter.addFragment(juzFragment, "Juz");
             viewPagerAdapter.addFragment(surahFragment, "Surah");
         } else {
-            String title = ThirteenLinePageData.juzInfo[juzNumber-1][0] + "  | " +
-                    ThirteenLinePageData.juzInfo[juzNumber-1][1] + " pages";
+            String title;
+
+            if (mushafVersion.equals("naskh_13_line"))
+                title = NaskhThirteenLinePageData.juzInfo[juzNumber-1][0] + "  | " +
+                        NaskhThirteenLinePageData.juzInfo[juzNumber-1][1] + " pages";
+            else
+                title = MadaniFifteenLinePageData.juzInfo[juzNumber-1][0] + "  | " +
+                        MadaniFifteenLinePageData.juzInfo[juzNumber-1][1] + " pages";
+
             TextView juzTitle = findViewById(R.id.juz_title_toolbar);
             juzTitle.setText(title);
 
@@ -75,7 +105,7 @@ public class NavigationActivity extends AppCompatActivity {
 
             TextView juzStart = findViewById(R.id.juz_start_toolbar);
 
-            juzStart.setText(ThirteenLinePageData.juzInfo[juzNumber-1][2]);
+            juzStart.setText(NaskhThirteenLinePageData.juzInfo[juzNumber-1][2]);
 
             juzQuarterFragment = new JuzQuarterFragment();
             rukuContentFragment = new RukuContentFragment();
@@ -89,12 +119,22 @@ public class NavigationActivity extends AppCompatActivity {
             surahFragment.setArguments(arguments);
 
             viewPagerAdapter.addFragment(juzQuarterFragment, "Quarter");
-            viewPagerAdapter.addFragment(rukuContentFragment, "Ruku");
+            if (mushafVersion.equals("naskh_13_line"))
+                viewPagerAdapter.addFragment(rukuContentFragment, "Ruku");
             viewPagerAdapter.addFragment(surahFragment, "Surah");
         }
 
         viewPager.setAdapter(viewPagerAdapter);
         tabLayout.setupWithViewPager(viewPager);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+
+        inflater.inflate(R.menu.settings, menu);
+
+        return true;
     }
 
     @Override
@@ -106,6 +146,12 @@ public class NavigationActivity extends AppCompatActivity {
             finish();
 
             return true;
+        } else if (id == R.id.go_to_settings_navigation) {
+            Intent goToSettings = new Intent(this, SettingsActivity.class);
+
+            this.startActivity(goToSettings);
+
+            finish();
         }
 
         return super.onOptionsItemSelected(item);

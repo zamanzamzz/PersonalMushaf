@@ -6,8 +6,20 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textColor">#FFF</item>
+        <item name="android:textColorSecondary">#A5A5A5</item>
         <item name="android:navigationBarColor">@color/colorPrimary</item>
         <item name="android:statusBarColor">@color/colorPrimary</item>
+        <item name="actionOverflowButtonStyle">@style/OverFlow</item>
+        <item name="alertDialogTheme">@style/DarkAlertDialog</item>
+    </style>
+    <style name="OverFlow" parent="@style/Widget.AppCompat.Light.ActionButton.Overflow">
+        <item name="android:src">@drawable/ic_overflow</item>
+    </style>
+    <style name="DarkAlertDialog" parent="Theme.AppCompat.Dialog.Alert">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">#FFF</item>
     </style>
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>

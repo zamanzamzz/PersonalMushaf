@@ -13,7 +13,7 @@
         android:elevation="4dp"
         app:titleTextColor="#FFF"
         android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Dark">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -31,7 +31,6 @@
                 android:layout_width="fill_parent"
                 android:layout_height="match_parent"
                 android:textSize="24sp"
-                android:paddingRight="@dimen/list_item_left_margin"
                 android:id="@+id/juz_start_toolbar"
                 android:textColor="#FFF"
                 android:gravity="center_vertical|end"

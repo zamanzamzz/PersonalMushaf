@@ -1,6 +1,7 @@
 package com.example.personalmushaf.navigation.tabs.juztab;
 
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.appcompat.app.ActionBar;
@@ -9,12 +10,14 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.personalmushaf.R;
-import com.example.personalmushaf.navigation.ThirteenLinePageData;
+import com.example.personalmushaf.navigation.MadaniFifteenLinePageData;
+import com.example.personalmushaf.navigation.NaskhThirteenLinePageData;
 
 
 /**
@@ -27,6 +30,8 @@ public class JuzFragment extends Fragment {
     private JuzAdapter adapter;
     private String[][] dataSet;
     private ActionBar actionBar;
+    private SharedPreferences preferences;
+
 
     public JuzFragment() {
         // Required empty public constructor
@@ -40,7 +45,15 @@ public class JuzFragment extends Fragment {
 
         actionBar = ((AppCompatActivity)getActivity()).getSupportActionBar();
 
-        dataSet = ThirteenLinePageData.juzInfo;
+        preferences = PreferenceManager.getDefaultSharedPreferences(container.getContext());
+
+        String mushaf = preferences.getString("mushaf", "madani_15_line");
+
+        if (mushaf.equals("madani_15_line"))
+            dataSet = MadaniFifteenLinePageData.juzInfo;
+        else
+            dataSet = NaskhThirteenLinePageData.juzInfo;
+
         actionBar.setTitle("Qur'an Contents");
 
 

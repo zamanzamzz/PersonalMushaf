@@ -10,8 +10,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.AsyncTask;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.Surface;
@@ -21,14 +22,12 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 
 
-import com.bumptech.glide.Glide;
-
-import com.example.personalmushaf.navigation.ThirteenLinePageData;
+import com.example.personalmushaf.navigation.NaskhThirteenLinePageData;
 import com.example.personalmushaf.navigation.snappositionchangelistener.OnSnapPositionChangeListener;
 import com.example.personalmushaf.navigation.snappositionchangelistener.RecyclerViewExtKt;
 import com.example.personalmushaf.navigation.snappositionchangelistener.SnapOnScrollListener;
-import com.example.personalmushaf.thirteenlinepage.ThirteenLineAdapter;
-import com.example.personalmushaf.thirteenlinepage.ThirteenLineDualAdapter;
+import com.example.personalmushaf.quranpage.QuranPageRecyclerViewAdapter;
+import com.example.personalmushaf.quranpage.QuranDualPageRecyclerViewAdapter;
 
 
  public class QuranActivity extends AppCompatActivity {
@@ -44,14 +43,21 @@ import com.example.personalmushaf.thirteenlinepage.ThirteenLineDualAdapter;
 
      private RecyclerView singlePageRecyclerView;
      private RecyclerView dualPageRecyclerView;
-     private ThirteenLineAdapter singlePageAdapter;
-     private ThirteenLineDualAdapter dualPageAdapter;
+     private QuranPageRecyclerViewAdapter singlePageAdapter;
+     private QuranDualPageRecyclerViewAdapter dualPageAdapter;
+
+     private SharedPreferences preferences;
+     String currentMushaf;
 
 
      @Override
 	 protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_quran);
+
+        preferences = PreferenceManager.getDefaultSharedPreferences(this);
+
+        currentMushaf = preferences.getString("mushaf", "madani_15_line");
 
         setupActionbar();
 
@@ -100,20 +106,11 @@ import com.example.personalmushaf.thirteenlinepage.ThirteenLineDualAdapter;
      @Override
 	 public boolean onOptionsItemSelected(MenuItem item) {
 		 int id = item.getItemId();
-		 final Context context = this;
-
 		 if (id == android.R.id.home) {
 
-             Glide.get(this).clearMemory();
-
-             AsyncTask.execute(new Runnable() {
-                 @Override
-                 public void run() {
-                     Glide.get(context).clearDiskCache();
-                 }
-             });
 
 			 finish();
+
 
 			 return true;
 		 }
@@ -123,17 +120,6 @@ import com.example.personalmushaf.thirteenlinepage.ThirteenLineDualAdapter;
 
      @Override
      public void onBackPressed() {
-         final Context context = this;
-
-         Glide.get(this).clearMemory();
-
-         AsyncTask.execute(new Runnable() {
-             @Override
-             public void run() {
-                 Glide.get(context).clearDiskCache();
-             }
-         });
-
          finish();
      }
 
@@ -161,21 +147,39 @@ import com.example.personalmushaf.thirteenlinepage.ThirteenLineDualAdapter;
                      return super.dispatchKeyEvent(event);
 
              case KeyEvent.KEYCODE_VOLUME_UP:
-                 if (action == KeyEvent.ACTION_DOWN && currentOrientation == "landscape" && pageNumber <= 847) {
-                     pageNumber++;
-
-                     if (pageNumber != 848)
+                 if (!currentMushaf.equals("madani_15_line")) {
+                     if (action == KeyEvent.ACTION_DOWN && currentOrientation == "landscape" && pageNumber <= 847) {
                          pageNumber++;
 
-                     if (pageNumber % 2 == 0)
-                         dualPageNumber = pageNumber/2;
+                         if (pageNumber != 848)
+                             pageNumber++;
+
+                         if (pageNumber % 2 == 0)
+                             dualPageNumber = pageNumber/2;
+                         else
+                             dualPageNumber = (pageNumber - 1)/2;
+                         layoutManager.smoothScrollToPosition(dualPageRecyclerView, new RecyclerView.State(), dualPageNumber);
+                         return true;
+                     }
                      else
-                         dualPageNumber = (pageNumber - 1)/2;
-                     layoutManager.smoothScrollToPosition(dualPageRecyclerView, new RecyclerView.State(), dualPageNumber);
-                     return true;
+                         return super.dispatchKeyEvent(event);
+                 } else {
+                     if (action == KeyEvent.ACTION_DOWN && currentOrientation == "landscape" && pageNumber <= 602) {
+                         pageNumber++;
+
+                         if (pageNumber != 603)
+                             pageNumber++;
+
+                         if (pageNumber % 2 == 0)
+                             dualPageNumber = (pageNumber-1)/2;
+                         else
+                             dualPageNumber = pageNumber/2;
+                         layoutManager.smoothScrollToPosition(dualPageRecyclerView, new RecyclerView.State(), dualPageNumber);
+                         return true;
+                     }
+                     else
+                         return super.dispatchKeyEvent(event);
                  }
-                 else
-                     return super.dispatchKeyEvent(event);
              default:
                  return super.dispatchKeyEvent(event);
          }
@@ -262,7 +266,7 @@ import com.example.personalmushaf.thirteenlinepage.ThirteenLineDualAdapter;
     private void setupSinglePageRecyclerView(RecyclerView.LayoutManager layoutManager) {
         singlePageRecyclerView = findViewById(R.id.pager);
         singlePageRecyclerView.setHasFixedSize(true);
-        singlePageAdapter = new ThirteenLineAdapter(ThirteenLinePageData.singlePageSets);
+        singlePageAdapter = new QuranPageRecyclerViewAdapter(NaskhThirteenLinePageData.singlePageSets);
         singlePageRecyclerView.setLayoutManager(layoutManager);
         layoutManager.scrollToPosition(pageNumber-1);
         layoutManager.setItemPrefetchEnabled(true);
@@ -279,15 +283,23 @@ import com.example.personalmushaf.thirteenlinepage.ThirteenLineDualAdapter;
     }
 
     private void setupDualPageRecyclerView(RecyclerView.LayoutManager layoutManager) {
-        int dualPageNumber;
-        if (pageNumber % 2 == 0)
-            dualPageNumber = pageNumber/2;
-        else
-            dualPageNumber = (pageNumber - 1)/2;
+         int dualPageNumber;
+
+         if (!currentMushaf.equals("madani_15_line")) {
+            if (pageNumber % 2 == 0)
+                dualPageNumber = pageNumber/2;
+            else
+                dualPageNumber = (pageNumber - 1)/2;
+         } else {
+             if (pageNumber % 2 == 0)
+                 dualPageNumber = pageNumber/2 - 1;
+             else
+                 dualPageNumber = (pageNumber - 1)/2;
+         }
 
         dualPageRecyclerView = findViewById(R.id.dualpager);
         dualPageRecyclerView.setHasFixedSize(true);
-        dualPageAdapter = new ThirteenLineDualAdapter(ThirteenLinePageData.dualPageSets);
+        dualPageAdapter = new QuranDualPageRecyclerViewAdapter(NaskhThirteenLinePageData.dualPageSets);
         dualPageRecyclerView.setLayoutManager(layoutManager);
         layoutManager.scrollToPosition(dualPageNumber);
         layoutManager.setItemPrefetchEnabled(true);
@@ -297,7 +309,10 @@ import com.example.personalmushaf.thirteenlinepage.ThirteenLineDualAdapter;
         RecyclerViewExtKt.attachSnapHelperWithListener(dualPageRecyclerView, snapHelper, SnapOnScrollListener.Behavior.NOTIFY_ON_SCROLL_STATE_IDLE, new OnSnapPositionChangeListener() {
             @Override
             public void onSnapPositionChange(int position) {
-                pageNumber = 2*position;
+                if (currentMushaf.equals("madani_15_line"))
+                    pageNumber = 2*position+1;
+                else
+                    pageNumber = 2*position;
                 pagesTurned = pagesTurned + 2;
             }
         });

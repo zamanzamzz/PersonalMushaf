@@ -13,7 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.personalmushaf.R;
-import com.example.personalmushaf.navigation.ThirteenLinePageData;
+import com.example.personalmushaf.navigation.NaskhThirteenLinePageData;
 
 
 /**
@@ -40,7 +40,7 @@ public class RukuContentFragment extends Fragment {
 
         juzNumber = getArguments().getInt("juz number");
 
-        dataSet = ThirteenLinePageData.rukuContentInfo[juzNumber-1];
+        dataSet = NaskhThirteenLinePageData.rukuContentInfo[juzNumber-1];
 
         juzRecyclerView = v.findViewById(R.id.tab_recycler_view);
         juzRecyclerView.setHasFixedSize(true);

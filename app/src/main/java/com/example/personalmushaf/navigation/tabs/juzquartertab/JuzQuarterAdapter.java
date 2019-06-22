@@ -1,6 +1,8 @@
 package com.example.personalmushaf.navigation.tabs.juzquartertab;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,12 +14,15 @@ import com.andexert.library.RippleView;
 import com.bumptech.glide.Glide;
 import com.example.personalmushaf.QuranActivity;
 import com.example.personalmushaf.R;
-import com.example.personalmushaf.navigation.ThirteenLinePageData;
+import com.example.personalmushaf.navigation.MadaniFifteenLinePageData;
 
 import androidx.recyclerview.widget.RecyclerView;
 
 public class JuzQuarterAdapter extends RecyclerView.Adapter<JuzQuarterAdapter.JuzViewHolder> {
     private String[][] dataSet;
+    private int juzNumber;
+    private SharedPreferences preferences;
+    private String mushaf;
 
     public static class JuzViewHolder extends RecyclerView.ViewHolder {
         public RippleView rippleView;
@@ -27,8 +32,9 @@ public class JuzQuarterAdapter extends RecyclerView.Adapter<JuzQuarterAdapter.Ju
         }
     }
 
-    public JuzQuarterAdapter(String[][] myDataSet) {
+    public JuzQuarterAdapter(String[][] myDataSet, int juzNumber) {
         dataSet = myDataSet;
+        this.juzNumber = juzNumber;
     }
 
     @Override
@@ -45,19 +51,34 @@ public class JuzQuarterAdapter extends RecyclerView.Adapter<JuzQuarterAdapter.Ju
 
     @Override
     public void onBindViewHolder(final JuzViewHolder holder, final int position) {
+        int id;
+
+        if (preferences == null)
+            preferences = PreferenceManager.getDefaultSharedPreferences(holder.rippleView.getContext());
+
+        if (mushaf == null)
+            mushaf = preferences.getString("mushaf", "madani_15_line");
 
         LinearLayout layout = (LinearLayout) holder.rippleView.getChildAt(0);
 
         ImageView quarterImage = (ImageView) layout.getChildAt(0);
 
-        int id = quarterImage.getResources().getIdentifier("quarter_" + position,
+        if (mushaf.equals("madani_15_line")) {
+            if (position <= 3)
+                id = quarterImage.getResources().getIdentifier("quarter_" + (position+1),
+                        "drawable", quarterImage.getContext().getPackageName());
+            else
+                id = quarterImage.getResources().getIdentifier("quarter_" + (position-3),
+                        "drawable", quarterImage.getContext().getPackageName());
+        } else
+            id = quarterImage.getResources().getIdentifier("quarter_" + position,
                     "drawable", quarterImage.getContext().getPackageName());
 
         Glide.with(layout.getContext()).load(id).into(quarterImage);
 
         TextView quarterLength = (TextView) ((LinearLayout) layout.getChildAt(1)).getChildAt(0);
         TextView quarterPageNumber = (TextView) ((LinearLayout) layout.getChildAt(1)).getChildAt(1);
-        TextView quarterType = (TextView) layout.getChildAt(2);
+        TextView quarterPrefix = (TextView) layout.getChildAt(2);
 
         String[] juzContentInfo = dataSet[position];
 
@@ -68,10 +89,13 @@ public class JuzQuarterAdapter extends RecyclerView.Adapter<JuzQuarterAdapter.Ju
         else
             length = "";
 
-        quarterLength.setText(length);
-        quarterPageNumber.setText(juzContentInfo[1]);
-        quarterType.setText(ThirteenLinePageData.juzQuarterType[position]);
+        if (!mushaf.equals("madani_15_line"))
+            quarterLength.setText(length);
 
+        quarterPageNumber.setText(juzContentInfo[1]);
+
+        if (mushaf.equals("madani_15_line"))
+            quarterPrefix.setText(MadaniFifteenLinePageData.juzQuarterPrefixes[juzNumber-1][position]);
 
         alternateBackgroundColor(layout, position);
 

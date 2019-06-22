@@ -1,0 +1,22 @@
+<resources>
+    <!-- Reply Preference -->
+    <string-array name="reply_entries">
+        <item>Reply</item>
+        <item>Reply to all</item>
+    </string-array>
+
+    <string-array name="reply_values">
+        <item>reply</item>
+        <item>reply_all</item>
+    </string-array>
+
+    <string-array name="mushaf_entries">
+        <item>Naskh 13 Line</item>
+        <item>Madani 15 Line</item>
+    </string-array>
+
+    <string-array name="mushaf_values">
+        <item>naskh_13_line</item>
+        <item>madani_15_line</item>
+    </string-array>
+</resources>

@@ -3,6 +3,9 @@
     xmlns:dist="http://schemas.android.com/apk/distribution"
     package="com.example.personalmushaf">
 
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+
     <dist:module dist:instant="true" />
 
     <application
@@ -13,15 +16,18 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme.Launcher">
         <activity
-            android:name=".QuranActivity"
-            android:theme="@style/AppTheme.NoActionBar.FullScreen"
-            android:taskAffinity=".main">
+            android:name=".SettingsActivity"
+            android:label="@string/title_activity_settings">
         </activity>
-        <activity android:name=".navigation.NavigationActivity"
+        <activity
+            android:name=".QuranActivity"
+            android:taskAffinity=".main"
+            android:theme="@style/AppTheme.NoActionBar.FullScreen"></activity>
+        <activity
+            android:name=".navigation.NavigationActivity"
             android:taskAffinity=".navigation">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
