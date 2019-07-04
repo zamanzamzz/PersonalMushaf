@@ -10,11 +10,13 @@ import android.widget.TextView;
 import com.andexert.library.RippleView;
 import com.example.personalmushaf.QuranActivity;
 import com.example.personalmushaf.R;
+import com.example.personalmushaf.navigation.QuranConstants;
 
 import androidx.recyclerview.widget.RecyclerView;
 
 public class RukuContentAdapter extends RecyclerView.Adapter<RukuContentAdapter.JuzViewHolder> {
     private String[][] dataSet;
+    private int juzNumber;
 
     public static class JuzViewHolder extends RecyclerView.ViewHolder {
         public RippleView rippleView;
@@ -24,8 +26,9 @@ public class RukuContentAdapter extends RecyclerView.Adapter<RukuContentAdapter.
         }
     }
 
-    public RukuContentAdapter(String[][] myDataSet) {
+    public RukuContentAdapter(String[][] myDataSet, int juzNumber) {
         dataSet = myDataSet;
+        this.juzNumber = juzNumber;
     }
 
     @Override
@@ -47,23 +50,14 @@ public class RukuContentAdapter extends RecyclerView.Adapter<RukuContentAdapter.
         TextView rukuNumber = (TextView) layout.getChildAt(0);
         TextView rukuPageNumber = (TextView) ((LinearLayout) layout.getChildAt(1)).getChildAt(1);
         TextView ayahRange = (TextView) ((LinearLayout) layout.getChildAt(1)).getChildAt(0);
-        TextView rukuType = (TextView) layout.getChildAt(2);
+        TextView rukuPrefix = (TextView) layout.getChildAt(2);
 
         String[] rukuInfo = dataSet[position];
 
-        String range;
-
-        if (!rukuInfo[2].equals("") && !rukuInfo[3].equals(""))
-            range = rukuInfo[1] + ":" + rukuInfo[2] + " - " + rukuInfo[1] + ":" + rukuInfo[3];
-        else if (rukuInfo[2].equals(""))
-            range = rukuInfo[1] + ":" + rukuInfo[3];
-        else
-            range = rukuInfo[1] + ":" + rukuInfo[2];
-
-        rukuNumber.setText(rukuInfo[0]);
-        ayahRange.setText(range);
-        rukuPageNumber.setText(rukuInfo[4]);
-        rukuType.setText(rukuInfo[5]);
+        rukuNumber.setText(QuranConstants.arabicNumerals[position]);
+        ayahRange.setText(rukuInfo[1] + ":" + rukuInfo[2]);
+        rukuPageNumber.setText(rukuInfo[0]);
+        rukuPrefix.setText(rukuInfo[3]);
 
         alternateBackgroundColor(layout, position);
 
@@ -85,11 +79,11 @@ public class RukuContentAdapter extends RecyclerView.Adapter<RukuContentAdapter.
     }
 
 
-    private void alternateBackgroundColor(LinearLayout layout, int position) {
+    private void alternateBackgroundColor(LinearLayout textView, int position) {
         if (position % 2 == 0)
-            layout.setBackgroundColor(layout.getResources().getColor(R.color.colorPrimary));
+            textView.setBackgroundColor(textView.getResources().getColor(R.color.colorPrimary, textView.getContext().getTheme()));
         else
-            layout.setBackgroundColor(layout.getResources().getColor(R.color.colorAccent));
+            textView.setBackgroundColor(textView.getResources().getColor(R.color.colorAccent, textView.getContext().getTheme()));
     }
 
 
@@ -99,7 +93,7 @@ public class RukuContentAdapter extends RecyclerView.Adapter<RukuContentAdapter.
 
         goToRukuAyah.putExtra("from", "NavigationActivity");
 
-        int pageNumber = Integer.valueOf(dataSet[selectedRuku][4]);
+        int pageNumber = Integer.valueOf(dataSet[selectedRuku][0]);
 
         goToRukuAyah.putExtra("new page number", pageNumber);
 

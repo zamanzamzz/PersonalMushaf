@@ -14,8 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.personalmushaf.R;
-import com.example.personalmushaf.navigation.MadaniFifteenLinePageData;
-import com.example.personalmushaf.navigation.NaskhThirteenLinePageData;
+import com.example.personalmushaf.navigation.NavigationDataUtil;
 
 
 /**
@@ -44,11 +43,15 @@ public class JuzQuarterFragment extends Fragment {
 
         preferences = PreferenceManager.getDefaultSharedPreferences(container.getContext());
 
+        String[] colNames = {"PageNumber", "Surah", "Ayah", "Prefix"};
+        String[] colNames13Line = {"PageNumber", "Surah", "Ayah", "Prefix", "Length"};
+
+
         String mushaf = preferences.getString("mushaf", "madani_15_line");
-        if (mushaf.equals("madani_15_line"))
-            dataSet = MadaniFifteenLinePageData.juzQuarterInfo[juzNumber-1];
-        else
-            dataSet = NaskhThirteenLinePageData.juzQuarterInfo[juzNumber-1];
+
+        dataSet = mushaf.equals("madani_15_line") ? NavigationDataUtil.fetchNavigationData(colNames, "MadaniQuarter", juzNumber, false) :
+                                                    NavigationDataUtil.fetchNavigationData(colNames13Line, "NaskhQuarter", juzNumber, true);
+
 
         juzQuarterRecyclerView = v.findViewById(R.id.tab_recycler_view);
         juzQuarterRecyclerView.setHasFixedSize(true);

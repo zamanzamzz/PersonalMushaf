@@ -22,7 +22,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 
 
-import com.example.personalmushaf.navigation.NaskhThirteenLinePageData;
+import com.example.personalmushaf.navigation.QuranConstants;
 import com.example.personalmushaf.navigation.snappositionchangelistener.OnSnapPositionChangeListener;
 import com.example.personalmushaf.navigation.snappositionchangelistener.RecyclerViewExtKt;
 import com.example.personalmushaf.navigation.snappositionchangelistener.SnapOnScrollListener;
@@ -266,7 +266,7 @@ import com.example.personalmushaf.quranpage.QuranDualPageRecyclerViewAdapter;
     private void setupSinglePageRecyclerView(RecyclerView.LayoutManager layoutManager) {
         singlePageRecyclerView = findViewById(R.id.pager);
         singlePageRecyclerView.setHasFixedSize(true);
-        singlePageAdapter = new QuranPageRecyclerViewAdapter(NaskhThirteenLinePageData.singlePageSets);
+        singlePageAdapter = new QuranPageRecyclerViewAdapter(this);
         singlePageRecyclerView.setLayoutManager(layoutManager);
         layoutManager.scrollToPosition(pageNumber-1);
         layoutManager.setItemPrefetchEnabled(true);
@@ -299,7 +299,7 @@ import com.example.personalmushaf.quranpage.QuranDualPageRecyclerViewAdapter;
 
         dualPageRecyclerView = findViewById(R.id.dualpager);
         dualPageRecyclerView.setHasFixedSize(true);
-        dualPageAdapter = new QuranDualPageRecyclerViewAdapter(NaskhThirteenLinePageData.dualPageSets);
+        dualPageAdapter = new QuranDualPageRecyclerViewAdapter(QuranConstants.naskh13LineDualPageSets);
         dualPageRecyclerView.setLayoutManager(layoutManager);
         layoutManager.scrollToPosition(dualPageNumber);
         layoutManager.setItemPrefetchEnabled(true);

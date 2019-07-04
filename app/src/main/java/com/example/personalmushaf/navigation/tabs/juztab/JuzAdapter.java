@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.andexert.library.RippleView;
 import com.example.personalmushaf.QuranActivity;
 import com.example.personalmushaf.R;
+import com.example.personalmushaf.navigation.QuranConstants;
 import com.example.personalmushaf.navigation.NavigationActivity;
 
 import androidx.recyclerview.widget.RecyclerView;
@@ -45,7 +46,7 @@ public class JuzAdapter extends RecyclerView.Adapter<JuzAdapter.JuzViewHolder> {
 
         LinearLayout layout = (LinearLayout) holder.rippleView.getChildAt(0);
 
-        TextView juzName = (TextView) layout.getChildAt(0);
+        TextView juz =  (TextView) layout.getChildAt(0);
         TextView juzPageNumber = (TextView) ((LinearLayout) layout.getChildAt(1)).getChildAt(1);
         TextView juzLength = (TextView) ((LinearLayout) layout.getChildAt(1)).getChildAt(0);
         TextView juzStart = (TextView) layout.getChildAt(2);
@@ -54,10 +55,10 @@ public class JuzAdapter extends RecyclerView.Adapter<JuzAdapter.JuzViewHolder> {
 
         String length = juzInfo[1] + " pages";
 
-        juzName.setText(juzInfo[0]);
+        juz.setText(QuranConstants.arabicNumerals[position]);
         juzLength.setText(length);
-        juzStart.setText(juzInfo[2]);
-        juzPageNumber.setText(juzInfo[3]);
+        juzStart.setText(juzInfo[3]);
+        juzPageNumber.setText(juzInfo[0]);
 
         alternateBackgroundColor(layout, position);
 
@@ -95,9 +96,9 @@ public class JuzAdapter extends RecyclerView.Adapter<JuzAdapter.JuzViewHolder> {
 
     private void alternateBackgroundColor(LinearLayout textView, int position) {
         if (position % 2 == 0)
-            textView.setBackgroundColor(textView.getResources().getColor(R.color.colorPrimary));
+            textView.setBackgroundColor(textView.getResources().getColor(R.color.colorPrimary, textView.getContext().getTheme()));
         else
-            textView.setBackgroundColor(textView.getResources().getColor(R.color.colorAccent));
+            textView.setBackgroundColor(textView.getResources().getColor(R.color.colorAccent, textView.getContext().getTheme()));
     }
 
     private void juzToJuzContentProcedure(RippleView rippleView, int juzNumber) {
@@ -118,7 +119,7 @@ public class JuzAdapter extends RecyclerView.Adapter<JuzAdapter.JuzViewHolder> {
     private boolean juzToPage(RippleView rippleView, int juzNumber) {
         final Intent goToJuz = new Intent(rippleView.getContext(), QuranActivity.class);
 
-        goToJuz.putExtra("new page number", Integer.valueOf(dataSet[juzNumber-1][3]));
+        goToJuz.putExtra("new page number", Integer.valueOf(dataSet[juzNumber-1][0]));
 
         rippleView.setOnRippleCompleteListener(new RippleView.OnRippleCompleteListener() {
             @Override

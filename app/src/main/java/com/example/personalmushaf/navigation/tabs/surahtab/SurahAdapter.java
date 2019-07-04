@@ -1,6 +1,8 @@
 package com.example.personalmushaf.navigation.tabs.surahtab;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +12,7 @@ import android.widget.TextView;
 import com.andexert.library.RippleView;
 import com.example.personalmushaf.QuranActivity;
 import com.example.personalmushaf.R;
+import com.example.personalmushaf.navigation.QuranConstants;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -17,6 +20,8 @@ import androidx.recyclerview.widget.RecyclerView;
 public class SurahAdapter extends RecyclerView.Adapter<SurahAdapter.SurahViewHolder> {
     private String[][] dataSet;
     int juzNumber;
+    private SharedPreferences preferences;
+
 
     public static class SurahViewHolder extends RecyclerView.ViewHolder {
         public RippleView rippleView;
@@ -38,6 +43,7 @@ public class SurahAdapter extends RecyclerView.Adapter<SurahAdapter.SurahViewHol
         RippleView v = (RippleView) LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.list_item_surah, parent, false);
 
+        preferences = PreferenceManager.getDefaultSharedPreferences(parent.getContext());
 
         SurahViewHolder vh = new SurahViewHolder(v);
         return vh;
@@ -54,10 +60,15 @@ public class SurahAdapter extends RecyclerView.Adapter<SurahAdapter.SurahViewHol
 
         final String[] surahInfo = dataSet[position];
 
-        surahStart.setText(surahInfo[0]);
-        surahPageNumber.setText(surahInfo[1]);
-        surahNumber.setText(surahInfo[2]);
-        surahOrigin.setText(surahInfo[3]);
+        String origin = Integer.valueOf(surahInfo[2]) == 1 ? "مكي" : "مدني";
+
+        final int pageNumber = preferences.getString("mushaf", "madani_15_line").equals("madani_15_line") ?
+                                Integer.valueOf(surahInfo[0]): Integer.valueOf(surahInfo[1]);
+
+        surahStart.setText(surahInfo[3]);
+        surahPageNumber.setText(Integer.toString(pageNumber));
+        surahNumber.setText(QuranConstants.arabicNumeralsThreeDigits[position]);
+        surahOrigin.setText(origin);
 
         alternateBackgroundColor(layout, position);
 
@@ -68,7 +79,6 @@ public class SurahAdapter extends RecyclerView.Adapter<SurahAdapter.SurahViewHol
                 rippleView.setRippleDuration(75);
                 rippleView.setFrameRate(10);
 
-                int pageNumber = Integer.valueOf(surahInfo[1]);
 
                 final Intent goToSurah = new Intent(rippleView.getContext(), QuranActivity.class);
 
@@ -91,10 +101,10 @@ public class SurahAdapter extends RecyclerView.Adapter<SurahAdapter.SurahViewHol
         return dataSet.length;
     }
 
-    private void alternateBackgroundColor(LinearLayout layout, int position) {
+    private void alternateBackgroundColor(LinearLayout textView, int position) {
         if (position % 2 == 0)
-            layout.setBackgroundColor(layout.getResources().getColor(R.color.colorPrimary));
+            textView.setBackgroundColor(textView.getResources().getColor(R.color.colorPrimary, textView.getContext().getTheme()));
         else
-            layout.setBackgroundColor(layout.getResources().getColor(R.color.colorAccent));
+            textView.setBackgroundColor(textView.getResources().getColor(R.color.colorAccent, textView.getContext().getTheme()));
     }
 }

@@ -16,8 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.personalmushaf.R;
-import com.example.personalmushaf.navigation.MadaniFifteenLinePageData;
-import com.example.personalmushaf.navigation.NaskhThirteenLinePageData;
+import com.example.personalmushaf.navigation.NavigationDataUtil;
 
 
 /**
@@ -49,15 +48,21 @@ public class JuzFragment extends Fragment {
 
         String mushaf = preferences.getString("mushaf", "madani_15_line");
 
-        if (mushaf.equals("madani_15_line"))
-            dataSet = MadaniFifteenLinePageData.juzInfo;
-        else
-            dataSet = NaskhThirteenLinePageData.juzInfo;
-
         actionBar.setTitle("Qur'an Contents");
 
+        String[] colNames = {"", "", "Juz", "Prefix"};
+        if (mushaf.equals("madani_15_line")) {
+            colNames[0] = "Madani15LinePageNumber";
+            colNames[1] = "Madani15LineLength";
+        } else {
+            colNames[0] = "\"13LinePageNumber\"";
+            colNames[1] = "\"13LineLength\"b";
+        }
 
-        juzRecyclerView = (RecyclerView) v.findViewById(R.id.tab_recycler_view);
+        dataSet = NavigationDataUtil.fetchNavigationData(colNames, "Juz", -1, false);
+
+
+        juzRecyclerView = v.findViewById(R.id.tab_recycler_view);
         juzRecyclerView.setHasFixedSize(true);
         LinearLayoutManager juzLayoutManager = new LinearLayoutManager(getContext());
         adapter = new JuzAdapter(dataSet);

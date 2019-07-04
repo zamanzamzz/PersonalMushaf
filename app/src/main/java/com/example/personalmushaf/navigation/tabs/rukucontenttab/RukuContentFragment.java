@@ -3,7 +3,6 @@ package com.example.personalmushaf.navigation.tabs.rukucontenttab;
 
 import android.os.Bundle;
 
-import androidx.appcompat.app.ActionBar;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -13,7 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.personalmushaf.R;
-import com.example.personalmushaf.navigation.NaskhThirteenLinePageData;
+import com.example.personalmushaf.navigation.NavigationDataUtil;
 
 
 /**
@@ -25,7 +24,6 @@ public class RukuContentFragment extends Fragment {
     private RecyclerView juzRecyclerView;
     private RukuContentAdapter adapter;
     private String[][] dataSet;
-    private ActionBar actionBar;
     private int juzNumber;
 
     public RukuContentFragment() {
@@ -40,14 +38,18 @@ public class RukuContentFragment extends Fragment {
 
         juzNumber = getArguments().getInt("juz number");
 
-        dataSet = NaskhThirteenLinePageData.rukuContentInfo[juzNumber-1];
-
         juzRecyclerView = v.findViewById(R.id.tab_recycler_view);
         juzRecyclerView.setHasFixedSize(true);
-        LinearLayoutManager juzLayoutManager = new LinearLayoutManager(getContext());
-        adapter = new RukuContentAdapter(dataSet);
 
+        String[] colNames = {"PageNumber", "Surah", "Ayah", "Prefix"};
+
+        dataSet = NavigationDataUtil.fetchNavigationData(colNames, "Ruku", juzNumber, false);
+
+        adapter = new RukuContentAdapter(dataSet, juzNumber);
         juzRecyclerView.setAdapter(adapter);
+
+        LinearLayoutManager juzLayoutManager = new LinearLayoutManager(getContext());
+
         juzRecyclerView.setLayoutManager(juzLayoutManager);
         return v;
     }

@@ -2,6 +2,7 @@ package com.example.personalmushaf.quranpage;
 
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -24,20 +25,16 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.example.personalmushaf.R;
-import com.example.personalmushaf.navigation.MadaniFifteenLinePageData;
-import com.example.personalmushaf.navigation.NaskhThirteenLinePageData;
 
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.lang.ref.WeakReference;
 
 public class QuranPageRecyclerViewAdapter extends RecyclerView.Adapter<QuranPageRecyclerViewAdapter.ThirteenLineViewHolder> {
-
-    private int[] dataSet;
-
     int highlightedLine = 0;
     boolean isHighlighted = false;
     SharedPreferences preferences;
+    String mushafVersion;
 
 
     final int x1 = 98;
@@ -57,8 +54,9 @@ public class QuranPageRecyclerViewAdapter extends RecyclerView.Adapter<QuranPage
         }
     }
 
-    public QuranPageRecyclerViewAdapter(int[] dataSet) {
-        this.dataSet = dataSet;
+    public QuranPageRecyclerViewAdapter(Context context) {
+        preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        mushafVersion = preferences.getString("mushaf", "madani_15_line");
     }
 
     @Override
@@ -79,33 +77,27 @@ public class QuranPageRecyclerViewAdapter extends RecyclerView.Adapter<QuranPage
 
         final ImageView imageView = (ImageView) holder.linearLayout.getChildAt(0);
 
-        if (preferences == null) {
-            preferences = PreferenceManager.getDefaultSharedPreferences(imageView.getContext());
-        }
-
-        String mushafVersion = preferences.getString("mushaf", "madani_15_line");
-
         final String path;
 
         if (mushafVersion.equals("madani_15_line"))
-            path = Environment.getExternalStorageDirectory().getPath() + "/personal_mushaf/15_line/pg_" + MadaniFifteenLinePageData.singlePageSets[position] + ".png";
+            path = Environment.getExternalStorageDirectory().getPath() + "/personal_mushaf/15_line/pg_" + (position+1) + ".png";
         else
-            path = Environment.getExternalStorageDirectory().getPath() + "/personal_mushaf/13_line/13_pg_" + NaskhThirteenLinePageData.singlePageSets[position] + ".png";
+            path = Environment.getExternalStorageDirectory().getPath() + "/personal_mushaf/13_line/13_pg_" + (position+1) + ".png";
 
         loadBitmap(path, imageView);
 
-        /*final int id = imageView.getResources().getIdentifier("pg_" + NaskhThirteenLinePageData.singlePageSets[position] + identifier
+        setHighlight(imageView, path, holder);
+        /*final int id = imageView.getResources().getIdentifier("pg_" + QuranConstants.singlePageSets[position] + identifier
                 , "drawable", imageView.getContext().getPackageName());
 
         imageView.setImageDrawable(imageView.getResources().getDrawable(id));*/
         //Glide.with(imageView.getContext()).load(BitmapFactory.decodeFile(path)).centerInside().into(imageView);
-        //setHighlight(imageView, id, holder);
     }
 
 
     @Override
     public int getItemCount() {
-        return dataSet.length;
+        return mushafVersion.equals("madani_15_line") ? 604 : 848;
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -129,7 +121,7 @@ public class QuranPageRecyclerViewAdapter extends RecyclerView.Adapter<QuranPage
         imageView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                Bitmap myBitmap = BitmapFactory.decodeResource(imageView.getResources(), path);
+                Bitmap myBitmap = BitmapFactory.decodeFile(path);
                 int pageNumber = holder.getAdapterPosition() + 1;
 
                 int i;
@@ -165,7 +157,7 @@ public class QuranPageRecyclerViewAdapter extends RecyclerView.Adapter<QuranPage
                     isHighlighted = false;
 
 
-                imageView.setImageDrawable(new BitmapDrawable(imageView.getResources(), tempBitmap));
+                imageView.setImageBitmap(tempBitmap);
 
                 return true;
             }

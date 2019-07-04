@@ -23,8 +23,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.example.personalmushaf.R;
-import com.example.personalmushaf.navigation.MadaniFifteenLinePageData;
-import com.example.personalmushaf.navigation.NaskhThirteenLinePageData;
+import com.example.personalmushaf.navigation.QuranConstants;
 
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -88,8 +87,8 @@ public class QuranDualPageRecyclerViewAdapter extends RecyclerView.Adapter<Quran
                 final ImageView imageView1 = (ImageView) holder.linearLayout.getChildAt(0);
                 final ImageView imageView2 = (ImageView) holder.linearLayout.getChildAt(1);
 
-                path1 = Environment.getExternalStorageDirectory().getPath() + "/personal_mushaf/13_line/13_pg_" + NaskhThirteenLinePageData.dualPageSets[position][0] + ".png";
-                path2 = Environment.getExternalStorageDirectory().getPath() + "/personal_mushaf/13_line/13_pg_" + NaskhThirteenLinePageData.dualPageSets[position][1] + ".png";
+                path1 = Environment.getExternalStorageDirectory().getPath() + "/personal_mushaf/13_line/13_pg_" + QuranConstants.naskh13LineDualPageSets[position][0] + ".png";
+                path2 = Environment.getExternalStorageDirectory().getPath() + "/personal_mushaf/13_line/13_pg_" + QuranConstants.naskh13LineDualPageSets[position][1] + ".png";
 
                 loadBitmap(path1, imageView2);
                 loadBitmap(path2, imageView1);
@@ -109,7 +108,7 @@ public class QuranDualPageRecyclerViewAdapter extends RecyclerView.Adapter<Quran
                 else
                     imageView = (ImageView) holder.linearLayout.getChildAt(0);
 
-                path1 = Environment.getExternalStorageDirectory().getPath() + "/personal_mushaf/13_line/13_pg_" + NaskhThirteenLinePageData.dualPageSets[position][0] + ".png";
+                path1 = Environment.getExternalStorageDirectory().getPath() + "/personal_mushaf/13_line/13_pg_" + QuranConstants.naskh13LineDualPageSets[position][0] + ".png";
 
                 loadBitmap(path1, imageView);
 
@@ -123,8 +122,8 @@ public class QuranDualPageRecyclerViewAdapter extends RecyclerView.Adapter<Quran
         else {
 
             if (position < 302 && position >= 0) {
-                path1 = Environment.getExternalStorageDirectory().getPath() + "/personal_mushaf/15_line/pg_" + MadaniFifteenLinePageData.dualPageSets[position][0] + ".png";
-                path2 = Environment.getExternalStorageDirectory().getPath() + "/personal_mushaf/15_line/pg_" + MadaniFifteenLinePageData.dualPageSets[position][1] + ".png";
+                path1 = Environment.getExternalStorageDirectory().getPath() + "/personal_mushaf/15_line/pg_" + QuranConstants.madani15LineDualPageSets[position][0] + ".png";
+                path2 = Environment.getExternalStorageDirectory().getPath() + "/personal_mushaf/15_line/pg_" + QuranConstants.madani15LineDualPageSets[position][1] + ".png";
 
                 final ImageView imageView1 = (ImageView) holder.linearLayout.getChildAt(0);
                 final ImageView imageView2 = (ImageView) holder.linearLayout.getChildAt(1);

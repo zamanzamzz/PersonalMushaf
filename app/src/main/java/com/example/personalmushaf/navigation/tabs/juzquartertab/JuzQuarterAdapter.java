@@ -14,7 +14,6 @@ import com.andexert.library.RippleView;
 import com.bumptech.glide.Glide;
 import com.example.personalmushaf.QuranActivity;
 import com.example.personalmushaf.R;
-import com.example.personalmushaf.navigation.MadaniFifteenLinePageData;
 
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -59,6 +58,7 @@ public class JuzQuarterAdapter extends RecyclerView.Adapter<JuzQuarterAdapter.Ju
         if (mushaf == null)
             mushaf = preferences.getString("mushaf", "madani_15_line");
 
+
         LinearLayout layout = (LinearLayout) holder.rippleView.getChildAt(0);
 
         ImageView quarterImage = (ImageView) layout.getChildAt(0);
@@ -82,20 +82,12 @@ public class JuzQuarterAdapter extends RecyclerView.Adapter<JuzQuarterAdapter.Ju
 
         String[] juzContentInfo = dataSet[position];
 
-        String length;
-
-        if (position != 0)
-            length = juzContentInfo[0] + " pages";
-        else
-            length = "";
-
         if (!mushaf.equals("madani_15_line"))
-            quarterLength.setText(length);
+            quarterLength.setText(juzContentInfo[4] + " pages");
 
-        quarterPageNumber.setText(juzContentInfo[1]);
+        quarterPageNumber.setText(juzContentInfo[0] + "\t\t\t\t" + juzContentInfo[1] + ":" + juzContentInfo[2]);
+        quarterPrefix.setText(juzContentInfo[3]);
 
-        if (mushaf.equals("madani_15_line"))
-            quarterPrefix.setText(MadaniFifteenLinePageData.juzQuarterPrefixes[juzNumber-1][position]);
 
         alternateBackgroundColor(layout, position);
 
@@ -117,18 +109,19 @@ public class JuzQuarterAdapter extends RecyclerView.Adapter<JuzQuarterAdapter.Ju
     }
 
 
-    private void alternateBackgroundColor(LinearLayout layout, int position) {
+    private void alternateBackgroundColor(LinearLayout textView, int position) {
         if (position % 2 == 0)
-            layout.setBackgroundColor(layout.getResources().getColor(R.color.colorPrimary));
+            textView.setBackgroundColor(textView.getResources().getColor(R.color.colorPrimary, textView.getContext().getTheme()));
         else
-            layout.setBackgroundColor(layout.getResources().getColor(R.color.colorAccent));
+            textView.setBackgroundColor(textView.getResources().getColor(R.color.colorAccent, textView.getContext().getTheme()));
     }
 
 
     private void juzContentProcedure(RippleView rippleView, int position) {
         final Intent goToJuz = new Intent(rippleView.getContext(), QuranActivity.class);
 
-        goToJuz.putExtra("new page number", Integer.valueOf(dataSet[position][1]));
+
+        goToJuz.putExtra("new page number", Integer.valueOf(dataSet[position][0]));
 
         rippleView.setOnRippleCompleteListener(new RippleView.OnRippleCompleteListener() {
             @Override
