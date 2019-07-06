@@ -35,6 +35,7 @@ public class NavigationDataUtil {
                 } while (c.moveToNext());
             }
         }
+        c.close();
         database.close();
 
         return dataSet;

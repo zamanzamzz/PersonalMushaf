@@ -25,6 +25,10 @@
         app:title="@string/mushaf_title"
         app:useSimpleSummaryProvider="true" />
 
+    <SwitchPreferenceCompat
+        app:key="smoothpageturn"
+        app:title="Smooth Volume Key Navigation" />
+
     <Preference
         app:fragment="com.example.personalmushaf.SettingsActivity$MessagesFragment"
         app:icon="@drawable/messages"

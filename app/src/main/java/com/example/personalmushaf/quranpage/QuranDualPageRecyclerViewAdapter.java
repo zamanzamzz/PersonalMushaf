@@ -1,6 +1,7 @@
 package com.example.personalmushaf.quranpage;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -9,7 +10,6 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
-import android.graphics.RectF;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
@@ -23,121 +23,122 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.example.personalmushaf.R;
+import com.example.personalmushaf.model.Ayah;
+import com.example.personalmushaf.model.AyahBounds;
+import com.example.personalmushaf.model.Page;
 import com.example.personalmushaf.navigation.QuranConstants;
 
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.lang.ref.WeakReference;
+import java.util.List;
 
-public class QuranDualPageRecyclerViewAdapter extends RecyclerView.Adapter<QuranDualPageRecyclerViewAdapter.ThirteenLineDualViewHolder> {
+public class QuranDualPageRecyclerViewAdapter extends RecyclerView.Adapter<QuranDualPageRecyclerViewAdapter.QuranPageDualViewHolder> {
 
     private int[] highlightedLine = {0, 0};
     private boolean isHighlighted = false;
-    SharedPreferences preferences;
+    private SharedPreferences preferences;
+    private String currentMushaf;
+    private Page rightPage;
+    private Page leftPage;
+    private Ayah highlightedAyah;
 
 
     private int[][] dataSet;
-    final int x1 = 98;
-    final int x2 = 946;
-    final int[] y1 = {115, 208, 301, 394, 487, 580, 673, 766, 859, 951,  1044, 1137, 1230};
-    final int[] y1Touch = {111, 207, 301, 395, 487, 579, 672, 765, 859, 955, 1047, 1140, 1234};
-    final int[] y2Touch = {207, 301, 395, 487, 579, 672, 765, 859, 955, 1047, 1140, 1234, 1327};
-    final int[] y2 = {204, 297, 390, 483, 576, 669, 762, 855, 947, 1040, 1133, 1226, 1319};
+    private final int x1 = 98;
+    private final int x2 = 946;
+    private final int[] y1 = {115, 208, 301, 394, 487, 580, 673, 766, 859, 951,  1044, 1137, 1230};
+    private final int[] y1Touch = {111, 207, 301, 395, 487, 579, 672, 765, 859, 955, 1047, 1140, 1234};
+    private final int[] y2Touch = {207, 301, 395, 487, 579, 672, 765, 859, 955, 1047, 1140, 1234, 1327};
+    private final int[] y2 = {204, 297, 390, 483, 576, 669, 762, 855, 947, 1040, 1133, 1226, 1319};
     private float x;
     private float y;
 
-    public static class ThirteenLineDualViewHolder extends RecyclerView.ViewHolder {
+    public static class QuranPageDualViewHolder extends RecyclerView.ViewHolder {
         public LinearLayout linearLayout;
-        public ThirteenLineDualViewHolder(LinearLayout v) {
+        public QuranPageDualViewHolder(LinearLayout v) {
             super(v);
             linearLayout = v;
         }
     }
 
-    public QuranDualPageRecyclerViewAdapter(int[][] dataSet) {
+    public QuranDualPageRecyclerViewAdapter(int[][] dataSet, Context context) {
         this.dataSet = dataSet;
+        preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        currentMushaf = preferences.getString("mushaf", "madani_15_line");
     }
 
     @Override
-    public ThirteenLineDualViewHolder onCreateViewHolder(ViewGroup parent,
-                                                     int viewType) {
+    public QuranPageDualViewHolder onCreateViewHolder(ViewGroup parent,
+                                                      int viewType) {
 
         LinearLayout v = (LinearLayout) LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.fragment_page, parent, false);
 
 
-        ThirteenLineDualViewHolder vh = new ThirteenLineDualViewHolder(v);
+        QuranPageDualViewHolder vh = new QuranPageDualViewHolder(v);
         return vh;
     }
 
     @Override
-    public void onBindViewHolder(ThirteenLineDualViewHolder holder, int position) {
+    public void onBindViewHolder(QuranPageDualViewHolder holder, int position) {
 
-        if (preferences == null) {
-            preferences = PreferenceManager.getDefaultSharedPreferences(holder.linearLayout.getContext());
-        }
 
-        String mushafVersion = preferences.getString("mushaf", "madani_15_line");
 
-        final String path1;
-        final String path2;
+        final String rightPagePath;
+        final String leftPagePath;
 
-        if (!mushafVersion.equals("madani_15_line")) {
+        if (!currentMushaf.equals("madani_15_line")) {
             if (position != 0 && position != 424) {
-                final ImageView imageView1 = (ImageView) holder.linearLayout.getChildAt(0);
-                final ImageView imageView2 = (ImageView) holder.linearLayout.getChildAt(1);
-
-                path1 = Environment.getExternalStorageDirectory().getPath() + "/personal_mushaf/13_line/13_pg_" + QuranConstants.naskh13LineDualPageSets[position][0] + ".png";
-                path2 = Environment.getExternalStorageDirectory().getPath() + "/personal_mushaf/13_line/13_pg_" + QuranConstants.naskh13LineDualPageSets[position][1] + ".png";
-
-                loadBitmap(path1, imageView2);
-                loadBitmap(path2, imageView1);
+                final ImageView rightImage = (ImageView) holder.linearLayout.getChildAt(1);
+                final ImageView leftImage = (ImageView) holder.linearLayout.getChildAt(0);
 
 
-                //Glide.with(imageView1.getContext()).load(BitmapFactory.decodeFile(path2)).centerInside().into(imageView1);
-                //Glide.with(imageView2.getContext()).load(BitmapFactory.decodeFile(path1)).centerInside().into(imageView2);
+                rightPagePath = Environment.getExternalStorageDirectory().getPath() + "/personal_mushaf/13_line/13_pg_" + QuranConstants.naskh13LineDualPageSets[position][0] + ".png";
+                leftPagePath = Environment.getExternalStorageDirectory().getPath() + "/personal_mushaf/13_line/13_pg_" + QuranConstants.naskh13LineDualPageSets[position][1] + ".png";
 
+                loadBitmap(rightPagePath, rightImage);
+                loadBitmap(leftPagePath, leftImage);
 
+                setHighlightDual(leftImage, rightImage, leftPagePath, rightPagePath, false);
+                setHighlightDual(rightImage, leftImage, rightPagePath, leftPagePath, true);
 
-                //setHighlightDual(imageView1, imageView2, id2, id1);
-                //setHighlightDual(imageView2, imageView1, id1, id2);
             } else {
-                final ImageView imageView;
-                if (position == 424)
-                    imageView = (ImageView) holder.linearLayout.getChildAt(1);
-                else
-                    imageView = (ImageView) holder.linearLayout.getChildAt(0);
+                final ImageView image;
+                boolean isRight;
+                if (position == 424) {
+                    image = (ImageView) holder.linearLayout.getChildAt(1);
+                    isRight = true;
+                }
+                else {
+                    image = (ImageView) holder.linearLayout.getChildAt(0);
+                    isRight = false;
+                }
 
-                path1 = Environment.getExternalStorageDirectory().getPath() + "/personal_mushaf/13_line/13_pg_" + QuranConstants.naskh13LineDualPageSets[position][0] + ".png";
+                rightPagePath = Environment.getExternalStorageDirectory().getPath() + "/personal_mushaf/13_line/13_pg_" + QuranConstants.naskh13LineDualPageSets[position][0] + ".png";
 
-                loadBitmap(path1, imageView);
+                loadBitmap(rightPagePath, image);
 
-
-                //Glide.with(imageView.getContext()).load(BitmapFactory.decodeFile(path1)).centerInside().into(imageView);
-
-                //setHighlightSingle(imageView, id1);
+                setHighlightSingle(image, rightPagePath, isRight);
             }
 
         }
         else {
 
             if (position < 302 && position >= 0) {
-                path1 = Environment.getExternalStorageDirectory().getPath() + "/personal_mushaf/15_line/pg_" + QuranConstants.madani15LineDualPageSets[position][0] + ".png";
-                path2 = Environment.getExternalStorageDirectory().getPath() + "/personal_mushaf/15_line/pg_" + QuranConstants.madani15LineDualPageSets[position][1] + ".png";
+                leftPagePath = Environment.getExternalStorageDirectory().getPath() + "/personal_mushaf/15_line/pg_" + QuranConstants.madani15LineDualPageSets[position][1] + ".png";
+                rightPagePath = Environment.getExternalStorageDirectory().getPath() + "/personal_mushaf/15_line/pg_" + QuranConstants.madani15LineDualPageSets[position][0] + ".png";
 
-                final ImageView imageView1 = (ImageView) holder.linearLayout.getChildAt(0);
-                final ImageView imageView2 = (ImageView) holder.linearLayout.getChildAt(1);
+                final ImageView leftImage = (ImageView) holder.linearLayout.getChildAt(0);
+                final ImageView rightImage = (ImageView) holder.linearLayout.getChildAt(1);
 
-                loadBitmap(path2, imageView1);
-                loadBitmap(path1, imageView2);
+                loadBitmap(leftPagePath, leftImage);
+                loadBitmap(rightPagePath, rightImage);
+
+                setHighlightDual(leftImage, rightImage, leftPagePath, rightPagePath, false);
+                setHighlightDual(rightImage, leftImage, rightPagePath, leftPagePath, true);
             }
 
-            //Glide.with(imageView1.getContext()).load(BitmapFactory.decodeFile(path2)).centerInside().into(imageView1);
-            //Glide.with(imageView2.getContext()).load(BitmapFactory.decodeFile(path1)).centerInside().into(imageView2);
-
-
-            //setHighlightDual(imageView1, imageView2, id2, id1);
-            //setHighlightDual(imageView2, imageView1, id1, id2);
 
         }
     }
@@ -148,8 +149,27 @@ public class QuranDualPageRecyclerViewAdapter extends RecyclerView.Adapter<Quran
         return dataSet.length;
     }
 
+    public void setPages(int dualPageNumber) {
+
+        if (currentMushaf.equals("madani_15_line")) {
+            rightPage = new Page(QuranConstants.madani15LineDualPageSets[dualPageNumber][0]);
+            leftPage = new Page(QuranConstants.madani15LineDualPageSets[dualPageNumber][1]);
+        } else {
+            if (dualPageNumber == 0) {
+                rightPage = null;
+                leftPage = new Page(QuranConstants.naskh13LineDualPageSets[dualPageNumber][0]);
+            } else if (dualPageNumber == 848) {
+                rightPage = new Page(QuranConstants.naskh13LineDualPageSets[dualPageNumber][0]);
+                leftPage = null;
+            } else {
+                rightPage = new Page(QuranConstants.naskh13LineDualPageSets[dualPageNumber][0]);
+                leftPage = new Page(QuranConstants.naskh13LineDualPageSets[dualPageNumber][1]);
+            }
+        }
+    }
+
     @SuppressLint("ClickableViewAccessibility")
-    private void setHighlightDual(final ImageView imageView, final ImageView otherPage, final int id, final int otherId) {
+    private void setHighlightDual(final ImageView imageView, final ImageView otherImageView, final String path, final String otherPath, final boolean isRightPage) {
         final Matrix inverse = new Matrix();
 
         imageView.setOnTouchListener(new View.OnTouchListener() {
@@ -169,22 +189,22 @@ public class QuranDualPageRecyclerViewAdapter extends RecyclerView.Adapter<Quran
         imageView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                Bitmap myBitmap = BitmapFactory.decodeResource(imageView.getResources(), id);
-                int i;
+                Bitmap myBitmap = BitmapFactory.decodeFile(path);
+                Bitmap myOtherBitmap = BitmapFactory.decodeFile(otherPath);
 
-                for (i = 0; i < 13; i++) {
-                    if (y >= y1Touch[i] && y <= y2Touch[i] && x >= x1 && x <= x2)
-                        break;
-                }
+                Ayah ayah;
+                if (isRightPage)
+                    ayah = rightPage.getAyahFromCoordinates(imageView, x, y);
+                else
+                    ayah = leftPage.getAyahFromCoordinates(imageView, x, y);
 
-                if (i == 13)
-                    return false;
+                List<AyahBounds> ayahBounds = ayah.getAyahBounds();
 
 
                 Paint myPaint = new Paint();
                 myPaint.setStyle(Paint.Style.FILL);
-                myPaint.setColor(Color.BLUE);
-                myPaint.setAlpha(50);
+                myPaint.setColor(Color.WHITE);
+                //myPaint.setAlpha(50);
 
                 Bitmap tempBitmap = Bitmap.createBitmap(myBitmap.getWidth(), myBitmap.getHeight(), Bitmap.Config.RGB_565);
                 Canvas tempCanvas = new Canvas(tempBitmap);
@@ -193,14 +213,21 @@ public class QuranDualPageRecyclerViewAdapter extends RecyclerView.Adapter<Quran
                 //Draw the image bitmap into the canvas
                 tempCanvas.drawBitmap(myBitmap, 0, 0, null);
 
-                if (!isHighlighted || highlightedLine[1] != i+1) {
-                    tempCanvas.drawRoundRect(new RectF(x1,y1[i],x2,y2[i]), 2, 2, myPaint);
-                    highlightedLine[1] = i+1;
-                    isHighlighted = true;
-                } else
+                if (isHighlighted && ayah.equals(highlightedAyah)) {
+                    highlightedAyah = null;
                     isHighlighted = false;
+                }
+                else {
+                    highlightedAyah = ayah;
+                    isHighlighted = true;
+                    for (AyahBounds bounds: ayahBounds){
+                        tempCanvas.drawRoundRect(bounds.getBounds(), 2, 2, myPaint);
+                    }
+                }
 
-                imageView.setImageDrawable(new BitmapDrawable(imageView.getResources(), tempBitmap));
+
+                imageView.setImageBitmap(tempBitmap);
+                otherImageView.setImageBitmap(myOtherBitmap);
 
                 return true;
             }
@@ -208,7 +235,7 @@ public class QuranDualPageRecyclerViewAdapter extends RecyclerView.Adapter<Quran
     }
 
     @SuppressLint("ClickableViewAccessibility")
-    private void setHighlightSingle(final ImageView imageView, final int id) {
+    private void setHighlightSingle(final ImageView imageView, final String path, final boolean isRightPage) {
         final Matrix inverse = new Matrix();
 
         imageView.setOnTouchListener(new View.OnTouchListener() {
@@ -228,22 +255,20 @@ public class QuranDualPageRecyclerViewAdapter extends RecyclerView.Adapter<Quran
         imageView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                Bitmap myBitmap = BitmapFactory.decodeResource(imageView.getResources(), id);
-                int i;
+                Bitmap myBitmap = BitmapFactory.decodeFile(path);
+                Ayah ayah;
+                if (isRightPage)
+                    ayah = rightPage.getAyahFromCoordinates(imageView, x, y);
+                else
+                    ayah = leftPage.getAyahFromCoordinates(imageView, x, y);
 
-                for (i = 0; i < 13; i++) {
-                    if (y >= y1Touch[i] && y <= y2Touch[i] && x >= x1 && x <= x2)
-                        break;
-                }
-
-                if (i == 13)
-                    return false;
+                List<AyahBounds> ayahBounds = ayah.getAyahBounds();
 
 
                 Paint myPaint = new Paint();
                 myPaint.setStyle(Paint.Style.FILL);
-                myPaint.setColor(Color.BLUE);
-                myPaint.setAlpha(50);
+                myPaint.setColor(Color.WHITE);
+                //myPaint.setAlpha(50);
 
                 Bitmap tempBitmap = Bitmap.createBitmap(myBitmap.getWidth(), myBitmap.getHeight(), Bitmap.Config.RGB_565);
                 Canvas tempCanvas = new Canvas(tempBitmap);
@@ -252,15 +277,20 @@ public class QuranDualPageRecyclerViewAdapter extends RecyclerView.Adapter<Quran
                 //Draw the image bitmap into the canvas
                 tempCanvas.drawBitmap(myBitmap, 0, 0, null);
 
-                if (!isHighlighted || highlightedLine[1] != i+1) {
-                    tempCanvas.drawRoundRect(new RectF(x1,y1[i],x2,y2[i]), 2, 2, myPaint);
-                    highlightedLine[1] = i+1;
-                    isHighlighted = true;
-                } else
+                if (isHighlighted && ayah.equals(highlightedAyah)) {
+                    highlightedAyah = null;
                     isHighlighted = false;
+                }
+                else {
+                    highlightedAyah = ayah;
+                    isHighlighted = true;
+                    for (AyahBounds bounds: ayahBounds){
+                        tempCanvas.drawRoundRect(bounds.getBounds(), 2, 2, myPaint);
+                    }
+                }
 
 
-                imageView.setImageDrawable(new BitmapDrawable(imageView.getResources(), tempBitmap));
+                imageView.setImageBitmap(tempBitmap);
 
                 return true;
             }
