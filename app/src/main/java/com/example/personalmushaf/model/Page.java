@@ -26,45 +26,50 @@ public class Page {
     private static final String GLYPHS_TABLE = "glyphs";
     private Map<String, List<AyahBounds>> ayahBounds;
 
-    public Page(int pageNumber) {
-        ayahBounds = new HashMap<>();
-        SQLiteDatabase database = SQLiteDatabase.openDatabase(Environment.getExternalStorageDirectory() + "/personal_mushaf/databases/ayahinfo_1260.db", null, SQLiteDatabase.OPEN_READONLY);
-        Cursor c = database.query(GLYPHS_TABLE,
-                new String[]{COL_PAGE, COL_LINE, COL_SURA, COL_AYAH,
-                        COL_POSITION, MIN_X, MIN_Y, MAX_X, MAX_Y},
-                COL_PAGE + "=" + pageNumber,
-                null, null, null,
-                COL_SURA + "," + COL_AYAH + "," + COL_POSITION);
-        try {
-            while (c.moveToNext()) {
-                int sura = c.getInt(2);
-                int ayah = c.getInt(3);
-                String key = sura + ":" + ayah;
-                List<AyahBounds> bounds = ayahBounds.get(key);
-                if (bounds == null) {
-                    bounds = new ArrayList<>();
-                }
+    public Page(final int pageNumber) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                ayahBounds = new HashMap<>();
+                SQLiteDatabase database = SQLiteDatabase.openDatabase(Environment.getExternalStorageDirectory() + "/personal_mushaf/databases/ayahinfo_1260.db", null, SQLiteDatabase.OPEN_READONLY);
+                Cursor c = database.query(GLYPHS_TABLE,
+                        new String[]{COL_PAGE, COL_LINE, COL_SURA, COL_AYAH,
+                                COL_POSITION, MIN_X, MIN_Y, MAX_X, MAX_Y},
+                        COL_PAGE + "=" + pageNumber,
+                        null, null, null,
+                        COL_SURA + "," + COL_AYAH + "," + COL_POSITION);
+                try {
+                    while (c.moveToNext()) {
+                        int sura = c.getInt(2);
+                        int ayah = c.getInt(3);
+                        String key = sura + ":" + ayah;
+                        List<AyahBounds> bounds = ayahBounds.get(key);
+                        if (bounds == null) {
+                            bounds = new ArrayList<>();
+                        }
 
-                AyahBounds last = null;
-                if (bounds.size() > 0) {
-                    last = bounds.get(bounds.size() - 1);
-                }
+                        AyahBounds last = null;
+                        if (bounds.size() > 0) {
+                            last = bounds.get(bounds.size() - 1);
+                        }
 
-                AyahBounds bound = new AyahBounds(c.getInt(1),
-                        c.getInt(4), c.getInt(5),
-                        c.getInt(6), c.getInt(7),
-                        c.getInt(8));
-                if (last != null && last.getLine() == bound.getLine()) {
-                    last.engulf(bound);
-                } else {
-                    bounds.add(bound);
+                        AyahBounds bound = new AyahBounds(c.getInt(1),
+                                c.getInt(4), c.getInt(5),
+                                c.getInt(6), c.getInt(7),
+                                c.getInt(8));
+                        if (last != null && last.getLine() == bound.getLine()) {
+                            last.engulf(bound);
+                        } else {
+                            bounds.add(bound);
+                        }
+                        ayahBounds.put(key, bounds);
+                    }
+                } finally {
+                    c.close();
+                    database.close();
                 }
-                ayahBounds.put(key, bounds);
             }
-        } finally {
-            c.close();
-            database.close();
-        }
+        }).run();
     }
 
     public Ayah getAyahFromCoordinates(

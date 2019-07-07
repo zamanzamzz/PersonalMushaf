@@ -147,6 +147,8 @@ public class QuranActivity extends AppCompatActivity {
                         layoutManager.smoothScrollToPosition(dualPageRecyclerView, new RecyclerView.State(), dualPageNumber);
                     else
                         layoutManager.scrollToPosition(dualPageNumber);
+
+                    dualPageAdapter.setPages(dualPageNumber);
                     return true;
                 } else
                     return super.dispatchKeyEvent(event);
@@ -168,6 +170,7 @@ public class QuranActivity extends AppCompatActivity {
                         else
                             layoutManager.scrollToPosition(dualPageNumber);
 
+                        dualPageAdapter.setPages(dualPageNumber);
                         return true;
                     } else
                         return super.dispatchKeyEvent(event);
@@ -187,6 +190,8 @@ public class QuranActivity extends AppCompatActivity {
                             layoutManager.smoothScrollToPosition(dualPageRecyclerView, new RecyclerView.State(), dualPageNumber);
                         else
                             layoutManager.scrollToPosition(dualPageNumber);
+
+                        dualPageAdapter.setPages(dualPageNumber);
                         return true;
                     } else
                         return super.dispatchKeyEvent(event);
@@ -279,12 +284,7 @@ public class QuranActivity extends AppCompatActivity {
         singlePageAdapter = new QuranPageRecyclerViewAdapter(this);
         singlePageRecyclerView.setLayoutManager(layoutManager);
         layoutManager.scrollToPosition(pageNumber - 1);
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                singlePageAdapter.setPageData(new Page(pageNumber));
-            }
-        }).run();
+        singlePageAdapter.setPageData(new Page(pageNumber));
         layoutManager.setItemPrefetchEnabled(true);
         singlePageRecyclerView.setAdapter(singlePageAdapter);
         singlePageRecyclerView.setItemViewCacheSize(3);
@@ -293,19 +293,16 @@ public class QuranActivity extends AppCompatActivity {
             @Override
             public void onSnapPositionChange(int position) {
                 pageNumber = position + 1;
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        singlePageAdapter.setPageData(new Page(pageNumber));
-                    }
-                }).run();
+
+                singlePageAdapter.setPageData(new Page(pageNumber));
+
                 pagesTurned++;
             }
         });
     }
 
     private void setupDualPageRecyclerView(RecyclerView.LayoutManager layoutManager) {
-        int dualPageNumber;
+         final int dualPageNumber;
 
         if (!currentMushaf.equals("madani_15_line")) {
             if (pageNumber % 2 == 0)
@@ -324,6 +321,7 @@ public class QuranActivity extends AppCompatActivity {
         dualPageAdapter = !currentMushaf.equals("madani_15_line") ? new QuranDualPageRecyclerViewAdapter(QuranConstants.naskh13LineDualPageSets, this):
                                                                     new QuranDualPageRecyclerViewAdapter(QuranConstants.madani15LineDualPageSets, this);
         dualPageAdapter.setPages(dualPageNumber);
+
         dualPageRecyclerView.setLayoutManager(layoutManager);
         layoutManager.scrollToPosition(dualPageNumber);
         layoutManager.setItemPrefetchEnabled(true);
@@ -332,13 +330,15 @@ public class QuranActivity extends AppCompatActivity {
         PagerSnapHelper snapHelper = new PagerSnapHelper();
         RecyclerViewExtKt.attachSnapHelperWithListener(dualPageRecyclerView, snapHelper, SnapOnScrollListener.Behavior.NOTIFY_ON_SCROLL_STATE_IDLE, new OnSnapPositionChangeListener() {
             @Override
-            public void onSnapPositionChange(int position) {
+            public void onSnapPositionChange(final int position) {
                 if (currentMushaf.equals("madani_15_line"))
                     pageNumber = 2 * position + 1;
                 else
                     pageNumber = 2 * position;
                 pagesTurned = pagesTurned + 2;
+
                 dualPageAdapter.setPages(position);
+
             }
         });
     }

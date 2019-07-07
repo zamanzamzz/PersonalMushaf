@@ -35,13 +35,12 @@ import java.util.List;
 
 public class QuranDualPageRecyclerViewAdapter extends RecyclerView.Adapter<QuranDualPageRecyclerViewAdapter.QuranPageDualViewHolder> {
 
-    private int[] highlightedLine = {0, 0};
-    private boolean isHighlighted = false;
     private SharedPreferences preferences;
     private String currentMushaf;
     private Page rightPage;
     private Page leftPage;
     private Ayah highlightedAyah;
+    private boolean isHighlighted = false;
 
 
     private int[][] dataSet;
