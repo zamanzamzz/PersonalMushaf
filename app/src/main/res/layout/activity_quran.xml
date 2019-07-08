@@ -13,12 +13,12 @@
         tools:context=".QuranActivity"
         android:orientation="vertical">
 
-        <androidx.recyclerview.widget.RecyclerView
+        <androidx.viewpager.widget.ViewPager
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="#FFF"
             android:id="@+id/pager">
-        </androidx.recyclerview.widget.RecyclerView>
+        </androidx.viewpager.widget.ViewPager>
 
     </LinearLayout>
     <FrameLayout

@@ -10,8 +10,14 @@
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/page"
+        android:id="@+id/page1"
         android:onClick="SystemUIListener"
         />
+
+    <ImageView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:id="@id/page2"
+        android:visibility="gone"/>
 
 </LinearLayout>
