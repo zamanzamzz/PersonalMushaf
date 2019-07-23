@@ -26,6 +26,10 @@
         app:useSimpleSummaryProvider="true" />
 
     <SwitchPreferenceCompat
+        app:key="force_dual_page"
+        app:title="Force Dual Page Mode" />
+
+    <SwitchPreferenceCompat
         app:key="smoothpageturn"
         app:title="Smooth Volume Key Navigation" />
 

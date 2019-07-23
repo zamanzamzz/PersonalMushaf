@@ -9,8 +9,10 @@ import androidx.viewpager.widget.ViewPager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.Surface;
 import android.view.View;
@@ -37,8 +39,9 @@ public class QuranActivity extends AppCompatActivity {
 
 
     private SharedPreferences preferences;
-    String currentMushaf;
+    private String currentMushaf;
     boolean isSmoothVolumeKeyNavigation;
+    boolean isForceDualPage;
 
 
     @Override
@@ -51,6 +54,7 @@ public class QuranActivity extends AppCompatActivity {
         currentMushaf = preferences.getString("mushaf", "madani_15_line");
 
         isSmoothVolumeKeyNavigation = preferences.getBoolean("smoothpageturn", false);
+        isForceDualPage = preferences.getBoolean("force_dual_page", false);
 
         setupActionbar();
 
@@ -109,6 +113,71 @@ public class QuranActivity extends AppCompatActivity {
         finish();
     }
 
+
+
+    @Override
+    public boolean dispatchKeyEvent(KeyEvent event) {
+        int dualPageNumber;
+        int action = event.getAction();
+        int keyCode = event.getKeyCode();
+
+        switch (keyCode) {
+            case KeyEvent.KEYCODE_VOLUME_DOWN:
+                if (action == KeyEvent.ACTION_DOWN && currentOrientation == "landscape" && pageNumber >= 2) {
+                    pageNumber--;
+
+                    if (pageNumber != 1)
+                        pageNumber--;
+
+                    if (pageNumber % 2 == 0)
+                        dualPageNumber = pageNumber / 2;
+                    else
+                        dualPageNumber = (pageNumber - 1) / 2;
+
+                    pager.setCurrentItem(pagerAdapter.getCount() - 1 - dualPageNumber, isSmoothVolumeKeyNavigation);
+                    return true;
+                } else
+                    return super.dispatchKeyEvent(event);
+
+            case KeyEvent.KEYCODE_VOLUME_UP:
+                if (!currentMushaf.equals("madani_15_line")) {
+                    if (action == KeyEvent.ACTION_DOWN && currentOrientation == "landscape" && pageNumber <= 847) {
+                        pageNumber++;
+
+                        if (pageNumber != 848)
+                            pageNumber++;
+
+                        if (pageNumber % 2 == 0)
+                            dualPageNumber = pageNumber / 2;
+                        else
+                            dualPageNumber = (pageNumber - 1) / 2;
+
+                        pager.setCurrentItem(pagerAdapter.getCount() - 1 - dualPageNumber, isSmoothVolumeKeyNavigation);
+                        return true;
+                    } else
+                        return super.dispatchKeyEvent(event);
+                } else {
+                    if (action == KeyEvent.ACTION_DOWN && currentOrientation == "landscape" && pageNumber <= 602) {
+                        pageNumber++;
+
+                        if (pageNumber != 603)
+                            pageNumber++;
+
+                        if (pageNumber % 2 == 0)
+                            dualPageNumber = (pageNumber - 1) / 2;
+                        else
+                            dualPageNumber = pageNumber / 2;
+
+                        pager.setCurrentItem(pagerAdapter.getCount() - 1 - dualPageNumber, isSmoothVolumeKeyNavigation);
+                        return true;
+                    } else
+                        return super.dispatchKeyEvent(event);
+                }
+            default:
+                return super.dispatchKeyEvent(event);
+        }
+    }
+
     private void setupActionbar() {
         toolbar = findViewById(R.id.toolbar);
         ViewGroup.LayoutParams params = toolbar.getLayoutParams();
@@ -146,7 +215,7 @@ public class QuranActivity extends AppCompatActivity {
         pager.setAdapter(pagerAdapter);
         pager.setOffscreenPageLimit(2);
 
-        if (currentOrientation.equals("portrait")) {
+        if (currentOrientation.equals("portrait") && !isForceDualPage) {
             final int position = pagerAdapter.getCount() - pageNumber;
             pager.post(new Runnable() {
                 @Override
@@ -173,6 +242,9 @@ public class QuranActivity extends AppCompatActivity {
             });
         } else {
             int dualPageNumber;
+
+            if (isForceDualPage)
+                this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 
             if (!currentMushaf.equals("madani_15_line")) {
                 if (pageNumber % 2 == 0)
@@ -215,6 +287,7 @@ public class QuranActivity extends AppCompatActivity {
             });
         }
     }
+
 
     private int getStatusBarHeight() {
         int result = 0;

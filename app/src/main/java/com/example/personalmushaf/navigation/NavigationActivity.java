@@ -90,7 +90,7 @@ public class NavigationActivity extends AppCompatActivity {
 
             if (mushafVersion.equals("naskh_13_line"))
                 title = QuranConstants.juzInfo[juzNumber-1][0] + "  | " +
-                        QuranConstants.juzInfo[juzNumber-1][1] + " pages";
+                        QuranConstants.juzInfo[juzNumber-1][2] + " pages";
             else
                 title = QuranConstants.juzInfo[juzNumber-1][0] + "  | " +
                         QuranConstants.juzInfo[juzNumber-1][1] + " pages";
@@ -105,7 +105,7 @@ public class NavigationActivity extends AppCompatActivity {
 
             TextView juzStart = findViewById(R.id.juz_start_toolbar);
 
-            juzStart.setText(QuranConstants.juzInfo[juzNumber-1][2]);
+            juzStart.setText(QuranConstants.juzInfo[juzNumber-1][3]);
 
             juzQuarterFragment = new JuzQuarterFragment();
             rukuContentFragment = new RukuContentFragment();

@@ -15,10 +15,12 @@ public class QuranPageAdapter extends FragmentPagerAdapter {
 
     private String mushafVersion;
     private String orientation;
+    private boolean isForceDualPage;
 
     public QuranPageAdapter(FragmentManager fm, Context context, String orientation) {
         super(fm, FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
         mushafVersion = PreferenceManager.getDefaultSharedPreferences(context).getString("mushaf", "madani_15_line");
+        isForceDualPage = PreferenceManager.getDefaultSharedPreferences(context).getBoolean("force_dual_page", false);
         this.orientation = orientation;
     }
 
@@ -28,21 +30,21 @@ public class QuranPageAdapter extends FragmentPagerAdapter {
         Fragment fragment;
         Bundle bundle;
         int pageNumber;
-        switch (orientation) {
-            case "landscape" :position++;
-                pageNumber = getCount() - position;
-                fragment = new QuranDualPageFragment();
-                bundle = new Bundle();
-                bundle.putInt("page_number", pageNumber);
-                fragment.setArguments(bundle);
-                break;
-            default:  position++;
-                pageNumber = getCount() + 1 - position;
-                fragment = new QuranPageFragment();
-                bundle = new Bundle();
-                bundle.putInt("page_number", pageNumber);
-                fragment.setArguments(bundle);
-                break;
+
+        if (orientation.equals("landscape") || isForceDualPage) {
+            position++;
+            pageNumber = getCount() - position;
+            fragment = new QuranDualPageFragment();
+            bundle = new Bundle();
+            bundle.putInt("page_number", pageNumber);
+            fragment.setArguments(bundle);
+        } else {
+            position++;
+            pageNumber = getCount() + 1 - position;
+            fragment = new QuranPageFragment();
+            bundle = new Bundle();
+            bundle.putInt("page_number", pageNumber);
+            fragment.setArguments(bundle);
         }
 
         return fragment;
@@ -50,7 +52,7 @@ public class QuranPageAdapter extends FragmentPagerAdapter {
 
     @Override
     public int getCount() {
-        if (orientation.equals("portrait")) {
+        if (orientation.equals("portrait") && !isForceDualPage) {
             if (mushafVersion.equals("madani_15_line"))
                 return 604;
             else

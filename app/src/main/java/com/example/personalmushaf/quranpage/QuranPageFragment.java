@@ -23,6 +23,7 @@ import com.example.personalmushaf.R;
 import com.example.personalmushaf.model.Ayah;
 import com.example.personalmushaf.model.AyahBounds;
 import com.example.personalmushaf.model.Page;
+import com.example.personalmushaf.navigation.QuranConstants;
 
 import java.util.List;
 
@@ -30,6 +31,7 @@ public class QuranPageFragment extends Fragment {
 
     private SharedPreferences preferences;
     private int page_number;
+    private String mushaf;
     private View v;
     private Page page;
     private Ayah highlightedAyah = null;
@@ -38,6 +40,7 @@ public class QuranPageFragment extends Fragment {
     private float y;
 
     public QuranPageFragment () {
+
     }
 
     @Override
@@ -47,25 +50,31 @@ public class QuranPageFragment extends Fragment {
 
         page_number = getArguments().getInt("page_number");
 
-        page = new Page(page_number);
-
         preferences = PreferenceManager.getDefaultSharedPreferences(v.getContext());
 
-        String mushaf = preferences.getString("mushaf", "madani_15_line");
+        mushaf = preferences.getString("mushaf", "madani_15_line");
 
         ImageView imageView = v.findViewById(R.id.page1);
 
         String path;
 
         if (mushaf.equals("madani_15_line"))
-            path = Environment.getExternalStorageDirectory().getPath() + "/personal_mushaf/15_line/pg_" + page_number + ".png";
+            path = QuranConstants.ASSETSDIRECTORY + "15_line/pg_" + page_number + ".png";
         else
-            path = Environment.getExternalStorageDirectory().getPath() + "/personal_mushaf/13_line/13_pg_" + page_number + ".png";
+            path = QuranConstants.ASSETSDIRECTORY + "13_line/13_pg_" + page_number + ".png";
 
         ImageUtils.getInstance().loadBitmap(path, imageView);
 
-        if (mushaf.equals("madani_15_line"))
+
+         if (mushaf.equals("madani_15_line")) {
+            page = new Page(page_number, false);
             setHighlight(imageView, path);
+        } else if (page_number >=  2 && page_number <= 4){
+             page = new Page(page_number, true);
+             setHighlight(imageView, path);
+         }
+
+
 
         return v;
     }
@@ -93,7 +102,7 @@ public class QuranPageFragment extends Fragment {
             public boolean onLongClick(View v) {
                 Bitmap myBitmap = BitmapFactory.decodeFile(path);
                 Ayah ayah = page.getAyahFromCoordinates(imageView, x, y);
-                List<AyahBounds> ayahBounds = ayah.getAyahBounds();
+                 List<AyahBounds> ayahBounds = ayah.getAyahBounds();
 
 
                 Paint myPaint = new Paint();
