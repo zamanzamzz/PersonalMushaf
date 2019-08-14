@@ -9,7 +9,6 @@ import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.os.Bundle;
-import android.os.Environment;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -58,21 +57,26 @@ public class QuranPageFragment extends Fragment {
 
         String path;
 
-        if (mushaf.equals("madani_15_line"))
+        if (mushaf.equals("madani_15_line")) {
             path = QuranConstants.ASSETSDIRECTORY + "15_line/pg_" + page_number + ".png";
-        else
+            page = new Page(page_number, false);
+            ImageUtils.getInstance().loadBitmap(path, imageView);
+
+            setHighlight(imageView, path);
+
+        }
+        else {
+
             path = QuranConstants.ASSETSDIRECTORY + "13_line/13_pg_" + page_number + ".png";
 
-        ImageUtils.getInstance().loadBitmap(path, imageView);
+            ImageUtils.getInstance().loadBitmap(path, imageView);
 
+            if (page_number != 1) {
+                page = new Page(page_number, true);
+                setHighlight(imageView, path);
+            }
 
-         if (mushaf.equals("madani_15_line")) {
-            page = new Page(page_number, false);
-            setHighlight(imageView, path);
-        } else if (page_number >=  2 && page_number <= 4){
-             page = new Page(page_number, true);
-             setHighlight(imageView, path);
-         }
+        }
 
 
 
@@ -107,8 +111,8 @@ public class QuranPageFragment extends Fragment {
 
                 Paint myPaint = new Paint();
                 myPaint.setStyle(Paint.Style.FILL);
-                myPaint.setColor(Color.WHITE);
-                //myPaint.setAlpha(50);
+                myPaint.setColor(Color.BLUE);
+                myPaint.setAlpha(50);
 
                 Bitmap tempBitmap = Bitmap.createBitmap(myBitmap.getWidth(), myBitmap.getHeight(), Bitmap.Config.RGB_565);
                 Canvas tempCanvas = new Canvas(tempBitmap);
@@ -135,5 +139,9 @@ public class QuranPageFragment extends Fragment {
                 return true;
             }
         });
+    }
+
+    public Ayah getHighlightedAyah() {
+        return highlightedAyah;
     }
 }

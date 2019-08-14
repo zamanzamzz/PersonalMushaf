@@ -65,4 +65,5 @@ public class QuranPageAdapter extends FragmentPagerAdapter {
         }
     }
 
+
 }

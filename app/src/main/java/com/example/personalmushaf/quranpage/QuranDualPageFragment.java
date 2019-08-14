@@ -67,26 +67,42 @@ public class QuranDualPageFragment extends Fragment {
                 ImageUtils.getInstance().loadBitmap(rightPagePath, rightImage);
                 ImageUtils.getInstance().loadBitmap(leftPagePath, leftImage);
 
-                //setHighlightDual(leftImage, rightImage, leftPagePath, rightPagePath, false);
-                //setHighlightDual(rightImage, leftImage, rightPagePath, leftPagePath, true);
+                setHighlightDual(leftImage, rightImage, leftPagePath, rightPagePath, false);
+                setHighlightDual(rightImage, leftImage, rightPagePath, leftPagePath, true);
+                rightPage = new Page(QuranConstants.naskh13LineDualPageSets[position][0],true);
+                leftPage = new Page(QuranConstants.naskh13LineDualPageSets[position][1], true);
+
 
             } else {
-                final ImageView image;
-                boolean isRight;
+                final ImageView image, image1;
+                image = v.findViewById(R.id.page1);
+                image1 = v.findViewById(R.id.page2);
+
                 if (position == 424) {
-                    image = v.findViewById(R.id.page2);
-                    isRight = false;
+                    image.setVisibility(View.GONE);
+
+                    rightPagePath = QuranConstants.ASSETSDIRECTORY + "13_line/13_pg_" + QuranConstants.naskh13LineDualPageSets[position][0] + ".png";
+
+                    ImageUtils.getInstance().loadBitmap(rightPagePath, image);
+                    ImageUtils.getInstance().loadBitmap(rightPagePath, image1);
+
+                    setHighlightSingle(image, rightPagePath, true);
+                    setHighlightSingle(image1, rightPagePath, true);
+
+                    rightPage = new Page(848, true);
+
+
+
+                } else {
+                    image1.setVisibility(View.GONE);
+
+                    rightPagePath = QuranConstants.ASSETSDIRECTORY + "13_line/13_pg_" + QuranConstants.naskh13LineDualPageSets[position][0] + ".png";
+
+                    ImageUtils.getInstance().loadBitmap(rightPagePath, image);
+                    ImageUtils.getInstance().loadBitmap(rightPagePath, image1);
                 }
-                else {
-                    image = v.findViewById(R.id.page1);
-                    isRight = true;
-                }
 
-                rightPagePath = QuranConstants.ASSETSDIRECTORY + "13_line/13_pg_" + QuranConstants.naskh13LineDualPageSets[position][0] + ".png";
 
-                ImageUtils.getInstance().loadBitmap(rightPagePath, image);
-
-                //setHighlightSingle(image, rightPagePath, isRight);
             }
 
         }
@@ -149,8 +165,8 @@ public class QuranDualPageFragment extends Fragment {
 
                 Paint myPaint = new Paint();
                 myPaint.setStyle(Paint.Style.FILL);
-                myPaint.setColor(Color.WHITE);
-                //myPaint.setAlpha(50);
+                myPaint.setColor(Color.BLUE);
+                myPaint.setAlpha(50);
 
                 Bitmap tempBitmap = Bitmap.createBitmap(myBitmap.getWidth(), myBitmap.getHeight(), Bitmap.Config.RGB_565);
                 Canvas tempCanvas = new Canvas(tempBitmap);
@@ -213,8 +229,8 @@ public class QuranDualPageFragment extends Fragment {
 
                 Paint myPaint = new Paint();
                 myPaint.setStyle(Paint.Style.FILL);
-                myPaint.setColor(Color.WHITE);
-                //myPaint.setAlpha(50);
+                myPaint.setColor(Color.BLUE);
+                myPaint.setAlpha(50);
 
                 Bitmap tempBitmap = Bitmap.createBitmap(myBitmap.getWidth(), myBitmap.getHeight(), Bitmap.Config.RGB_565);
                 Canvas tempCanvas = new Canvas(tempBitmap);

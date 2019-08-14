@@ -3,7 +3,6 @@ package com.example.personalmushaf.model;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.RectF;
-import android.os.Environment;
 import android.util.SparseArray;
 import android.widget.ImageView;
 

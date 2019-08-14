@@ -248,6 +248,8 @@ public class QuranConstants {
             "٤٠",
     };
 
+    
+
     public static QuranConstants getInstance() {
         return ourInstance;
     }

@@ -20,6 +20,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 
+
 import com.example.personalmushaf.quranpage.QuranPageAdapter;
 
 
