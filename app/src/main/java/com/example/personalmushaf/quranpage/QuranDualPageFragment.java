@@ -1,7 +1,6 @@
 package com.example.personalmushaf.quranpage;
 
 import android.annotation.SuppressLint;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -9,7 +8,6 @@ import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.os.Bundle;
-import android.os.Environment;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -17,23 +15,23 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import androidx.fragment.app.Fragment;
-import androidx.preference.PreferenceManager;
 
+import com.example.personalmushaf.QuranSettings;
 import com.example.personalmushaf.R;
 import com.example.personalmushaf.model.Ayah;
 import com.example.personalmushaf.model.AyahBounds;
-import com.example.personalmushaf.model.Page;
+import com.example.personalmushaf.model.PageData;
 import com.example.personalmushaf.navigation.QuranConstants;
+import com.example.personalmushaf.util.ImageUtils;
 
 import java.util.List;
 
 public class QuranDualPageFragment extends Fragment {
 
-    private SharedPreferences preferences;
     private int position;
     private View v;
-    private Page rightPage;
-    private Page leftPage;
+    private PageData rightPageData;
+    private PageData leftPageData;
     private Ayah highlightedAyah = null;
     private boolean isHighlighted = false;
     private float x;
@@ -48,14 +46,13 @@ public class QuranDualPageFragment extends Fragment {
         v = inflater.inflate(R.layout.fragment_page, container, false);
 
         position = getArguments().getInt("page_number");
-        preferences = PreferenceManager.getDefaultSharedPreferences(v.getContext());
 
-        String mushaf = preferences.getString("mushaf", "madani_15_line");
+        String mushafVersion = QuranSettings.getInstance().getMushafVersion(v.getContext());
 
         final String rightPagePath;
         final String leftPagePath;
 
-        if (!mushaf.equals("madani_15_line")) {
+        if (!mushafVersion.equals("madani_15_line")) {
             if (position != 0 && position != 424) {
                 final ImageView rightImage = v.findViewById(R.id.page2);
                 final ImageView leftImage = v.findViewById(R.id.page1);
@@ -69,8 +66,8 @@ public class QuranDualPageFragment extends Fragment {
 
                 setHighlightDual(leftImage, rightImage, leftPagePath, rightPagePath, false);
                 setHighlightDual(rightImage, leftImage, rightPagePath, leftPagePath, true);
-                rightPage = new Page(QuranConstants.naskh13LineDualPageSets[position][0],true);
-                leftPage = new Page(QuranConstants.naskh13LineDualPageSets[position][1], true);
+                rightPageData = new PageData(QuranConstants.naskh13LineDualPageSets[position][0],true);
+                leftPageData = new PageData(QuranConstants.naskh13LineDualPageSets[position][1], true);
 
 
             } else {
@@ -89,9 +86,7 @@ public class QuranDualPageFragment extends Fragment {
                     setHighlightSingle(image, rightPagePath, true);
                     setHighlightSingle(image1, rightPagePath, true);
 
-                    rightPage = new Page(848, true);
-
-
+                    rightPageData = new PageData(848, true);
 
                 } else {
                     image1.setVisibility(View.GONE);
@@ -120,8 +115,8 @@ public class QuranDualPageFragment extends Fragment {
 
                 setHighlightDual(leftImage, rightImage, leftPagePath, rightPagePath, false);
                 setHighlightDual(rightImage, leftImage, rightPagePath, leftPagePath, true);
-                leftPage = new Page(QuranConstants.madani15LineDualPageSets[position][1], false);
-                rightPage = new Page(QuranConstants.madani15LineDualPageSets[position][0],false);
+                leftPageData = new PageData(QuranConstants.madani15LineDualPageSets[position][1], false);
+                rightPageData = new PageData(QuranConstants.madani15LineDualPageSets[position][0],false);
             }
 
 
@@ -156,9 +151,9 @@ public class QuranDualPageFragment extends Fragment {
 
                 Ayah ayah;
                 if (isRightPage)
-                    ayah = rightPage.getAyahFromCoordinates(imageView, x, y);
+                    ayah = rightPageData.getAyahFromCoordinates(imageView, x, y);
                 else
-                    ayah = leftPage.getAyahFromCoordinates(imageView, x, y);
+                    ayah = leftPageData.getAyahFromCoordinates(imageView, x, y);
 
                 List<AyahBounds> ayahBounds = ayah.getAyahBounds();
 
@@ -220,9 +215,9 @@ public class QuranDualPageFragment extends Fragment {
                 Bitmap myBitmap = BitmapFactory.decodeFile(path);
                 Ayah ayah;
                 if (isRightPage)
-                    ayah = rightPage.getAyahFromCoordinates(imageView, x, y);
+                    ayah = rightPageData.getAyahFromCoordinates(imageView, x, y);
                 else
-                    ayah = leftPage.getAyahFromCoordinates(imageView, x, y);
+                    ayah = leftPageData.getAyahFromCoordinates(imageView, x, y);
 
                 List<AyahBounds> ayahBounds = ayah.getAyahBounds();
 

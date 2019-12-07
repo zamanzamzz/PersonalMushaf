@@ -1,8 +1,10 @@
 package com.example.personalmushaf.navigation.tabs.juztab;
 
 
-import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
@@ -10,11 +12,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.preference.PreferenceManager;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-
+import com.example.personalmushaf.QuranSettings;
 import com.example.personalmushaf.R;
 import com.example.personalmushaf.navigation.NavigationDataUtil;
 
@@ -29,7 +27,6 @@ public class JuzFragment extends Fragment {
     private JuzAdapter adapter;
     private String[][] dataSet;
     private ActionBar actionBar;
-    private SharedPreferences preferences;
 
 
     public JuzFragment() {
@@ -44,14 +41,12 @@ public class JuzFragment extends Fragment {
 
         actionBar = ((AppCompatActivity)getActivity()).getSupportActionBar();
 
-        preferences = PreferenceManager.getDefaultSharedPreferences(container.getContext());
-
-        String mushaf = preferences.getString("mushaf", "madani_15_line");
+        String mushafVersion = QuranSettings.getInstance().getMushafVersion(v.getContext());
 
         actionBar.setTitle("Qur'an Contents");
 
         String[] colNames = {"", "", "Juz", "Prefix"};
-        if (mushaf.equals("madani_15_line")) {
+        if (mushafVersion.equals("madani_15_line")) {
             colNames[0] = "Madani15LinePageNumber";
             colNames[1] = "Madani15LineLength";
         } else {

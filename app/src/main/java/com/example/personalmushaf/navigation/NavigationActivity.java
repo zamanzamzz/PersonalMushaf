@@ -2,22 +2,12 @@ package com.example.personalmushaf.navigation;
 
 import android.Manifest;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.TextView;
-
-import com.example.personalmushaf.R;
-import com.example.personalmushaf.SettingsActivity;
-import com.example.personalmushaf.navigation.tabs.juztab.JuzFragment;
-import com.example.personalmushaf.navigation.tabs.juzquartertab.JuzQuarterFragment;
-import com.example.personalmushaf.navigation.tabs.rukucontenttab.RukuContentFragment;
-import com.example.personalmushaf.navigation.tabs.surahtab.SurahFragment;
-import com.google.android.material.tabs.TabLayout;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -25,6 +15,15 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.viewpager.widget.ViewPager;
+
+import com.example.personalmushaf.QuranSettings;
+import com.example.personalmushaf.R;
+import com.example.personalmushaf.SettingsActivity;
+import com.example.personalmushaf.navigation.tabs.juzquartertab.JuzQuarterFragment;
+import com.example.personalmushaf.navigation.tabs.juztab.JuzFragment;
+import com.example.personalmushaf.navigation.tabs.rukucontenttab.RukuContentFragment;
+import com.example.personalmushaf.navigation.tabs.surahtab.SurahFragment;
+import com.google.android.material.tabs.TabLayout;
 
 
 public class NavigationActivity extends AppCompatActivity {
@@ -38,7 +37,6 @@ public class NavigationActivity extends AppCompatActivity {
     JuzQuarterFragment juzQuarterFragment;
     RukuContentFragment rukuContentFragment;
     SurahFragment surahFragment;
-    SharedPreferences preferences;
     String mushafVersion;
 
     @Override
@@ -51,8 +49,7 @@ public class NavigationActivity extends AppCompatActivity {
         setSupportActionBar(navigationToolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
-        preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        mushafVersion = preferences.getString("mushaf", "madani_15_line");
+        mushafVersion = QuranSettings.getInstance().getMushafVersion(this);
 
         Intent intent = getIntent();
 

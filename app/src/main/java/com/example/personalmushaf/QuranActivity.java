@@ -1,25 +1,20 @@
 package com.example.personalmushaf;
 
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.viewpager.widget.ViewPager;
-
-
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.Surface;
 import android.view.View;
-
 import android.view.ViewGroup;
 import android.view.WindowManager;
 
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.viewpager.widget.ViewPager;
 
 import com.example.personalmushaf.quranpage.QuranPageAdapter;
 
@@ -38,9 +33,7 @@ public class QuranActivity extends AppCompatActivity {
 
     private QuranPageAdapter pagerAdapter;
 
-
-    private SharedPreferences preferences;
-    private String currentMushaf;
+    private String mushafVersion;
     boolean isSmoothVolumeKeyNavigation;
     boolean isForceDualPage;
 
@@ -50,12 +43,10 @@ public class QuranActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_quran);
 
-        preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        mushafVersion = QuranSettings.getInstance().getMushafVersion(this);
 
-        currentMushaf = preferences.getString("mushaf", "madani_15_line");
-
-        isSmoothVolumeKeyNavigation = preferences.getBoolean("smoothpageturn", false);
-        isForceDualPage = preferences.getBoolean("force_dual_page", false);
+        isSmoothVolumeKeyNavigation = QuranSettings.getInstance().getIsSmoothKeyNavigation(this);
+        isForceDualPage = QuranSettings.getInstance().getIsForceDualPage(this);
 
         setupActionbar();
 
@@ -98,11 +89,7 @@ public class QuranActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == android.R.id.home) {
-
-
             finish();
-
-
             return true;
         }
 
@@ -141,7 +128,7 @@ public class QuranActivity extends AppCompatActivity {
                     return super.dispatchKeyEvent(event);
 
             case KeyEvent.KEYCODE_VOLUME_UP:
-                if (!currentMushaf.equals("madani_15_line")) {
+                if (!mushafVersion.equals("madani_15_line")) {
                     if (action == KeyEvent.ACTION_DOWN && currentOrientation == "landscape" && pageNumber <= 847) {
                         pageNumber++;
 
@@ -247,7 +234,7 @@ public class QuranActivity extends AppCompatActivity {
             if (isForceDualPage)
                 this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 
-            if (!currentMushaf.equals("madani_15_line")) {
+            if (!mushafVersion.equals("madani_15_line")) {
                 if (pageNumber % 2 == 0)
                     dualPageNumber = pageNumber / 2;
                 else
@@ -274,7 +261,7 @@ public class QuranActivity extends AppCompatActivity {
 
                 @Override
                 public void onPageSelected(int position) {
-                    if (currentMushaf.equals("madani_15_line"))
+                    if (mushafVersion.equals("madani_15_line"))
                         pageNumber = 604 - 2 * position + 1;
                     else
                         pageNumber = 848 - 2 * position;

@@ -33,16 +33,5 @@
         app:key="smoothpageturn"
         app:title="Smooth Volume Key Navigation" />
 
-    <Preference
-        app:fragment="com.example.personalmushaf.SettingsActivity$MessagesFragment"
-        app:icon="@drawable/messages"
-        app:key="messages_header"
-        app:title="@string/messages_header" />
-
-    <Preference
-        app:fragment="com.example.personalmushaf.SettingsActivity$SyncFragment"
-        app:icon="@drawable/sync"
-        app:key="sync_header"
-        app:title="@string/sync_header" />
 
 </androidx.preference.PreferenceScreen>
