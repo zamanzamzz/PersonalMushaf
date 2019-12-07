@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public class Page {
+public class PageData {
     private static final String COL_PAGE = "page_number";
     private static final String COL_LINE = "line_number";
     private static final String COL_SURA = "sura_number";
@@ -27,7 +27,7 @@ public class Page {
     private static final String GLYPHS_TABLE = "glyphs";
     private Map<String, List<AyahBounds>> ayahBounds;
 
-    public Page(final int pageNumber, final boolean mushaf) {
+    public PageData(final int pageNumber, final boolean mushaf) {
         new Thread(new Runnable() {
             @Override
             public void run() {

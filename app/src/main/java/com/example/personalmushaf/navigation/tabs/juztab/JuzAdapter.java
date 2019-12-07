@@ -7,13 +7,13 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.andexert.library.RippleView;
 import com.example.personalmushaf.QuranActivity;
 import com.example.personalmushaf.R;
-import com.example.personalmushaf.navigation.QuranConstants;
 import com.example.personalmushaf.navigation.NavigationActivity;
-
-import androidx.recyclerview.widget.RecyclerView;
+import com.example.personalmushaf.navigation.QuranConstants;
 
 public class JuzAdapter extends RecyclerView.Adapter<JuzAdapter.JuzViewHolder> {
     private String[][] dataSet;

@@ -1,4 +1,4 @@
-package com.example.personalmushaf.quranpage;
+package com.example.personalmushaf.util;
 
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -12,10 +12,13 @@ import java.lang.ref.WeakReference;
 
 public class ImageUtils {
 
-    private static final ImageUtils imageUtils = new ImageUtils();
+    private static ImageUtils imageUtils;
 
     public static ImageUtils getInstance() {
-        return imageUtils;
+        if (imageUtils == null) {
+            imageUtils = new ImageUtils();
+        }
+            return imageUtils;
     }
 
     private class BitmapWorkerTask extends AsyncTask<String, Void, Bitmap> {
@@ -62,7 +65,7 @@ public class ImageUtils {
         }
     }
 
-    private static class AsyncDrawable extends BitmapDrawable {
+    private class AsyncDrawable extends BitmapDrawable {
         private final WeakReference<BitmapWorkerTask> bitmapWorkerTaskReference;
 
         public AsyncDrawable(Resources res, Bitmap bitmap,
@@ -77,7 +80,7 @@ public class ImageUtils {
         }
     }
 
-    public static boolean cancelPotentialWork(String path, ImageView imageView) {
+    public boolean cancelPotentialWork(String path, ImageView imageView) {
         final BitmapWorkerTask bitmapWorkerTask = getBitmapWorkerTask(imageView);
 
         if (bitmapWorkerTask != null) {
@@ -94,7 +97,7 @@ public class ImageUtils {
         return true;
     }
 
-    private static BitmapWorkerTask getBitmapWorkerTask(ImageView imageView) {
+    private BitmapWorkerTask getBitmapWorkerTask(ImageView imageView) {
         if (imageView != null) {
             final Drawable drawable = imageView.getDrawable();
             if (drawable instanceof AsyncDrawable) {

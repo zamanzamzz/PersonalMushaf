@@ -7,8 +7,10 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.preference.ListPreference;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
+import androidx.preference.SwitchPreferenceCompat;
 
 import com.example.personalmushaf.navigation.NavigationActivity;
 
@@ -92,22 +94,33 @@ public class SettingsActivity extends AppCompatActivity implements
         @Override
         public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
             setPreferencesFromResource(R.xml.header_preferences, rootKey);
-        }
-    }
+            ListPreference mushafVersion = findPreference("mushaf");
+            SwitchPreferenceCompat isForceDualPages = findPreference("force_dual_page");
+            SwitchPreferenceCompat isSmoothKeyNavigation = findPreference("smoothpageturn");
 
-    public static class MessagesFragment extends PreferenceFragmentCompat {
+            mushafVersion.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+                @Override
+                public boolean onPreferenceChange(Preference preference, Object newValue) {
+                    QuranSettings.getInstance().setMushafVersion((String) newValue);
+                    return true;
+                }
+            });
 
-        @Override
-        public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
-            setPreferencesFromResource(R.xml.messages_preferences, rootKey);
-        }
-    }
+            isForceDualPages.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+                @Override
+                public boolean onPreferenceChange(Preference preference, Object newValue) {
+                    QuranSettings.getInstance().setForceDualPage((Boolean) newValue);
+                    return true;
+                }
+            });
 
-    public static class SyncFragment extends PreferenceFragmentCompat {
-
-        @Override
-        public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
-            setPreferencesFromResource(R.xml.sync_preferences, rootKey);
+            isSmoothKeyNavigation.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+                @Override
+                public boolean onPreferenceChange(Preference preference, Object newValue) {
+                    QuranSettings.getInstance().setSmoothKeyNavigation((Boolean) newValue);
+                    return true;
+                }
+            });
         }
     }
 }

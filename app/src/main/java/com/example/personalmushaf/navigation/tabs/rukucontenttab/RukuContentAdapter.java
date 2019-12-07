@@ -7,16 +7,15 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.andexert.library.RippleView;
 import com.example.personalmushaf.QuranActivity;
 import com.example.personalmushaf.R;
 import com.example.personalmushaf.navigation.QuranConstants;
 
-import androidx.recyclerview.widget.RecyclerView;
-
 public class RukuContentAdapter extends RecyclerView.Adapter<RukuContentAdapter.JuzViewHolder> {
     private String[][] dataSet;
-    private int juzNumber;
 
     public static class JuzViewHolder extends RecyclerView.ViewHolder {
         public RippleView rippleView;
@@ -26,9 +25,8 @@ public class RukuContentAdapter extends RecyclerView.Adapter<RukuContentAdapter.
         }
     }
 
-    public RukuContentAdapter(String[][] myDataSet, int juzNumber) {
+    public RukuContentAdapter(String[][] myDataSet) {
         dataSet = myDataSet;
-        this.juzNumber = juzNumber;
     }
 
     @Override

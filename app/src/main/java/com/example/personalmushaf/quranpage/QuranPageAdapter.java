@@ -2,13 +2,13 @@ package com.example.personalmushaf.quranpage;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
+import com.example.personalmushaf.QuranSettings;
 import com.example.personalmushaf.navigation.QuranConstants;
 
 public class QuranPageAdapter extends FragmentPagerAdapter {
@@ -19,8 +19,8 @@ public class QuranPageAdapter extends FragmentPagerAdapter {
 
     public QuranPageAdapter(FragmentManager fm, Context context, String orientation) {
         super(fm, FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
-        mushafVersion = PreferenceManager.getDefaultSharedPreferences(context).getString("mushaf", "madani_15_line");
-        isForceDualPage = PreferenceManager.getDefaultSharedPreferences(context).getBoolean("force_dual_page", false);
+        mushafVersion = QuranSettings.getInstance().getMushafVersion(context);
+        isForceDualPage = QuranSettings.getInstance().getIsForceDualPage(context);
         this.orientation = orientation;
     }
 
