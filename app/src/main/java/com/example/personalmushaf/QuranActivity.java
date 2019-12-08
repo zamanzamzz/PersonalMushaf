@@ -3,6 +3,7 @@ package com.example.personalmushaf;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.MenuItem;
@@ -30,7 +31,10 @@ public class QuranActivity extends AppCompatActivity {
     private String currentOrientation;
 
     private ViewPager2 pager;
-    private ViewPager2 dualPager;
+
+    private ViewPager2.OnPageChangeCallback singlePageChangeCallback;
+    private ViewPager2.OnPageChangeCallback dualPageChangeCallback;
+
 
     private QuranPageAdapter pagerAdapter;
 
@@ -59,7 +63,7 @@ public class QuranActivity extends AppCompatActivity {
 
         currentOrientation = getScreenOrientation();
 
-        setupPager();
+        setupPagers();
 
         getWindow().getDecorView().setOnSystemUiVisibilityChangeListener
                 (new View.OnSystemUiVisibilityChangeListener() {
@@ -84,6 +88,31 @@ public class QuranActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         hideSystemUI();
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+
+        super.onConfigurationChanged(newConfig);
+        if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
+            pager.unregisterOnPageChangeCallback(dualPageChangeCallback);
+            destroyPager();
+            setupSinglePager();
+            pager.setCurrentItem(pageNumber - 1, false);
+
+            pager.registerOnPageChangeCallback(singlePageChangeCallback);
+
+        } else if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            pager.unregisterOnPageChangeCallback(singlePageChangeCallback);
+            destroyPager();
+            final int dualPosition = setupDualPager();
+
+            if (isForceDualPage)
+                this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+            pager.setCurrentItem(dualPosition, false);
+
+            pager.registerOnPageChangeCallback(dualPageChangeCallback);
+        }
     }
 
     @Override
@@ -123,7 +152,7 @@ public class QuranActivity extends AppCompatActivity {
                     else
                         dualPageNumber = (pageNumber - 1) / 2;
 
-                    dualPager.setCurrentItem(dualPageNumber, isSmoothVolumeKeyNavigation);
+                    pager.setCurrentItem(dualPageNumber, isSmoothVolumeKeyNavigation);
                     return true;
                 } else
                     return super.dispatchKeyEvent(event);
@@ -141,7 +170,7 @@ public class QuranActivity extends AppCompatActivity {
                         else
                             dualPageNumber = (pageNumber - 1) / 2;
 
-                        dualPager.setCurrentItem(dualPageNumber, isSmoothVolumeKeyNavigation);
+                        pager.setCurrentItem(dualPageNumber, isSmoothVolumeKeyNavigation);
                         return true;
                     } else
                         return super.dispatchKeyEvent(event);
@@ -157,7 +186,7 @@ public class QuranActivity extends AppCompatActivity {
                         else
                             dualPageNumber = pageNumber / 2;
 
-                        dualPager.setCurrentItem(dualPageNumber, isSmoothVolumeKeyNavigation);
+                        pager.setCurrentItem(dualPageNumber, isSmoothVolumeKeyNavigation);
                         return true;
                     } else
                         return super.dispatchKeyEvent(event);
@@ -198,81 +227,94 @@ public class QuranActivity extends AppCompatActivity {
 
 
 
-    private void setupPager() {
-        if (currentOrientation.equals("portrait") && !isForceDualPage) {
-            if (dualPager != null)
-                dualPager.removeAllViews();
-
-            pager = findViewById(R.id.pager);
-            pagerAdapter = new QuranPageAdapter(getSupportFragmentManager(), getLifecycle(), this, currentOrientation);
-            pager.setAdapter(pagerAdapter);
-            pager.setOffscreenPageLimit(2);
-            final int position = pageNumber - 1;
-            pager.setCurrentItem(position, false);
-            pager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
-                @Override
-                public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-                    super.onPageScrolled(position, positionOffset, positionOffsetPixels);
-                }
-
-                @Override
-                public void onPageSelected(int position) {
-                    super.onPageSelected(position);
+    private void setupPagers() {
+        singlePageChangeCallback = new ViewPager2.OnPageChangeCallback() {
+            @Override
+            public void onPageSelected(int position) {
+                super.onPageSelected(position);
+                if (position != 0) {
                     pageNumber = position + 1;
                     pagesTurned++;
+                    if (pagesTurned > 5) {
+                        pagerAdapter.removeAllButLast();
+                        pagesTurned = 0;
+                    }
                 }
+            }};
 
-                @Override
-                public void onPageScrollStateChanged(int state) {
-                    super.onPageScrollStateChanged(state);
+        dualPageChangeCallback = new ViewPager2.OnPageChangeCallback() {
+            @Override
+            public void onPageSelected(int position) {
+                super.onPageSelected(position);
+                if (position != 0) {
+                    pageNumber = 2*position;
+                    pagesTurned = pagesTurned + 2;
+                    if (pagesTurned > 5) {
+                        pagerAdapter.removeAllButLast();
+                        pagesTurned = 0;
+                    }
                 }
-            });
+            }
+        };
+
+        if (currentOrientation.equals("portrait") && !isForceDualPage) {
+            setupSinglePager();
+
+            pager.setCurrentItem(pageNumber - 1, false);
+
+            pager.registerOnPageChangeCallback(singlePageChangeCallback);
+
         } else {
-            if (pager != null)
-                pager.removeAllViews();
-
-            dualPager = findViewById(R.id.dual_pager);
-            pagerAdapter = new QuranPageAdapter(getSupportFragmentManager(), getLifecycle(), this, currentOrientation);
-            dualPager.setAdapter(pagerAdapter);
-            dualPager.setOffscreenPageLimit(2);
-            int dualPageNumber;
+            int dualPageNumber = setupDualPager();
 
             if (isForceDualPage)
                 this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 
-            if (!mushafVersion.equals("madani_15_line")) {
-                if (pageNumber % 2 == 0)
-                    dualPageNumber = pageNumber / 2;
-                else
-                    dualPageNumber = (pageNumber - 1) / 2;
-            } else {
-                if (pageNumber % 2 == 0)
-                    dualPageNumber = pageNumber / 2 - 1;
-                else
-                    dualPageNumber = (pageNumber - 1) / 2;
-            }
 
-            final int position = dualPageNumber;
-            dualPager.setCurrentItem(position, false);
-            dualPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
-                @Override
-                public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-                    super.onPageScrolled(position, positionOffset, positionOffsetPixels);
-                }
+            pager.setCurrentItem(dualPageNumber, false);
 
-                @Override
-                public void onPageSelected(int position) {
-                    super.onPageSelected(position);
-                    pageNumber = 2*position;
-                    pagesTurned = pagesTurned + 2;
-                }
-
-                @Override
-                public void onPageScrollStateChanged(int state) {
-                    super.onPageScrollStateChanged(state);
-                }
-            });
+            pager.registerOnPageChangeCallback(dualPageChangeCallback);
         }
+    }
+
+    private void setupSinglePager() {
+        pager = findViewById(R.id.pager);
+        pagerAdapter = new QuranPageAdapter(getSupportFragmentManager(), getLifecycle(), this, "portrait");
+        pager.setAdapter(pagerAdapter);
+        pager.setOffscreenPageLimit(1);
+    }
+
+    private int setupDualPager() {
+        pager = findViewById(R.id.pager);
+        pagerAdapter = new QuranPageAdapter(getSupportFragmentManager(), getLifecycle(), this, "landscape");
+        pager.setAdapter(pagerAdapter);
+        pager.setOffscreenPageLimit(1);
+        return singlePageToDualPageNumber(pageNumber);
+    }
+
+
+    private void destroyPager() {
+        pagerAdapter.removeAllfragments();
+        pagerAdapter = null;
+        pager = null;
+        System.gc();
+    }
+
+    private int singlePageToDualPageNumber(int pageNumber) {
+        int dualPageNumber;
+        if (!mushafVersion.equals("madani_15_line")) {
+            if (pageNumber % 2 == 0)
+                dualPageNumber = pageNumber / 2;
+            else
+                dualPageNumber = (pageNumber - 1) / 2;
+        } else {
+            if (pageNumber % 2 == 0)
+                dualPageNumber = pageNumber / 2 - 1;
+            else
+                dualPageNumber = (pageNumber - 1) / 2;
+        }
+
+        return dualPageNumber;
     }
 
 

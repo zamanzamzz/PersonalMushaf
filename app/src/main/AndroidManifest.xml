@@ -22,6 +22,7 @@
         <activity
             android:name=".QuranActivity"
             android:taskAffinity=".main"
+            android:configChanges="keyboardHidden|orientation|screenSize"
             android:theme="@style/AppTheme.NoActionBar.FullScreen"></activity>
         <activity
             android:name=".navigation.NavigationActivity"

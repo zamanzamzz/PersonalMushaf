@@ -20,7 +20,6 @@
             android:background="#FFF"
             android:id="@+id/pager">
         </androidx.viewpager2.widget.ViewPager2>
-
     </LinearLayout>
     <FrameLayout
         android:layout_width="match_parent"
