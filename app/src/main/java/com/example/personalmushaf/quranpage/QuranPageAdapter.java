@@ -41,21 +41,21 @@ public class QuranPageAdapter extends FragmentStateAdapter {
     public Fragment createFragment(int position) {
         Fragment fragment;
         Bundle bundle;
-        int pageNumber;
+        int dualPagerPosition;
 
         if (orientation.equals("landscape") || isForceDualPage) {
             position++;
-            pageNumber = position - 1;
+            dualPagerPosition = position - 1;
             fragment = new QuranDualPageFragment();
             bundle = new Bundle();
-            bundle.putInt("page_number", pageNumber);
+            bundle.putInt("dual_pager_position", dualPagerPosition);
             fragment.setArguments(bundle);
         } else {
             position++;
-            pageNumber = position;
+            dualPagerPosition = mushafVersion.equals("madani_15_line") ? position : position + 1;
             fragment = new QuranPageFragment();
             bundle = new Bundle();
-            bundle.putInt("page_number", pageNumber);
+            bundle.putInt("page_number", dualPagerPosition);
             fragment.setArguments(bundle);
         }
 
@@ -70,7 +70,7 @@ public class QuranPageAdapter extends FragmentStateAdapter {
             if (mushafVersion.equals("madani_15_line"))
                 return 604;
             else
-                return 848;
+                return 847;
         } else {
             if (mushafVersion.equals("madani_15_line"))
                 return QuranConstants.madani15LineDualPageSets.length;
