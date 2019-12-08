@@ -9,12 +9,14 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.viewpager.widget.ViewPager;
+import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.personalmushaf.QuranSettings;
 import com.example.personalmushaf.R;
@@ -24,6 +26,7 @@ import com.example.personalmushaf.navigation.tabs.juztab.JuzFragment;
 import com.example.personalmushaf.navigation.tabs.rukucontenttab.RukuContentFragment;
 import com.example.personalmushaf.navigation.tabs.surahtab.SurahFragment;
 import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.tabs.TabLayoutMediator;
 
 
 public class NavigationActivity extends AppCompatActivity {
@@ -31,7 +34,7 @@ public class NavigationActivity extends AppCompatActivity {
     private static final int  REQUEST_READ_EXTERNAL_STORAGE = 111;
     Toolbar navigationToolbar;
     TabLayout tabLayout;
-    ViewPager viewPager;
+    ViewPager2 viewPager;
     ViewPagerAdapter viewPagerAdapter;
     JuzFragment juzFragment;
     JuzQuarterFragment juzQuarterFragment;
@@ -57,7 +60,7 @@ public class NavigationActivity extends AppCompatActivity {
 
         tabLayout = findViewById(R.id.tab_layout);
         viewPager = findViewById(R.id.viewpager);
-        viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
+        viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager(), getLifecycle());
 
         boolean hasPermissionLocation = (ContextCompat.checkSelfPermission(getApplicationContext(),
                 Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED);
@@ -122,7 +125,13 @@ public class NavigationActivity extends AppCompatActivity {
         }
 
         viewPager.setAdapter(viewPagerAdapter);
-        tabLayout.setupWithViewPager(viewPager);
+        viewPager.setOffscreenPageLimit(3);
+        new TabLayoutMediator(tabLayout, viewPager, new TabLayoutMediator.TabConfigurationStrategy() {
+            @Override
+            public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
+                tab.setText(viewPagerAdapter.getPageTitle(position));
+            }
+        }).attach();
     }
 
     @Override

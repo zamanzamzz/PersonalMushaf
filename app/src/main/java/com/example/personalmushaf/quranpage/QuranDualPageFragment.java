@@ -58,16 +58,16 @@ public class QuranDualPageFragment extends Fragment {
                 final ImageView leftImage = v.findViewById(R.id.page1);
 
 
-                rightPagePath = QuranConstants.ASSETSDIRECTORY + "13_line/13_pg_" + QuranConstants.naskh13LineDualPageSets[position][0] + ".png";
-                leftPagePath = QuranConstants.ASSETSDIRECTORY + "13_line/13_pg_" + QuranConstants.naskh13LineDualPageSets[position][1] + ".png";
+                rightPagePath = QuranConstants.ASSETSDIRECTORY + "13_line/13_pg_" + QuranConstants.naskh13LineDualPageSets[position][1] + ".png";
+                leftPagePath = QuranConstants.ASSETSDIRECTORY + "13_line/13_pg_" + QuranConstants.naskh13LineDualPageSets[position][0] + ".png";
 
                 ImageUtils.getInstance().loadBitmap(rightPagePath, rightImage);
                 ImageUtils.getInstance().loadBitmap(leftPagePath, leftImage);
 
                 setHighlightDual(leftImage, rightImage, leftPagePath, rightPagePath, false);
                 setHighlightDual(rightImage, leftImage, rightPagePath, leftPagePath, true);
-                rightPageData = new PageData(QuranConstants.naskh13LineDualPageSets[position][0],true);
-                leftPageData = new PageData(QuranConstants.naskh13LineDualPageSets[position][1], true);
+                rightPageData = new PageData(QuranConstants.naskh13LineDualPageSets[position][1],true);
+                leftPageData = new PageData(QuranConstants.naskh13LineDualPageSets[position][0], true);
 
 
             } else {
@@ -104,8 +104,8 @@ public class QuranDualPageFragment extends Fragment {
         else {
 
             if (position < 302 && position >= 0) {
-                leftPagePath = QuranConstants.ASSETSDIRECTORY + "15_line/pg_" + QuranConstants.madani15LineDualPageSets[position][1] + ".png";
-                rightPagePath = QuranConstants.ASSETSDIRECTORY + "15_line/pg_" + QuranConstants.madani15LineDualPageSets[position][0] + ".png";
+                leftPagePath = QuranConstants.ASSETSDIRECTORY + "15_line/pg_" + QuranConstants.madani15LineDualPageSets[position][0] + ".png";
+                rightPagePath = QuranConstants.ASSETSDIRECTORY + "15_line/pg_" + QuranConstants.madani15LineDualPageSets[position][1] + ".png";
 
                 final ImageView leftImage = v.findViewById(R.id.page1);
                 final ImageView rightImage = v.findViewById(R.id.page2);
@@ -115,8 +115,8 @@ public class QuranDualPageFragment extends Fragment {
 
                 setHighlightDual(leftImage, rightImage, leftPagePath, rightPagePath, false);
                 setHighlightDual(rightImage, leftImage, rightPagePath, leftPagePath, true);
-                leftPageData = new PageData(QuranConstants.madani15LineDualPageSets[position][1], false);
-                rightPageData = new PageData(QuranConstants.madani15LineDualPageSets[position][0],false);
+                leftPageData = new PageData(QuranConstants.madani15LineDualPageSets[position][0], false);
+                rightPageData = new PageData(QuranConstants.madani15LineDualPageSets[position][1],false);
             }
 
 

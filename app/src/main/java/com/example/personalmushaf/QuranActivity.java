@@ -14,7 +14,7 @@ import android.view.WindowManager;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.viewpager.widget.ViewPager;
+import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.personalmushaf.quranpage.QuranPageAdapter;
 
@@ -29,7 +29,8 @@ public class QuranActivity extends AppCompatActivity {
 
     private String currentOrientation;
 
-    private ViewPager pager;
+    private ViewPager2 pager;
+    private ViewPager2 dualPager;
 
     private QuranPageAdapter pagerAdapter;
 
@@ -122,7 +123,7 @@ public class QuranActivity extends AppCompatActivity {
                     else
                         dualPageNumber = (pageNumber - 1) / 2;
 
-                    pager.setCurrentItem(pagerAdapter.getCount() - 1 - dualPageNumber, isSmoothVolumeKeyNavigation);
+                    dualPager.setCurrentItem(dualPageNumber, isSmoothVolumeKeyNavigation);
                     return true;
                 } else
                     return super.dispatchKeyEvent(event);
@@ -140,7 +141,7 @@ public class QuranActivity extends AppCompatActivity {
                         else
                             dualPageNumber = (pageNumber - 1) / 2;
 
-                        pager.setCurrentItem(pagerAdapter.getCount() - 1 - dualPageNumber, isSmoothVolumeKeyNavigation);
+                        dualPager.setCurrentItem(dualPageNumber, isSmoothVolumeKeyNavigation);
                         return true;
                     } else
                         return super.dispatchKeyEvent(event);
@@ -156,7 +157,7 @@ public class QuranActivity extends AppCompatActivity {
                         else
                             dualPageNumber = pageNumber / 2;
 
-                        pager.setCurrentItem(pagerAdapter.getCount() - 1 - dualPageNumber, isSmoothVolumeKeyNavigation);
+                        dualPager.setCurrentItem(dualPageNumber, isSmoothVolumeKeyNavigation);
                         return true;
                     } else
                         return super.dispatchKeyEvent(event);
@@ -198,37 +199,42 @@ public class QuranActivity extends AppCompatActivity {
 
 
     private void setupPager() {
-        pager = findViewById(R.id.pager);
-        pagerAdapter = new QuranPageAdapter(getSupportFragmentManager(), this, currentOrientation);
-        pager.setAdapter(pagerAdapter);
-        pager.setOffscreenPageLimit(2);
-
         if (currentOrientation.equals("portrait") && !isForceDualPage) {
-            final int position = pagerAdapter.getCount() - pageNumber;
-            pager.post(new Runnable() {
-                @Override
-                public void run() {
-                    pager.setCurrentItem(position, false);
-                }
-            });
-            pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            if (dualPager != null)
+                dualPager.removeAllViews();
+
+            pager = findViewById(R.id.pager);
+            pagerAdapter = new QuranPageAdapter(getSupportFragmentManager(), getLifecycle(), this, currentOrientation);
+            pager.setAdapter(pagerAdapter);
+            pager.setOffscreenPageLimit(2);
+            final int position = pageNumber - 1;
+            pager.setCurrentItem(position, false);
+            pager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
                 @Override
                 public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
+                    super.onPageScrolled(position, positionOffset, positionOffsetPixels);
                 }
 
                 @Override
                 public void onPageSelected(int position) {
-                    pageNumber = pagerAdapter.getCount() - position;
+                    super.onPageSelected(position);
+                    pageNumber = position + 1;
                     pagesTurned++;
                 }
 
                 @Override
                 public void onPageScrollStateChanged(int state) {
-
+                    super.onPageScrollStateChanged(state);
                 }
             });
         } else {
+            if (pager != null)
+                pager.removeAllViews();
+
+            dualPager = findViewById(R.id.dual_pager);
+            pagerAdapter = new QuranPageAdapter(getSupportFragmentManager(), getLifecycle(), this, currentOrientation);
+            dualPager.setAdapter(pagerAdapter);
+            dualPager.setOffscreenPageLimit(2);
             int dualPageNumber;
 
             if (isForceDualPage)
@@ -246,31 +252,24 @@ public class QuranActivity extends AppCompatActivity {
                     dualPageNumber = (pageNumber - 1) / 2;
             }
 
-            final int position = pagerAdapter.getCount() - 1 - dualPageNumber;
-            pager.post(new Runnable() {
-                @Override
-                public void run() {
-                    pager.setCurrentItem(position, false);
-                }
-            });
-            pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            final int position = dualPageNumber;
+            dualPager.setCurrentItem(position, false);
+            dualPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
                 @Override
                 public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
+                    super.onPageScrolled(position, positionOffset, positionOffsetPixels);
                 }
 
                 @Override
                 public void onPageSelected(int position) {
-                    if (mushafVersion.equals("madani_15_line"))
-                        pageNumber = 604 - 2 * position + 1;
-                    else
-                        pageNumber = 848 - 2 * position;
+                    super.onPageSelected(position);
+                    pageNumber = 2*position;
                     pagesTurned = pagesTurned + 2;
                 }
 
                 @Override
                 public void onPageScrollStateChanged(int state) {
-
+                    super.onPageScrollStateChanged(state);
                 }
             });
         }
