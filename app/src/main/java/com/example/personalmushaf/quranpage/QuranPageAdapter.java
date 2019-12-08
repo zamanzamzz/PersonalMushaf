@@ -93,7 +93,7 @@ public class QuranPageAdapter extends FragmentStateAdapter {
 
     public void removeAllButLast() {
         if ( mFragmentList != null ) {
-            for ( int i = 0; i < mFragmentList.size() - 1; i++) {
+            for ( int i = 0; i < mFragmentList.size() - 3; i++) {
                 fm.beginTransaction().remove(mFragmentList.get(i)).commit();
             }
             mFragmentList.clear();
