@@ -252,7 +252,6 @@ public class QuranActivity extends AppCompatActivity {
             this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
     }
 
-
     private void destroyPager() {
         if (currentOrientation.equals("landscape"))
             pager.unregisterOnPageChangeCallback(dualPageChangeCallback);
