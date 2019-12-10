@@ -4,7 +4,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.VibrationEffect;
+import android.os.Vibrator;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.Surface;
@@ -129,31 +132,26 @@ public class QuranActivity extends AppCompatActivity {
     public boolean dispatchKeyEvent(KeyEvent event) {
         int action = event.getAction();
         int keyCode = event.getKeyCode();
+        Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 
         if (currentOrientation.equals("landscape") && action == KeyEvent.ACTION_DOWN) {
             switch (keyCode) {
                 case KeyEvent.KEYCODE_VOLUME_DOWN:
-                    if (mushafVersion.equals("madani_15_line")) {
-                        if (pageNumber >= 2) {
-                            pager.setCurrentItem(pageNumberToDualPagerPosition(pageNumber - 2), isSmoothVolumeKeyNavigation);
-                        }
-                    } else {
-                        if (pageNumber >= 3) {
-                            pager.setCurrentItem(pageNumberToDualPagerPosition(pageNumber - 2), isSmoothVolumeKeyNavigation);
-                        }
-                    }
+                    if (getScreenRotation() == Surface.ROTATION_90)
+                        flipPageBackward(2);
+                    else
+                        flipPageForward(2);
+
+                    vibrate(v, 100);
                     return true;
 
                 case KeyEvent.KEYCODE_VOLUME_UP:
-                    if (mushafVersion.equals("madani_15_line")) {
-                        if (pageNumber <= 602) {
-                            pager.setCurrentItem(pageNumberToDualPagerPosition(pageNumber + 2), isSmoothVolumeKeyNavigation);
-                        }
-                    } else {
-                        if (pageNumber <= 847) {
-                                pager.setCurrentItem(pageNumberToDualPagerPosition(pageNumber + 2), isSmoothVolumeKeyNavigation);
-                        }
-                    }
+                    if (getScreenRotation() == Surface.ROTATION_90)
+                        flipPageForward(2);
+                    else
+                        flipPageBackward(2);
+
+                    vibrate(v, 100);
                     return true;
             }
         }
@@ -315,7 +313,7 @@ public class QuranActivity extends AppCompatActivity {
     }
 
     private String getScreenOrientation() {
-        final int screenOrientation = ((WindowManager) this.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getOrientation();
+        final int screenOrientation = ((WindowManager) this.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getRotation();
         switch (screenOrientation) {
             case Surface.ROTATION_0:
                 return "portrait";
@@ -328,6 +326,10 @@ public class QuranActivity extends AppCompatActivity {
             default:
                 return "landscape";
         }
+    }
+
+    private int getScreenRotation() {
+        return ((WindowManager) this.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getRotation();
     }
 
     public void SystemUIListener(View view) {
@@ -363,6 +365,39 @@ public class QuranActivity extends AppCompatActivity {
         } else {
             getSupportActionBar().hide();
             getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
+        }
+    }
+
+    private void vibrate(Vibrator v, int time) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            v.vibrate(VibrationEffect.createOneShot(time, VibrationEffect.DEFAULT_AMPLITUDE));
+        } else {
+            //deprecated in API 26
+            v.vibrate(time);
+        }
+    }
+
+    private void flipPageBackward(int pagesToFlip) {
+        if (mushafVersion.equals("madani_15_line")) {
+            if (pageNumber >= 2) {
+                pager.setCurrentItem(pageNumberToDualPagerPosition(pageNumber - pagesToFlip), isSmoothVolumeKeyNavigation);
+            }
+        } else {
+            if (pageNumber >= 3) {
+                pager.setCurrentItem(pageNumberToDualPagerPosition(pageNumber - pagesToFlip), isSmoothVolumeKeyNavigation);
+            }
+        }
+    }
+
+    private void flipPageForward(int pagesToFlip) {
+        if (mushafVersion.equals("madani_15_line")) {
+            if (pageNumber <= 602) {
+                pager.setCurrentItem(pageNumberToDualPagerPosition(pageNumber + pagesToFlip), isSmoothVolumeKeyNavigation);
+            }
+        } else {
+            if (pageNumber <= 847) {
+                pager.setCurrentItem(pageNumberToDualPagerPosition(pageNumber + pagesToFlip), isSmoothVolumeKeyNavigation);
+            }
         }
     }
 
