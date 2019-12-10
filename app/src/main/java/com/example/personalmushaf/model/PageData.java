@@ -6,7 +6,7 @@ import android.graphics.RectF;
 import android.util.SparseArray;
 import android.widget.ImageView;
 
-import com.example.personalmushaf.navigation.QuranConstants;
+import com.example.personalmushaf.navigation.navigationdata.QuranConstants;
 
 import java.util.ArrayList;
 import java.util.HashMap;

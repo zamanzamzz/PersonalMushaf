@@ -2,18 +2,15 @@ package com.example.personalmushaf.quranpage;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Lifecycle;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 import com.example.personalmushaf.QuranSettings;
-import com.example.personalmushaf.navigation.QuranConstants;
+import com.example.personalmushaf.navigation.navigationdata.QuranConstants;
 
 import java.util.ArrayList;
 import java.util.List;

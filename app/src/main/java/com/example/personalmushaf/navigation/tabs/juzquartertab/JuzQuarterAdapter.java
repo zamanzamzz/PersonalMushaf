@@ -13,12 +13,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.andexert.library.RippleView;
 import com.bumptech.glide.Glide;
 import com.example.personalmushaf.QuranActivity;
-import com.example.personalmushaf.QuranSettings;
 import com.example.personalmushaf.R;
 
 public class JuzQuarterAdapter extends RecyclerView.Adapter<JuzQuarterAdapter.JuzViewHolder> {
-    private String[][] dataSet;
-    private String mushafVersion;
+    private int[][] dataset;
+    private String[] lengths;
+    private String[] prefixes;
 
     public static class JuzViewHolder extends RecyclerView.ViewHolder {
         public RippleView rippleView;
@@ -28,8 +28,10 @@ public class JuzQuarterAdapter extends RecyclerView.Adapter<JuzQuarterAdapter.Ju
         }
     }
 
-    public JuzQuarterAdapter(String[][] myDataSet) {
-        dataSet = myDataSet;
+    public JuzQuarterAdapter(int[][] dataset, String[] prefixes, String[] lengths) {
+        this.dataset = dataset;
+        this.prefixes = prefixes;
+        this.lengths = lengths;
     }
 
     @Override
@@ -39,7 +41,6 @@ public class JuzQuarterAdapter extends RecyclerView.Adapter<JuzQuarterAdapter.Ju
         RippleView v = (RippleView) LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.list_item_juz_quarter, parent, false);
 
-
         JuzViewHolder vh = new JuzViewHolder(v);
         return vh;
     }
@@ -47,14 +48,13 @@ public class JuzQuarterAdapter extends RecyclerView.Adapter<JuzQuarterAdapter.Ju
     @Override
     public void onBindViewHolder(final JuzViewHolder holder, final int position) {
         int id;
-
-        mushafVersion = QuranSettings.getInstance().getMushafVersion(holder.rippleView.getContext());
+        final int index;
 
         LinearLayout layout = (LinearLayout) holder.rippleView.getChildAt(0);
 
         ImageView quarterImage = (ImageView) layout.getChildAt(0);
 
-        if (mushafVersion.equals("madani_15_line")) {
+        if (getItemCount() == 8) {
             if (position <= 3)
                 id = quarterImage.getResources().getIdentifier("quarter_" + (position+1),
                         "drawable", quarterImage.getContext().getPackageName());
@@ -71,13 +71,12 @@ public class JuzQuarterAdapter extends RecyclerView.Adapter<JuzQuarterAdapter.Ju
         TextView quarterPageNumber = (TextView) ((LinearLayout) layout.getChildAt(1)).getChildAt(1);
         TextView quarterPrefix = (TextView) layout.getChildAt(2);
 
-        String[] juzContentInfo = dataSet[position];
+        if (getItemCount() == 4)
+            quarterLength.setText(lengths[position]+ " pages");
 
-        if (!mushafVersion.equals("madani_15_line"))
-            quarterLength.setText(juzContentInfo[4] + " pages");
+        quarterPageNumber.setText(dataset[position][3] + "\t\t\t\t" + dataset[position][1] + ":" + dataset[position][2]);
+        quarterPrefix.setText(prefixes[position]);
 
-        quarterPageNumber.setText(juzContentInfo[0] + "\t\t\t\t" + juzContentInfo[1] + ":" + juzContentInfo[2]);
-        quarterPrefix.setText(juzContentInfo[3]);
 
 
         alternateBackgroundColor(layout, position);
@@ -96,7 +95,7 @@ public class JuzQuarterAdapter extends RecyclerView.Adapter<JuzQuarterAdapter.Ju
 
     @Override
     public int getItemCount() {
-        return dataSet.length;
+        return dataset.length;
     }
 
 
@@ -112,7 +111,7 @@ public class JuzQuarterAdapter extends RecyclerView.Adapter<JuzQuarterAdapter.Ju
         final Intent goToJuz = new Intent(rippleView.getContext(), QuranActivity.class);
 
 
-        goToJuz.putExtra("new page number", Integer.valueOf(dataSet[position][0]));
+        goToJuz.putExtra("new page number", Integer.valueOf(dataset[position][3]));
 
         rippleView.setOnRippleCompleteListener(new RippleView.OnRippleCompleteListener() {
             @Override

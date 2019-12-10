@@ -15,12 +15,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-import androidx.viewpager.widget.ViewPager;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.personalmushaf.QuranSettings;
 import com.example.personalmushaf.R;
 import com.example.personalmushaf.SettingsActivity;
+import com.example.personalmushaf.navigation.navigationdata.QuranConstants;
 import com.example.personalmushaf.navigation.tabs.juzquartertab.JuzQuarterFragment;
 import com.example.personalmushaf.navigation.tabs.juztab.JuzFragment;
 import com.example.personalmushaf.navigation.tabs.rukucontenttab.RukuContentFragment;
@@ -41,6 +41,8 @@ public class NavigationActivity extends AppCompatActivity {
     RukuContentFragment rukuContentFragment;
     SurahFragment surahFragment;
     String mushafVersion;
+    TextView juzStart;
+    int juzNumber;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -56,7 +58,7 @@ public class NavigationActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
 
-        int juzNumber = intent.getIntExtra("juz number", -1);
+        this.juzNumber = intent.getIntExtra("juz number", -1);
 
         tabLayout = findViewById(R.id.tab_layout);
         viewPager = findViewById(R.id.viewpager);
@@ -89,11 +91,11 @@ public class NavigationActivity extends AppCompatActivity {
             String title;
 
             if (mushafVersion.equals("naskh_13_line"))
-                title = QuranConstants.juzInfo[juzNumber-1][0] + "  | " +
-                        QuranConstants.juzInfo[juzNumber-1][2] + " pages";
+                title = QuranConstants.arabicNumerals[juzNumber - 1] + "  | " +
+                        QuranConstants.juzInfo[juzNumber - 1][0] + " pages";
             else
-                title = QuranConstants.juzInfo[juzNumber-1][0] + "  | " +
-                        QuranConstants.juzInfo[juzNumber-1][1] + " pages";
+                title = QuranConstants.arabicNumerals[juzNumber - 1] + "  | " +
+                        QuranConstants.juzInfo[juzNumber - 1][1] + " pages";
 
             TextView juzTitle = findViewById(R.id.juz_title_toolbar);
             juzTitle.setText(title);
@@ -103,9 +105,9 @@ public class NavigationActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayShowTitleEnabled(false);
             getSupportActionBar().setHomeButtonEnabled(true);
 
-            TextView juzStart = findViewById(R.id.juz_start_toolbar);
+            juzStart = findViewById(R.id.juz_start_toolbar);
 
-            juzStart.setText(QuranConstants.juzInfo[juzNumber-1][3]);
+            juzStart.setText(juzStart.getResources().getStringArray(R.array.juz_names)[juzNumber - 1]);
 
             juzQuarterFragment = new JuzQuarterFragment();
             rukuContentFragment = new RukuContentFragment();
@@ -136,10 +138,13 @@ public class NavigationActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
+        if (juzNumber < 0) {
+            MenuInflater inflater = getMenuInflater();
 
-        inflater.inflate(R.menu.settings, menu);
-
+            inflater.inflate(R.menu.settings, menu);
+        } else {
+            juzStart.setPadding(0, 0, 30, 0);
+        }
         return true;
     }
 
@@ -158,6 +163,8 @@ public class NavigationActivity extends AppCompatActivity {
             this.startActivity(goToSettings);
 
             finish();
+
+            return true;
         }
 
         return super.onOptionsItemSelected(item);

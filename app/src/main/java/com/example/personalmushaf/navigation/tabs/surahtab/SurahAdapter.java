@@ -15,13 +15,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.andexert.library.RippleView;
 import com.example.personalmushaf.QuranActivity;
 import com.example.personalmushaf.R;
-import com.example.personalmushaf.navigation.QuranConstants;
+import com.example.personalmushaf.navigation.navigationdata.QuranConstants;
 
 public class SurahAdapter extends RecyclerView.Adapter<SurahAdapter.SurahViewHolder> {
-    private String[][] dataSet;
-    int juzNumber;
-    private SharedPreferences preferences;
-
+    private int[][] dataset;
+    private String mushafVersion;
+    private String[] prefixes;
 
     public static class SurahViewHolder extends RecyclerView.ViewHolder {
         public RippleView rippleView;
@@ -31,9 +30,10 @@ public class SurahAdapter extends RecyclerView.Adapter<SurahAdapter.SurahViewHol
         }
     }
 
-    public SurahAdapter(String[][] myDataSet, int juzNumber) {
-        dataSet = myDataSet;
-        this.juzNumber = juzNumber;
+    public SurahAdapter(int[][] dataset, String[] prefixes, String mushafVersion) {
+        this.dataset = dataset;
+        this.prefixes = prefixes;
+        this.mushafVersion = mushafVersion;
     }
 
     @Override
@@ -42,8 +42,6 @@ public class SurahAdapter extends RecyclerView.Adapter<SurahAdapter.SurahViewHol
         // create a new view
         RippleView v = (RippleView) LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.list_item_surah, parent, false);
-
-        preferences = PreferenceManager.getDefaultSharedPreferences(parent.getContext());
 
         SurahViewHolder vh = new SurahViewHolder(v);
         return vh;
@@ -58,14 +56,13 @@ public class SurahAdapter extends RecyclerView.Adapter<SurahAdapter.SurahViewHol
         TextView surahOrigin = (TextView) ((LinearLayout) layout.getChildAt(1)).getChildAt(0);
         TextView surahStart = (TextView) layout.getChildAt(2);
 
-        final String[] surahInfo = dataSet[position];
+        final int[] surahInfo = dataset[position];
 
-        String origin = Integer.valueOf(surahInfo[2]) == 1 ? "مكي" : "مدني";
+        String origin = surahInfo[2] == 1 ? "مكي" : "مدني";
 
-        final int pageNumber = preferences.getString("mushaf", "madani_15_line").equals("madani_15_line") ?
-                                Integer.valueOf(surahInfo[0]): Integer.valueOf(surahInfo[1]);
+        final int pageNumber = mushafVersion.equals("madani_15_line") ? surahInfo[3]: surahInfo[4];
 
-        surahStart.setText(surahInfo[3]);
+        surahStart.setText(prefixes[position]);
         surahPageNumber.setText(Integer.toString(pageNumber));
         surahNumber.setText(QuranConstants.arabicNumeralsThreeDigits[position]);
         surahOrigin.setText(origin);
@@ -98,7 +95,7 @@ public class SurahAdapter extends RecyclerView.Adapter<SurahAdapter.SurahViewHol
 
     @Override
     public int getItemCount() {
-        return dataSet.length;
+        return dataset.length;
     }
 
     private void alternateBackgroundColor(LinearLayout textView, int position) {

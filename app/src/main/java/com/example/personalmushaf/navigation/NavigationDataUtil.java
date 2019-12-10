@@ -3,6 +3,8 @@ package com.example.personalmushaf.navigation;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.example.personalmushaf.navigation.navigationdata.QuranConstants;
+
 public class NavigationDataUtil {
     public static String[][] fetchNavigationData(String[] colNames, String table, int juzNumber, boolean needLength) {
         String[][] dataSet;

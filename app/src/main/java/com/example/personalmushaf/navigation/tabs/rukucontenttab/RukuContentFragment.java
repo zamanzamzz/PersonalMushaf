@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.personalmushaf.R;
 import com.example.personalmushaf.navigation.NavigationDataUtil;
+import com.example.personalmushaf.navigation.navigationdata.QuranConstants;
 
 
 /**
@@ -22,7 +23,8 @@ public class RukuContentFragment extends Fragment {
     private View v;
     private RecyclerView juzRecyclerView;
     private RukuContentAdapter adapter;
-    private String[][] dataSet;
+    private int[][] dataset;
+    private String[] prefixes;
     private int juzNumber;
 
     public RukuContentFragment() {
@@ -40,11 +42,10 @@ public class RukuContentFragment extends Fragment {
         juzRecyclerView = v.findViewById(R.id.tab_recycler_view);
         juzRecyclerView.setHasFixedSize(true);
 
-        String[] colNames = {"PageNumber", "Surah", "Ayah", "Prefix"};
+        dataset = QuranConstants.rukuInfo[juzNumber-1];
+        prefixes = v.getResources().getStringArray(v.getResources().getIdentifier("juz_" + (juzNumber - 1), "array", v.getContext().getPackageName()));
 
-        dataSet = NavigationDataUtil.fetchNavigationData(colNames, "Ruku", juzNumber, false);
-
-        adapter = new RukuContentAdapter(dataSet);
+        adapter = new RukuContentAdapter(dataset, prefixes);
         juzRecyclerView.setAdapter(adapter);
 
         LinearLayoutManager juzLayoutManager = new LinearLayoutManager(getContext());

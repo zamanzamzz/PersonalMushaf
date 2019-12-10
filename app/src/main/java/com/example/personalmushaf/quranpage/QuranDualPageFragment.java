@@ -21,7 +21,7 @@ import com.example.personalmushaf.R;
 import com.example.personalmushaf.model.Ayah;
 import com.example.personalmushaf.model.AyahBounds;
 import com.example.personalmushaf.model.PageData;
-import com.example.personalmushaf.navigation.QuranConstants;
+import com.example.personalmushaf.navigation.navigationdata.QuranConstants;
 import com.example.personalmushaf.util.ImageUtils;
 
 import java.util.List;

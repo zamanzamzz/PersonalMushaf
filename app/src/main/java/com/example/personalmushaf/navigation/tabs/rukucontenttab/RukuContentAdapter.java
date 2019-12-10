@@ -12,10 +12,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.andexert.library.RippleView;
 import com.example.personalmushaf.QuranActivity;
 import com.example.personalmushaf.R;
-import com.example.personalmushaf.navigation.QuranConstants;
+import com.example.personalmushaf.navigation.navigationdata.QuranConstants;
 
 public class RukuContentAdapter extends RecyclerView.Adapter<RukuContentAdapter.JuzViewHolder> {
-    private String[][] dataSet;
+    private int[][] dataset;
+    private String[] prefixes;
 
     public static class JuzViewHolder extends RecyclerView.ViewHolder {
         public RippleView rippleView;
@@ -25,8 +26,9 @@ public class RukuContentAdapter extends RecyclerView.Adapter<RukuContentAdapter.
         }
     }
 
-    public RukuContentAdapter(String[][] myDataSet) {
-        dataSet = myDataSet;
+    public RukuContentAdapter(int[][] dataset, String[] prefixes) {
+        this.dataset = dataset;
+        this.prefixes = prefixes;
     }
 
     @Override
@@ -50,12 +52,12 @@ public class RukuContentAdapter extends RecyclerView.Adapter<RukuContentAdapter.
         TextView ayahRange = (TextView) ((LinearLayout) layout.getChildAt(1)).getChildAt(0);
         TextView rukuPrefix = (TextView) layout.getChildAt(2);
 
-        String[] rukuInfo = dataSet[position];
+        int[] rukuInfo = dataset[position];
 
         rukuNumber.setText(QuranConstants.arabicNumerals[position]);
-        ayahRange.setText(rukuInfo[1] + ":" + rukuInfo[2]);
-        rukuPageNumber.setText(rukuInfo[0]);
-        rukuPrefix.setText(rukuInfo[3]);
+        ayahRange.setText(rukuInfo[0] + ":" + rukuInfo[1]);
+        rukuPageNumber.setText(Integer.toString(rukuInfo[2]));
+        rukuPrefix.setText(prefixes[position]);
 
         alternateBackgroundColor(layout, position);
 
@@ -73,7 +75,7 @@ public class RukuContentAdapter extends RecyclerView.Adapter<RukuContentAdapter.
 
     @Override
     public int getItemCount() {
-        return dataSet.length;
+        return dataset.length;
     }
 
 
@@ -91,7 +93,7 @@ public class RukuContentAdapter extends RecyclerView.Adapter<RukuContentAdapter.
 
         goToRukuAyah.putExtra("from", "NavigationActivity");
 
-        int pageNumber = Integer.valueOf(dataSet[selectedRuku][0]);
+        int pageNumber = Integer.valueOf(dataset[selectedRuku][2]);
 
         goToRukuAyah.putExtra("new page number", pageNumber);
 

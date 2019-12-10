@@ -10,8 +10,10 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.personalmushaf.QuranSettings;
 import com.example.personalmushaf.R;
 import com.example.personalmushaf.navigation.NavigationDataUtil;
+import com.example.personalmushaf.navigation.navigationdata.QuranConstants;
 
 
 /**
@@ -22,6 +24,8 @@ public class SurahFragment extends Fragment {
     private View v;
     private RecyclerView surahRecyclerView;
     private SurahAdapter adapter;
+    private String mushafVersion;
+    private String[] prefixes;
 
 
     public SurahFragment() {
@@ -34,17 +38,18 @@ public class SurahFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         int juzNumber = getArguments().getInt("juz number");
-        String[][] dataSet;
-
-        String[] colName = {"Madani15LinePageNumber", "\"13LinePageNumber\"", "IsMakki", "Name"};
-
-        dataSet = NavigationDataUtil.fetchNavigationData(colName, "Surah", juzNumber, false);
+        int[][] dataset = QuranConstants.getSurahsInJuz(juzNumber);
 
         v = inflater.inflate(R.layout.fragment_tab, container, false);
         surahRecyclerView = v.findViewById(R.id.tab_recycler_view);
         surahRecyclerView.setHasFixedSize(true);
         LinearLayoutManager surahLayoutManager = new LinearLayoutManager(getContext());
-        adapter = new SurahAdapter(dataSet, juzNumber);
+
+        mushafVersion = QuranSettings.getInstance().getMushafVersion(getContext());
+        prefixes = new String[dataset.length];
+        System.arraycopy(getResources().getStringArray(R.array.surah_names), dataset[0][0] - 1, prefixes, 0, dataset.length);
+
+        adapter = new SurahAdapter(dataset, prefixes, mushafVersion);
         surahRecyclerView.setAdapter(adapter);
         surahRecyclerView.setLayoutManager(surahLayoutManager);
 
