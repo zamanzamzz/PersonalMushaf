@@ -47,7 +47,9 @@ public class SurahFragment extends Fragment {
 
         mushafVersion = QuranSettings.getInstance().getMushafVersion(getContext());
         prefixes = new String[dataset.length];
-        System.arraycopy(getResources().getStringArray(R.array.surah_names), dataset[0][0] - 1, prefixes, 0, dataset.length);
+
+        if (dataset.length > 0)
+            System.arraycopy(getResources().getStringArray(R.array.surah_names), dataset[0][0] - 1, prefixes, 0, dataset.length);
 
         adapter = new SurahAdapter(dataset, prefixes, mushafVersion);
         surahRecyclerView.setAdapter(adapter);

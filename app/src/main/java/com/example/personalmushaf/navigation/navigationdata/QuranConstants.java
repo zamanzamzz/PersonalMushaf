@@ -1390,9 +1390,15 @@ public class QuranConstants {
         if (juzNumber < 0)
             return surahInfo;
         else {
-            int[][] surahInfoInJuz = new int[surahsInJuz[juzNumber-1][0]][5];
-            System.arraycopy(surahInfo, surahsInJuz[juzNumber-1][1], surahInfoInJuz, 0, surahsInJuz[juzNumber-1][0]);
-            return surahInfoInJuz;
+            int[][] surahInfoInJuz;
+            if (surahsInJuz[juzNumber-1][0] == 0) {
+                surahInfoInJuz = new int[0][0];
+                return surahInfoInJuz;
+            } else {
+                surahInfoInJuz = new int[surahsInJuz[juzNumber-1][0]][5];
+                System.arraycopy(surahInfo, surahsInJuz[juzNumber-1][1], surahInfoInJuz, 0, surahsInJuz[juzNumber-1][0]);
+                return surahInfoInJuz;
+            }
         }
     }
 }
