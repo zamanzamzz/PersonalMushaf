@@ -37,9 +37,9 @@ public class QuranSinglePage {
 
     public void init() {
         String path;
-        String mushafVersion = QuranSettings.getInstance().getMushafVersion(imageView.getContext());
+        int mushafVersion = QuranSettings.getInstance().getMushafVersion(imageView.getContext());
 
-        if (mushafVersion.equals("madani_15_line")) {
+        if (mushafVersion == QuranSettings.MADANI15LINE) {
             path = QuranConstants.ASSETSDIRECTORY + "15_line/pg_" + pageNumber + ".png";
             ImageUtils.getInstance().loadBitmap(path, imageView);
             setPageData(new PageData(pageNumber, false));

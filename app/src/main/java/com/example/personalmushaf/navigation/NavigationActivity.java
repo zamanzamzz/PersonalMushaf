@@ -40,7 +40,7 @@ public class NavigationActivity extends AppCompatActivity {
     JuzQuarterFragment juzQuarterFragment;
     RukuContentFragment rukuContentFragment;
     SurahFragment surahFragment;
-    String mushafVersion;
+    int mushafVersion;
     TextView juzStart;
     int juzNumber;
 
@@ -90,7 +90,7 @@ public class NavigationActivity extends AppCompatActivity {
         } else {
             String title;
 
-            if (mushafVersion.equals("naskh_13_line"))
+            if (mushafVersion == QuranSettings.NASKH13LINE)
                 title = QuranConstants.arabicNumerals[juzNumber - 1] + "  | " +
                         QuranConstants.juzInfo[juzNumber - 1][0] + " pages";
             else
@@ -121,7 +121,7 @@ public class NavigationActivity extends AppCompatActivity {
             surahFragment.setArguments(arguments);
 
             viewPagerAdapter.addFragment(juzQuarterFragment, "Quarter");
-            if (mushafVersion.equals("naskh_13_line"))
+            if (mushafVersion == QuranSettings.NASKH13LINE)
                 viewPagerAdapter.addFragment(rukuContentFragment, "Ruku");
             viewPagerAdapter.addFragment(surahFragment, "Surah");
         }

@@ -40,7 +40,7 @@ public class JuzFragment extends Fragment {
 
         actionBar = ((AppCompatActivity)getActivity()).getSupportActionBar();
 
-        String mushafVersion = QuranSettings.getInstance().getMushafVersion(v.getContext());
+        int mushafVersion = QuranSettings.getInstance().getMushafVersion(v.getContext());
 
         actionBar.setTitle("Qur'an Contents");
 

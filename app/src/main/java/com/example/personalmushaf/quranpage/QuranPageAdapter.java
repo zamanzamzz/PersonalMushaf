@@ -9,6 +9,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.Lifecycle;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
+import com.example.personalmushaf.QuranActivity;
 import com.example.personalmushaf.QuranSettings;
 import com.example.personalmushaf.navigation.navigationdata.QuranConstants;
 
@@ -17,13 +18,13 @@ import java.util.List;
 
 public class QuranPageAdapter extends FragmentStateAdapter {
 
-    private String mushafVersion;
-    private String orientation;
+    private int mushafVersion;
+    private int orientation;
     private boolean isForceDualPage;
     private List<Fragment> mFragmentList;
     private FragmentManager fm;
 
-    public QuranPageAdapter(FragmentManager fm, Lifecycle lifecycle, Context context, String orientation) {
+    public QuranPageAdapter(FragmentManager fm, Lifecycle lifecycle, Context context, int orientation) {
         super(fm, lifecycle);
         this.fm = fm;
         mushafVersion = QuranSettings.getInstance().getMushafVersion(context);
@@ -40,7 +41,7 @@ public class QuranPageAdapter extends FragmentStateAdapter {
         Bundle bundle;
         int dualPagerPosition;
 
-        if (orientation.equals("landscape") || isForceDualPage) {
+        if (QuranActivity.isLandscape(orientation) || isForceDualPage) {
             position++;
             dualPagerPosition = position - 1;
             fragment = new QuranDualPageFragment();
@@ -49,7 +50,7 @@ public class QuranPageAdapter extends FragmentStateAdapter {
             fragment.setArguments(bundle);
         } else {
             position++;
-            dualPagerPosition = mushafVersion.equals("madani_15_line") ? position : position + 1;
+            dualPagerPosition = mushafVersion == QuranSettings.MADANI15LINE ? position : position + 1;
             fragment = new QuranPageFragment();
             bundle = new Bundle();
             bundle.putInt("page_number", dualPagerPosition);
@@ -63,13 +64,13 @@ public class QuranPageAdapter extends FragmentStateAdapter {
 
     @Override
     public int getItemCount() {
-        if (orientation.equals("portrait") && !isForceDualPage) {
-            if (mushafVersion.equals("madani_15_line"))
+        if (!QuranActivity.isLandscape(orientation) && !isForceDualPage) {
+            if (mushafVersion == QuranSettings.MADANI15LINE)
                 return 604;
             else
                 return 847;
         } else {
-            if (mushafVersion.equals("madani_15_line"))
+            if (mushafVersion == QuranSettings.MADANI15LINE)
                 return QuranConstants.madani15LineDualPageSets.length;
             else
                 return QuranConstants.naskh13LineDualPageSets.length;

@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.andexert.library.RippleView;
 import com.example.personalmushaf.QuranActivity;
+import com.example.personalmushaf.QuranSettings;
 import com.example.personalmushaf.R;
 import com.example.personalmushaf.navigation.NavigationActivity;
 import com.example.personalmushaf.navigation.navigationdata.QuranConstants;
@@ -29,11 +30,11 @@ public class JuzAdapter extends RecyclerView.Adapter<JuzAdapter.JuzViewHolder> {
         }
     }
 
-    public JuzAdapter(String[] juzNames, String mushafVersion) {
+    public JuzAdapter(String[] juzNames, int mushafVersion) {
         this.juzNames = juzNames;
         this.dataSet = QuranConstants.juzInfo;
-        this.lengthIndex = mushafVersion.equals("madani_15_line") ? 1 : 0;
-        this.pageNumberIndex = mushafVersion.equals("madani_15_line") ? 3 : 2;
+        this.lengthIndex = mushafVersion == QuranSettings.MADANI15LINE ? 1 : 0;
+        this.pageNumberIndex = mushafVersion == QuranSettings.MADANI15LINE ? 3 : 2;
     }
 
     @Override

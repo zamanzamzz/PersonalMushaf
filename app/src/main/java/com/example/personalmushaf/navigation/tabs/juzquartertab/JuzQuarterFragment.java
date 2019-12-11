@@ -40,9 +40,9 @@ public class JuzQuarterFragment extends Fragment {
 
         juzIndex = getArguments().getInt("juz number") - 1;
 
-        String mushafVersion = QuranSettings.getInstance().getMushafVersion(v.getContext());
+        int mushafVersion = QuranSettings.getInstance().getMushafVersion(v.getContext());
 
-        if (mushafVersion.equals("madani_15_line")) {
+        if (mushafVersion == QuranSettings.MADANI15LINE) {
             dataset = new int[8][4];
             prefixes = new String[8];
             System.arraycopy(QuranConstants.madaniQuarterInfo, juzIndex *8, dataset, 0, 8);

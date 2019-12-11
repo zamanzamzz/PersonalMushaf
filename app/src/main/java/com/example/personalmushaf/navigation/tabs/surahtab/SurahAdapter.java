@@ -14,12 +14,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.andexert.library.RippleView;
 import com.example.personalmushaf.QuranActivity;
+import com.example.personalmushaf.QuranSettings;
 import com.example.personalmushaf.R;
 import com.example.personalmushaf.navigation.navigationdata.QuranConstants;
 
 public class SurahAdapter extends RecyclerView.Adapter<SurahAdapter.SurahViewHolder> {
     private int[][] dataset;
-    private String mushafVersion;
+    private int mushafVersion;
     private String[] prefixes;
 
     public static class SurahViewHolder extends RecyclerView.ViewHolder {
@@ -30,7 +31,7 @@ public class SurahAdapter extends RecyclerView.Adapter<SurahAdapter.SurahViewHol
         }
     }
 
-    public SurahAdapter(int[][] dataset, String[] prefixes, String mushafVersion) {
+    public SurahAdapter(int[][] dataset, String[] prefixes, int mushafVersion) {
         this.dataset = dataset;
         this.prefixes = prefixes;
         this.mushafVersion = mushafVersion;
@@ -60,7 +61,7 @@ public class SurahAdapter extends RecyclerView.Adapter<SurahAdapter.SurahViewHol
 
         String origin = surahInfo[2] == 1 ? "مكي" : "مدني";
 
-        final int pageNumber = mushafVersion.equals("madani_15_line") ? surahInfo[3]: surahInfo[4];
+        final int pageNumber = mushafVersion == QuranSettings.MADANI15LINE ? surahInfo[3]: surahInfo[4];
 
         surahStart.setText(prefixes[position]);
         surahPageNumber.setText(Integer.toString(pageNumber));

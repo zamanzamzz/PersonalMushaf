@@ -47,12 +47,12 @@ public class QuranDualPageFragment extends Fragment {
 
         dualPagerPosition = getArguments().getInt("dual_pager_position");
 
-        String mushafVersion = QuranSettings.getInstance().getMushafVersion(v.getContext());
+        int mushafVersion = QuranSettings.getInstance().getMushafVersion(v.getContext());
 
         final String rightPagePath;
         final String leftPagePath;
 
-        if (!mushafVersion.equals("madani_15_line")) {
+        if (!(mushafVersion == QuranSettings.MADANI15LINE)) {
             if (dualPagerPosition < 423) {
                 final ImageView rightImage = v.findViewById(R.id.page2);
                 final ImageView leftImage = v.findViewById(R.id.page1);

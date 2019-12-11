@@ -31,7 +31,8 @@ public class QuranActivity extends AppCompatActivity {
     private int receivedPageNumber;
     private int pagesTurned;
 
-    private String currentOrientation;
+    private int currentOrientation;
+    private int mushafVersion;
 
     private ViewPager2 pager;
 
@@ -41,7 +42,6 @@ public class QuranActivity extends AppCompatActivity {
 
     private QuranPageAdapter pagerAdapter;
 
-    private String mushafVersion;
     boolean isSmoothVolumeKeyNavigation;
     boolean isForceDualPage;
 
@@ -50,9 +50,7 @@ public class QuranActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_quran);
-
-        mushafVersion = QuranSettings.getInstance().getMushafVersion(this);
-
+        
         isSmoothVolumeKeyNavigation = QuranSettings.getInstance().getIsSmoothKeyNavigation(this);
         isForceDualPage = QuranSettings.getInstance().getIsForceDualPage(this);
 
@@ -64,7 +62,8 @@ public class QuranActivity extends AppCompatActivity {
 
         setPageNumberAndPagesTurned(savedInstanceState);
 
-        currentOrientation = getScreenOrientation();
+        currentOrientation = getScreenRotation();
+        mushafVersion = QuranSettings.getInstance().getMushafVersion(this);
 
         setupInitialPager();
 
@@ -97,14 +96,13 @@ public class QuranActivity extends AppCompatActivity {
     public void onConfigurationChanged(Configuration newConfig) {
 
         super.onConfigurationChanged(newConfig);
+        currentOrientation = getScreenRotation();
         if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
             destroyPager();
-            currentOrientation = "portrait";
             setupSinglePager();
 
         } else if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
             destroyPager();
-            currentOrientation = "landscape";
             setupDualPager();
         }
     }
@@ -134,7 +132,7 @@ public class QuranActivity extends AppCompatActivity {
         int keyCode = event.getKeyCode();
         Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 
-        if (currentOrientation.equals("landscape") && action == KeyEvent.ACTION_DOWN) {
+        if (isLandscape(currentOrientation) && action == KeyEvent.ACTION_DOWN) {
             switch (keyCode) {
                 case KeyEvent.KEYCODE_VOLUME_DOWN:
                     if (getScreenRotation() == Surface.ROTATION_90)
@@ -225,7 +223,7 @@ public class QuranActivity extends AppCompatActivity {
             }
         };
 
-        if (currentOrientation.equals("portrait") && !isForceDualPage) {
+        if (!isLandscape(currentOrientation) && !isForceDualPage) {
             setupSinglePager();
         } else {
             setupDualPager();
@@ -234,7 +232,7 @@ public class QuranActivity extends AppCompatActivity {
 
     private void setupSinglePager() {
         pager = findViewById(R.id.pager);
-        pagerAdapter = new QuranPageAdapter(getSupportFragmentManager(), getLifecycle(), this, "portrait");
+        pagerAdapter = new QuranPageAdapter(getSupportFragmentManager(), getLifecycle(), this, currentOrientation);
         pager.setAdapter(pagerAdapter);
         pager.setOffscreenPageLimit(1);
         pager.setCurrentItem(pageNumberToSinglePagerPosition(pageNumber), false);
@@ -243,7 +241,7 @@ public class QuranActivity extends AppCompatActivity {
 
     private void setupDualPager() {
         pager = findViewById(R.id.pager);
-        pagerAdapter = new QuranPageAdapter(getSupportFragmentManager(), getLifecycle(), this, "landscape");
+        pagerAdapter = new QuranPageAdapter(getSupportFragmentManager(), getLifecycle(), this, currentOrientation);
         pager.setAdapter(pagerAdapter);
         pager.setOffscreenPageLimit(1);
         pager.setCurrentItem(pageNumberToDualPagerPosition(pageNumber), false);
@@ -253,7 +251,7 @@ public class QuranActivity extends AppCompatActivity {
     }
 
     private void destroyPager() {
-        if (currentOrientation.equals("landscape"))
+        if (isLandscape(currentOrientation))
             pager.unregisterOnPageChangeCallback(dualPageChangeCallback);
         else
             pager.unregisterOnPageChangeCallback(singlePageChangeCallback);
@@ -264,7 +262,7 @@ public class QuranActivity extends AppCompatActivity {
     }
 
     private int pageNumberToDualPagerPosition(int pageNumber) {
-        if (!mushafVersion.equals("madani_15_line")) {
+        if (!(mushafVersion == QuranSettings.MADANI15LINE)) {
             if (pageNumber % 2 == 0)
                 return pageNumber / 2 - 1;
             else
@@ -278,7 +276,7 @@ public class QuranActivity extends AppCompatActivity {
     }
 
     private int dualPagerPositionToPageNumber(int dualPageNumber) {
-        if (!mushafVersion.equals("madani_15_line")) {
+        if (!(mushafVersion == QuranSettings.MADANI15LINE)) {
             return dualPageNumber*2 + 2;
         } else {
             return dualPageNumber*2 + 1;
@@ -286,7 +284,7 @@ public class QuranActivity extends AppCompatActivity {
     }
 
     private int pageNumberToSinglePagerPosition(int pageNumber) {
-        if (!mushafVersion.equals("madani_15_line")) {
+        if (!(mushafVersion == QuranSettings.MADANI15LINE)) {
             return pageNumber - 2;
         } else {
             return pageNumber - 1;
@@ -294,7 +292,7 @@ public class QuranActivity extends AppCompatActivity {
     }
 
     private int singlePagerPositionToPageNumber(int position) {
-        if (!mushafVersion.equals("madani_15_line")) {
+        if (!(mushafVersion == QuranSettings.MADANI15LINE)) {
             return position + 2;
         } else {
             return position + 1;
@@ -309,22 +307,6 @@ public class QuranActivity extends AppCompatActivity {
             result = getResources().getDimensionPixelSize(resourceId);
         }
         return result;
-    }
-
-    private String getScreenOrientation() {
-        final int screenOrientation = ((WindowManager) this.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getRotation();
-        switch (screenOrientation) {
-            case Surface.ROTATION_0:
-                return "portrait";
-            case Surface.ROTATION_90:
-                return "landscape";
-            case Surface.ROTATION_180:
-                return "portrait";
-            case Surface.ROTATION_270:
-                return "landscape";
-            default:
-                return "landscape";
-        }
     }
 
     private int getScreenRotation() {
@@ -367,6 +349,10 @@ public class QuranActivity extends AppCompatActivity {
         }
     }
 
+    public static boolean isLandscape(int currentOrientation) {
+        return currentOrientation == Surface.ROTATION_90 || currentOrientation == Surface.ROTATION_270;
+    }
+
     private void vibrate(Vibrator v, int time) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             v.vibrate(VibrationEffect.createOneShot(time, VibrationEffect.DEFAULT_AMPLITUDE));
@@ -377,7 +363,7 @@ public class QuranActivity extends AppCompatActivity {
     }
 
     private void flipPageBackward(int pagesToFlip) {
-        if (mushafVersion.equals("madani_15_line")) {
+        if (mushafVersion == QuranSettings.MADANI15LINE) {
             if (pageNumber >= 2) {
                 pager.setCurrentItem(pageNumberToDualPagerPosition(pageNumber - pagesToFlip), isSmoothVolumeKeyNavigation);
             }
@@ -389,7 +375,7 @@ public class QuranActivity extends AppCompatActivity {
     }
 
     private void flipPageForward(int pagesToFlip) {
-        if (mushafVersion.equals("madani_15_line")) {
+        if (mushafVersion == QuranSettings.MADANI15LINE) {
             if (pageNumber <= 602) {
                 pager.setCurrentItem(pageNumberToDualPagerPosition(pageNumber + pagesToFlip), isSmoothVolumeKeyNavigation);
             }

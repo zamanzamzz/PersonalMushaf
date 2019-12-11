@@ -48,7 +48,6 @@ public class JuzQuarterAdapter extends RecyclerView.Adapter<JuzQuarterAdapter.Ju
     @Override
     public void onBindViewHolder(final JuzViewHolder holder, final int position) {
         int id;
-        final int index;
 
         LinearLayout layout = (LinearLayout) holder.rippleView.getChildAt(0);
 

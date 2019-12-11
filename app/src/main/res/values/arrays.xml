@@ -11,45 +11,12 @@
     </string-array>
 
     <string-array name="mushaf_entries">
-        <item>Naskh 13 Line</item>
         <item>Madani 15 Line</item>
+        <item>Naskh 13 Line</item>
     </string-array>
 
     <string-array name="mushaf_values">
-        <item>naskh_13_line</item>
-        <item>madani_15_line</item>
-    </string-array>
-
-    <string-array name="juz_names">
-        <item>الم</item>
-        <item>سيقول السفهاء</item>
-        <item>تلك الرسل</item>
-        <item>لن تنال البر</item>
-        <item>والمحصنات</item>
-        <item>لا يحب الله</item>
-        <item>وإذا سمعوا</item>
-        <item>ولو أننا نزلنا</item>
-        <item>قال الملا</item>
-        <item>واعلموا أنما</item>
-        <item>يعتذرون إليكم</item>
-        <item>وما من دآبة</item>
-        <item>وما أبرئ</item>
-        <item>ربما يود</item>
-        <item>سبحان الذي</item>
-        <item>قال ألم</item>
-        <item>اقترب للناس</item>
-        <item>قد أفلح</item>
-        <item>وقال الذين</item>
-        <item>أمن خلق</item>
-        <item>أتل ما أوحي</item>
-        <item>ومن يقنت</item>
-        <item>ومالي لا</item>
-        <item>فمن أظلم</item>
-        <item>إليه يرد</item>
-        <item>حم</item>
-        <item>قال فما خطبكم</item>
-        <item>قد سمع الله</item>
-        <item>تبرك الذي</item>
-        <item>عم يتسائلون</item>
+        <item>0</item>
+        <item>1</item>
     </string-array>
 </resources>

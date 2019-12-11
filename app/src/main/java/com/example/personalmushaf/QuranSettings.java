@@ -6,9 +6,11 @@ import android.content.SharedPreferences;
 import androidx.preference.PreferenceManager;
 
 public class QuranSettings {
+    public static final int MADANI15LINE = 0;
+    public static final int NASKH13LINE = 1;
     private static QuranSettings quranSettings;
     private SharedPreferences preferences;
-    private String mushafVersion;
+    private Integer mushafVersion;
     private Boolean isForceDualPage;
 
     private Boolean isSmoothKeyNavigation;
@@ -19,10 +21,10 @@ public class QuranSettings {
         return quranSettings;
     }
 
-    public String getMushafVersion(Context context) {
+    public int getMushafVersion(Context context) {
         if (mushafVersion == null) {
             setPreference(context);
-            mushafVersion = preferences.getString("mushaf", "madani_15_line");
+            mushafVersion = Integer.parseInt(preferences.getString("mushaf", Integer.toString(MADANI15LINE)));
         }
 
         return mushafVersion;
@@ -51,7 +53,7 @@ public class QuranSettings {
             preferences = PreferenceManager.getDefaultSharedPreferences(context);
     }
 
-    public void setMushafVersion(String mushafVersion) {
+    public void setMushafVersion(Integer mushafVersion) {
         this.mushafVersion = mushafVersion;
     }
 

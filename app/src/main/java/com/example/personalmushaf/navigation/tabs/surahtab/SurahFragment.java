@@ -24,7 +24,7 @@ public class SurahFragment extends Fragment {
     private View v;
     private RecyclerView surahRecyclerView;
     private SurahAdapter adapter;
-    private String mushafVersion;
+    private int mushafVersion;
     private String[] prefixes;
 
 
