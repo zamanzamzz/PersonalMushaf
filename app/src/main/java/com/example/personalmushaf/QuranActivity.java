@@ -20,6 +20,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.viewpager2.widget.ViewPager2;
 
+import com.example.personalmushaf.quranactivitystrategies.MadaniQuranActivityStrategy;
+import com.example.personalmushaf.quranactivitystrategies.Naskh13QuranActivityStrategy;
+import com.example.personalmushaf.quranactivitystrategies.QuranActivityStrategy;
 import com.example.personalmushaf.quranpage.QuranPageAdapter;
 
 
@@ -32,7 +35,6 @@ public class QuranActivity extends AppCompatActivity {
     private int pagesTurned;
 
     private int currentOrientation;
-    private int mushafVersion;
 
     private ViewPager2 pager;
 
@@ -44,6 +46,7 @@ public class QuranActivity extends AppCompatActivity {
 
     boolean isSmoothVolumeKeyNavigation;
     boolean isForceDualPage;
+    private QuranActivityStrategy strategy;
 
 
     @Override
@@ -63,17 +66,12 @@ public class QuranActivity extends AppCompatActivity {
         setPageNumberAndPagesTurned(savedInstanceState);
 
         currentOrientation = getScreenRotation();
-        mushafVersion = QuranSettings.getInstance().getMushafVersion(this);
+
+        setStrategy();
 
         setupInitialPager();
 
-        getWindow().getDecorView().setOnSystemUiVisibilityChangeListener
-                (new View.OnSystemUiVisibilityChangeListener() {
-                    @Override
-                    public void onSystemUiVisibilityChange(int visibility) {
-                        actionOnSystemUIChange(visibility);
-                    }
-                });
+        setOnSystemUiVisibilityChangeListener();
 
         hideSystemUI();
     }
@@ -96,13 +94,14 @@ public class QuranActivity extends AppCompatActivity {
     public void onConfigurationChanged(Configuration newConfig) {
 
         super.onConfigurationChanged(newConfig);
-        currentOrientation = getScreenRotation();
         if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
             destroyPager();
+            currentOrientation = getScreenRotation();
             setupSinglePager();
 
         } else if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
             destroyPager();
+            currentOrientation = getScreenRotation();
             setupDualPager();
         }
     }
@@ -261,43 +260,7 @@ public class QuranActivity extends AppCompatActivity {
         System.gc();
     }
 
-    private int pageNumberToDualPagerPosition(int pageNumber) {
-        if (!(mushafVersion == QuranSettings.MADANI15LINE)) {
-            if (pageNumber % 2 == 0)
-                return pageNumber / 2 - 1;
-            else
-                return (pageNumber - 1) / 2 - 1;
-        } else {
-            if (pageNumber % 2 == 0)
-                return pageNumber / 2 - 1;
-            else
-                return (pageNumber - 1) / 2;
-        }
-    }
 
-    private int dualPagerPositionToPageNumber(int dualPageNumber) {
-        if (!(mushafVersion == QuranSettings.MADANI15LINE)) {
-            return dualPageNumber*2 + 2;
-        } else {
-            return dualPageNumber*2 + 1;
-        }
-    }
-
-    private int pageNumberToSinglePagerPosition(int pageNumber) {
-        if (!(mushafVersion == QuranSettings.MADANI15LINE)) {
-            return pageNumber - 2;
-        } else {
-            return pageNumber - 1;
-        }
-    }
-
-    private int singlePagerPositionToPageNumber(int position) {
-        if (!(mushafVersion == QuranSettings.MADANI15LINE)) {
-            return position + 2;
-        } else {
-            return position + 1;
-        }
-    }
 
 
     private int getStatusBarHeight() {
@@ -362,27 +325,48 @@ public class QuranActivity extends AppCompatActivity {
         }
     }
 
+    private void setOnSystemUiVisibilityChangeListener() {
+        getWindow().getDecorView().setOnSystemUiVisibilityChangeListener
+                (new View.OnSystemUiVisibilityChangeListener() {
+                    @Override
+                    public void onSystemUiVisibilityChange(int visibility) {
+                        actionOnSystemUIChange(visibility);
+                    }
+                });
+    }
+
+    private void setStrategy() {
+        if (QuranSettings.getInstance().getMushafVersion(this) == QuranSettings.MADANI15LINE)
+            strategy = new MadaniQuranActivityStrategy();
+        else
+            strategy = new Naskh13QuranActivityStrategy();
+    }
+
+    private int pageNumberToDualPagerPosition(int pageNumber) {
+        return strategy.pageNumberToDualPagerPosition(pageNumber);
+    }
+
+    private int dualPagerPositionToPageNumber(int dualPagerPosition) {
+        return strategy.dualPagerPositionToPageNumber(dualPagerPosition);
+    }
+
+    private int pageNumberToSinglePagerPosition(int pageNumber) {
+        return strategy.pageNumberToSinglePagerPosition(pageNumber);
+    }
+
+    private int singlePagerPositionToPageNumber(int position) {
+        return strategy.singlePagerPositionToPageNumber(position);
+    }
+
     private void flipPageBackward(int pagesToFlip) {
-        if (mushafVersion == QuranSettings.MADANI15LINE) {
-            if (pageNumber >= 2) {
-                pager.setCurrentItem(pageNumberToDualPagerPosition(pageNumber - pagesToFlip), isSmoothVolumeKeyNavigation);
-            }
-        } else {
-            if (pageNumber >= 3) {
-                pager.setCurrentItem(pageNumberToDualPagerPosition(pageNumber - pagesToFlip), isSmoothVolumeKeyNavigation);
-            }
+        if (pageNumber - pagesToFlip >= strategy.minPage()) {
+            pager.setCurrentItem(pageNumberToDualPagerPosition(pageNumber - pagesToFlip), isSmoothVolumeKeyNavigation);
         }
     }
 
     private void flipPageForward(int pagesToFlip) {
-        if (mushafVersion == QuranSettings.MADANI15LINE) {
-            if (pageNumber <= 602) {
-                pager.setCurrentItem(pageNumberToDualPagerPosition(pageNumber + pagesToFlip), isSmoothVolumeKeyNavigation);
-            }
-        } else {
-            if (pageNumber <= 847) {
-                pager.setCurrentItem(pageNumberToDualPagerPosition(pageNumber + pagesToFlip), isSmoothVolumeKeyNavigation);
-            }
+        if (pageNumber + pagesToFlip <= strategy.maxPage()) {
+            pager.setCurrentItem(pageNumberToDualPagerPosition(pageNumber + pagesToFlip), isSmoothVolumeKeyNavigation);
         }
     }
 
