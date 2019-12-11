@@ -13,25 +13,17 @@ import com.example.personalmushaf.QuranActivity;
 import com.example.personalmushaf.QuranSettings;
 import com.example.personalmushaf.navigation.navigationdata.QuranConstants;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class QuranPageAdapter extends FragmentStateAdapter {
 
     private int mushafVersion;
     private int orientation;
     private boolean isForceDualPage;
-    private List<Fragment> mFragmentList;
-    private FragmentManager fm;
 
     public QuranPageAdapter(FragmentManager fm, Lifecycle lifecycle, Context context, int orientation) {
         super(fm, lifecycle);
-        this.fm = fm;
         mushafVersion = QuranSettings.getInstance().getMushafVersion(context);
         isForceDualPage = QuranSettings.getInstance().getIsForceDualPage(context);
         this.orientation = orientation;
-        mFragmentList = new ArrayList<>();
-
     }
 
     @NonNull
@@ -57,8 +49,6 @@ public class QuranPageAdapter extends FragmentStateAdapter {
             fragment.setArguments(bundle);
         }
 
-        mFragmentList.add(fragment);
-
         return fragment;
     }
 
@@ -76,27 +66,4 @@ public class QuranPageAdapter extends FragmentStateAdapter {
                 return QuranConstants.naskh13LineDualPageSets.length;
         }
     }
-
-
-
-    public void removeAllfragments() {
-        if ( mFragmentList != null ) {
-            for ( Fragment fragment : mFragmentList ) {
-                fm.beginTransaction().remove(fragment).commit();
-            }
-            mFragmentList.clear();
-            notifyDataSetChanged();
-        }
-    }
-
-    public void removeAllButLast() {
-        if ( mFragmentList != null ) {
-            for ( int i = 0; i < mFragmentList.size() - 3; i++) {
-                fm.beginTransaction().remove(mFragmentList.get(i)).commit();
-            }
-            mFragmentList.clear();
-            notifyDataSetChanged();
-        }
-    }
-
 }

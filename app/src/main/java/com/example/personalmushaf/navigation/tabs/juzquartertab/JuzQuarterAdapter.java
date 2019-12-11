@@ -11,7 +11,6 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.andexert.library.RippleView;
-import com.bumptech.glide.Glide;
 import com.example.personalmushaf.QuranActivity;
 import com.example.personalmushaf.R;
 
@@ -64,7 +63,7 @@ public class JuzQuarterAdapter extends RecyclerView.Adapter<JuzQuarterAdapter.Ju
             id = quarterImage.getResources().getIdentifier("quarter_" + position,
                     "drawable", quarterImage.getContext().getPackageName());
 
-        Glide.with(layout.getContext()).load(id).into(quarterImage);
+        quarterImage.setImageDrawable(quarterImage.getResources().getDrawable(id, null));
 
         TextView quarterLength = (TextView) ((LinearLayout) layout.getChildAt(1)).getChildAt(0);
         TextView quarterPageNumber = (TextView) ((LinearLayout) layout.getChildAt(1)).getChildAt(1);

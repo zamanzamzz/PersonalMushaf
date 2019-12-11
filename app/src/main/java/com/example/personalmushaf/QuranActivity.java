@@ -193,13 +193,8 @@ public class QuranActivity extends AppCompatActivity {
                 super.onPageSelected(position);
                 pageNumber = singlePagerPositionToPageNumber(position);
                 pagesTurned++;
-                if (pagesTurned > 7) {
-                    pager.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            pagerAdapter.removeAllButLast();
-                        }
-                    });
+                if (pagesTurned >= 8){
+                    System.gc();
                     pagesTurned = 0;
                 }
             }};
@@ -209,14 +204,9 @@ public class QuranActivity extends AppCompatActivity {
             public void onPageSelected(int position) {
             super.onPageSelected(position);
                 pageNumber = dualPagerPositionToPageNumber(position);
-                pagesTurned = pagesTurned + 2;
-                if (pagesTurned > 7) {
-                    pager.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            pagerAdapter.removeAllButLast();
-                        }
-                    });
+                pagesTurned += 2;
+                if (pagesTurned >= 8){
+                    System.gc();
                     pagesTurned = 0;
                 }
             }
@@ -254,7 +244,6 @@ public class QuranActivity extends AppCompatActivity {
             pager.unregisterOnPageChangeCallback(dualPageChangeCallback);
         else
             pager.unregisterOnPageChangeCallback(singlePageChangeCallback);
-        pagerAdapter.removeAllfragments();
         pagerAdapter = null;
         pager = null;
         System.gc();

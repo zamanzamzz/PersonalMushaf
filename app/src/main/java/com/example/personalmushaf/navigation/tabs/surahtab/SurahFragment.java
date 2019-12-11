@@ -12,7 +12,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.personalmushaf.QuranSettings;
 import com.example.personalmushaf.R;
-import com.example.personalmushaf.navigation.NavigationDataUtil;
 import com.example.personalmushaf.navigation.navigationdata.QuranConstants;
 
 
