@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:dist="http://schemas.android.com/apk/distribution"
-    package="com.example.personalmushaf">
+    package="com.android.personalmushaf">
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.VIBRATE"/>
 
     <dist:module dist:instant="true" />
@@ -17,21 +18,30 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme.Launcher">
         <activity
-            android:name=".SettingsActivity"
+            android:name="com.android.personalmushaf.SettingsActivity"
             android:label="@string/title_activity_settings">
         </activity>
         <activity
-            android:name=".QuranActivity"
+            android:name="com.android.personalmushaf.QuranActivity"
             android:taskAffinity=".main"
             android:configChanges="keyboardHidden|orientation|screenSize"
-            android:theme="@style/AppTheme.NoActionBar.FullScreen"></activity>
+            android:theme="@style/AppTheme.NoActionBar.FullScreen"/>
         <activity
-            android:name=".navigation.NavigationActivity"
+            android:name="com.android.personalmushaf.navigation.NavigationActivity"
             android:taskAffinity=".navigation">
+        </activity>
+        <activity
+            android:name="com.android.personalmushaf.startup.StartupMushafTypeActivity"
+            android:taskAffinity=".startup">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
+                <action android:name="android.intent.action.MAIN" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name="com.android.personalmushaf.startup.StartupMushafStyleActivity"
+            android:taskAffinity=".startup"
+            android:theme="@style/AppTheme.NoActionBar.FullScreen">
         </activity>
     </application>
 
