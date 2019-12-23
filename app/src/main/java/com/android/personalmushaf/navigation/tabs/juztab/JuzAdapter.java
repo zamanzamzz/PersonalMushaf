@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.andexert.library.RippleView;
 import com.android.personalmushaf.QuranActivity;
-import com.android.personalmushaf.QuranSettings;
 import com.android.personalmushaf.R;
 import com.android.personalmushaf.model.mushafs.strategies.navigationstrategies.NavigationStrategy;
 import com.android.personalmushaf.navigation.NavigationActivity;

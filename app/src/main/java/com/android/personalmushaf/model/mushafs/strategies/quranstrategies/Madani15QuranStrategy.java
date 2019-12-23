@@ -1,11 +1,15 @@
 package com.android.personalmushaf.model.mushafs.strategies.quranstrategies;
 
+import com.android.personalmushaf.model.PageData;
+import com.android.personalmushaf.model.mushafs.mushafmetadata.MushafMetadata;
 import com.android.personalmushaf.navigation.navigationdata.QuranConstants;
 
 public class Madani15QuranStrategy implements QuranStrategy {
 
-    public Madani15QuranStrategy() {
+    private MushafMetadata mushafMetadata;
 
+    public Madani15QuranStrategy(MushafMetadata mushafMetadata) {
+        this.mushafMetadata = mushafMetadata;
     }
 
     public int pageNumberToDualPagerPosition(int pageNumber) {
@@ -28,7 +32,7 @@ public class Madani15QuranStrategy implements QuranStrategy {
     }
 
     public int minPage() {
-        return 0;
+        return 1;
     }
 
     public int maxPage() {
@@ -45,5 +49,34 @@ public class Madani15QuranStrategy implements QuranStrategy {
 
     public int getNumOfDualPages() {
         return QuranConstants.madani15LineDualPageSets.length;
+    }
+
+    public String getPagePath(int pageNumber) {
+        return QuranConstants.ASSETSDIRECTORY + "/" + mushafMetadata.getDirectoryName() + "/images/pg_" + pageNumber + ".png";
+    }
+
+    public PageData getPageData(int pageNumber) {
+        return new PageData(pageNumber, mushafMetadata.getDatabasePath());
+    }
+
+    public String getLeftPagePath(int dualPagerPosition) {
+        return QuranConstants.ASSETSDIRECTORY + "/" + mushafMetadata.getDirectoryName() + "/images/pg_" + QuranConstants.madani15LineDualPageSets[dualPagerPosition][0] + ".png";
+    }
+
+    public String getRightPagePath(int dualPagerPosition) {
+        return QuranConstants.ASSETSDIRECTORY + "/" + mushafMetadata.getDirectoryName() + "/images/pg_" + QuranConstants.madani15LineDualPageSets[dualPagerPosition][1] + ".png";
+    }
+
+
+    public PageData getLeftPageData(int dualPagerPosition) {
+        return new PageData(QuranConstants.madani15LineDualPageSets[dualPagerPosition][0], mushafMetadata.getDatabasePath());
+    }
+
+    public PageData getRightPageData(int dualPagerPosition) {
+        return new PageData(QuranConstants.madani15LineDualPageSets[dualPagerPosition][1], mushafMetadata.getDatabasePath());
+    }
+
+    public boolean isDanglingPage(int dualPagerPosition) {
+        return false;
     }
 }

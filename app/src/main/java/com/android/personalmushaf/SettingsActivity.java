@@ -98,13 +98,13 @@ public class SettingsActivity extends AppCompatActivity implements
             SwitchPreferenceCompat isForceDualPages = findPreference("force_dual_page");
             SwitchPreferenceCompat isSmoothKeyNavigation = findPreference("smoothpageturn");
 
+
             mushafVersion.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
                 @Override
                 public boolean onPreferenceChange(Preference preference, Object newValue) {
                     int mushaf = Integer.parseInt((String) newValue);
                     QuranSettings.getInstance().setMushafVersion(mushaf);
                     QuranSettings.getInstance().setMushafStrategy(mushaf);
-                    QuranSettings.getInstance().setMushafMetadata(mushaf);
                     return true;
                 }
             });

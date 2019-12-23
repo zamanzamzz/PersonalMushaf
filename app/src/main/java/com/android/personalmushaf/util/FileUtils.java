@@ -1,6 +1,7 @@
 package com.android.personalmushaf.util;
 
 import android.widget.ProgressBar;
+
 import com.android.personalmushaf.navigation.navigationdata.QuranConstants;
 
 import java.io.BufferedInputStream;

@@ -6,8 +6,6 @@ import android.graphics.RectF;
 import android.util.SparseArray;
 import android.widget.ImageView;
 
-import com.android.personalmushaf.navigation.navigationdata.QuranConstants;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -27,14 +25,12 @@ public class PageData {
     private static final String GLYPHS_TABLE = "glyphs";
     private Map<String, List<AyahBounds>> ayahBounds;
 
-    public PageData(final int pageNumber, final boolean mushaf) {
+    public PageData(final int pageNumber, final String databasePath) {
         new Thread(new Runnable() {
             @Override
             public void run() {
                 ayahBounds = new HashMap<>();
-                String path = !mushaf ? QuranConstants.ASSETSDIRECTORY + "/madani_15_line/databases/ayahinfo_15line.db":
-                                        QuranConstants.ASSETSDIRECTORY + "/naskh_13_line/databases/ayahinfo_13line.db";
-                SQLiteDatabase database = SQLiteDatabase.openDatabase(path, null, SQLiteDatabase.OPEN_READONLY);
+                SQLiteDatabase database = SQLiteDatabase.openDatabase(databasePath, null, SQLiteDatabase.OPEN_READONLY);
                 Cursor c = database.query(GLYPHS_TABLE,
                         new String[]{COL_PAGE, COL_LINE, COL_SURA, COL_AYAH,
                                 COL_POSITION, MIN_X, MIN_Y, MAX_X, MAX_Y},

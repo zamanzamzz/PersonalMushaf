@@ -21,7 +21,7 @@ import com.android.personalmushaf.R;
 import com.android.personalmushaf.model.Ayah;
 import com.android.personalmushaf.model.AyahBounds;
 import com.android.personalmushaf.model.PageData;
-import com.android.personalmushaf.navigation.navigationdata.QuranConstants;
+import com.android.personalmushaf.model.mushafs.strategies.quranstrategies.QuranStrategy;
 import com.android.personalmushaf.util.ImageUtils;
 
 import java.util.List;
@@ -29,8 +29,8 @@ import java.util.List;
 public class QuranDualPageFragment extends Fragment {
 
 
-    private PageData rightPageData;
     private PageData leftPageData;
+    private PageData rightPageData;
     private Ayah highlightedAyah = null;
     private boolean isHighlighted = false;
     private float x;
@@ -46,60 +46,24 @@ public class QuranDualPageFragment extends Fragment {
 
         int dualPagerPosition = getArguments().getInt("dual_pager_position");
 
-        int mushafVersion = QuranSettings.getInstance().getMushafVersion(v.getContext());
+        QuranStrategy quranStrategy = QuranSettings.getInstance().getMushafStrategy(getContext()).getQuranStrategy();
 
-        final String rightPagePath;
-        final String leftPagePath;
         final ImageView leftImage = v.findViewById(R.id.page1);
+        final String leftPagePath = quranStrategy.getLeftPagePath(dualPagerPosition);
+        leftPageData = quranStrategy.getLeftPageData(dualPagerPosition);
+
         final ImageView rightImage = v.findViewById(R.id.page2);
+        final String rightPagePath = quranStrategy.getRightPagePath(dualPagerPosition);
+        rightPageData = quranStrategy.getRightPageData(dualPagerPosition);
 
-        if (!(mushafVersion == QuranSettings.MADANI15LINE)) {
-            if (dualPagerPosition < 423) {
+        loadImages(leftImage, rightImage, leftPagePath, rightPagePath);
 
-
-                rightPagePath = QuranConstants.ASSETSDIRECTORY + "/naskh_13_line/images/pg_" + QuranConstants.naskh13LineDualPageSets[dualPagerPosition][1] + ".png";
-                leftPagePath = QuranConstants.ASSETSDIRECTORY + "/naskh_13_line/images/pg_" + QuranConstants.naskh13LineDualPageSets[dualPagerPosition][0] + ".png";
-
-                loadImages(leftImage, rightImage, leftPagePath, rightPagePath);
-
-                setHighlight(leftImage, rightImage, leftPagePath, rightPagePath);
-                rightPageData = new PageData(QuranConstants.naskh13LineDualPageSets[dualPagerPosition][1],true);
-                leftPageData = new PageData(QuranConstants.naskh13LineDualPageSets[dualPagerPosition][0], true);
-
-
-            } else {
-
-                leftImage.setVisibility(View.GONE);
-
-                rightPagePath = QuranConstants.ASSETSDIRECTORY + "/naskh_13_line/images/pg_" + 848 + ".png";
-
-                ImageUtils.getInstance().loadBitmap(rightPagePath, leftImage);
-                ImageUtils.getInstance().loadBitmap(rightPagePath, rightImage);
-
-                setHighlightSingle(leftImage, rightPagePath, true);
-                setHighlightSingle(rightImage, rightPagePath, true);
-
-                rightPageData = new PageData(848, true);
-
-
-            }
-
-        }
-        else {
-
-            if (dualPagerPosition < 302 && dualPagerPosition >= 0) {
-                leftPagePath = QuranConstants.ASSETSDIRECTORY + "/madani_15_line/images/pg_" + QuranConstants.madani15LineDualPageSets[dualPagerPosition][0] + ".png";
-                rightPagePath = QuranConstants.ASSETSDIRECTORY + "/madani_15_line/images/pg_" + QuranConstants.madani15LineDualPageSets[dualPagerPosition][1] + ".png";
-
-
-                loadImages(leftImage, rightImage, leftPagePath, rightPagePath);
-
-                setHighlight(leftImage, rightImage, leftPagePath, rightPagePath);
-                leftPageData = new PageData(QuranConstants.madani15LineDualPageSets[dualPagerPosition][0], false);
-                rightPageData = new PageData(QuranConstants.madani15LineDualPageSets[dualPagerPosition][1],false);
-            }
-
-
+        if (!quranStrategy.isDanglingPage(dualPagerPosition)) {
+            setHighlight(leftImage, rightImage, leftPagePath, rightPagePath);
+        } else {
+            leftImage.setVisibility(View.GONE);
+            setHighlightSingle(leftImage, rightPagePath, true);
+            setHighlightSingle(rightImage, rightPagePath, true);
         }
 
         return v;

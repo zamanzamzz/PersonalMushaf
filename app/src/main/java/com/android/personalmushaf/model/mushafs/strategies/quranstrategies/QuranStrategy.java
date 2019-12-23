@@ -1,6 +1,7 @@
 package com.android.personalmushaf.model.mushafs.strategies.quranstrategies;
 
 
+import com.android.personalmushaf.model.PageData;
 
 public interface QuranStrategy {
     int pageNumberToDualPagerPosition(int pageNumber);
@@ -20,4 +21,18 @@ public interface QuranStrategy {
     int getNumOfSinglePages();
 
     int getNumOfDualPages();
+
+    String getPagePath(int pageNumber);
+
+    PageData getPageData(int pageNumber);
+
+    String getRightPagePath(int dualPagerPosition);
+
+    String getLeftPagePath(int dualPagerPosition);
+
+    PageData getRightPageData(int dualPagerPosition);
+
+    PageData getLeftPageData(int dualPagerPosition);
+
+    boolean isDanglingPage(int dualPagerPosition);
 }

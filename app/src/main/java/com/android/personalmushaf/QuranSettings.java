@@ -5,8 +5,6 @@ import android.content.SharedPreferences;
 
 import androidx.preference.PreferenceManager;
 
-import com.android.personalmushaf.model.mushafs.mushafmetadata.MushafMetadata;
-import com.android.personalmushaf.model.mushafs.mushafmetadata.MushafMetadataFactory;
 import com.android.personalmushaf.model.mushafs.strategies.mushafstrategies.MushafStrategy;
 import com.android.personalmushaf.model.mushafs.strategies.mushafstrategies.MushafStrategyFactory;
 import com.android.personalmushaf.navigation.navigationdata.QuranConstants;
@@ -21,7 +19,6 @@ public class QuranSettings {
     private static boolean[] availableMushafs = {false, false, false};
     private static QuranSettings quranSettings;
     private MushafStrategy mushafStrategy;
-    private MushafMetadata mushafMetadata;
     private SharedPreferences preferences;
     private Integer mushafVersion;
     private Boolean isForceDualPage;
@@ -62,18 +59,6 @@ public class QuranSettings {
 
     public void setMushafStrategy(int mushaf) {
         mushafStrategy = MushafStrategyFactory.getMushafStrategy(mushaf);
-    }
-
-    public MushafMetadata getMushafMetadata(Context context) {
-        if (mushafMetadata == null) {
-            mushafMetadata = MushafMetadataFactory.getMushafMetadata(getMushafVersion(context));
-        }
-
-        return mushafMetadata;
-    }
-
-    public void setMushafMetadata(int mushaf) {
-        mushafMetadata = MushafMetadataFactory.getMushafMetadata(mushaf);
     }
 
     public Boolean getIsForceDualPage(Context context) {
