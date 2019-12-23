@@ -11,17 +11,18 @@ import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 import com.android.personalmushaf.QuranActivity;
 import com.android.personalmushaf.QuranSettings;
-import com.android.personalmushaf.navigation.navigationdata.QuranConstants;
+import com.android.personalmushaf.model.mushafs.strategies.quranstrategies.QuranStrategy;
 
 public class QuranPageAdapter extends FragmentStateAdapter {
 
-    private int mushafVersion;
+    private QuranStrategy quranStrategy;
     private int orientation;
     private boolean isForceDualPage;
 
-    public QuranPageAdapter(FragmentManager fm, Lifecycle lifecycle, Context context, int orientation) {
+    public QuranPageAdapter(FragmentManager fm, Lifecycle lifecycle, QuranStrategy quranStrategy,
+                            Context context, int orientation) {
         super(fm, lifecycle);
-        mushafVersion = QuranSettings.getInstance().getMushafVersion(context);
+        this.quranStrategy = quranStrategy;
         isForceDualPage = QuranSettings.getInstance().getIsForceDualPage(context);
         this.orientation = orientation;
     }
@@ -31,21 +32,20 @@ public class QuranPageAdapter extends FragmentStateAdapter {
     public Fragment createFragment(int position) {
         Fragment fragment;
         Bundle bundle;
-        int dualPagerPosition;
 
         if (QuranActivity.isLandscape(orientation) || isForceDualPage) {
             position++;
-            dualPagerPosition = position - 1;
+            int pagerPosition = position - 1;
             fragment = new QuranDualPageFragment();
             bundle = new Bundle();
-            bundle.putInt("dual_pager_position", dualPagerPosition);
+            bundle.putInt("dual_pager_position", pagerPosition);
             fragment.setArguments(bundle);
         } else {
             position++;
-            dualPagerPosition = mushafVersion == QuranSettings.MADANI15LINE ? position : position + 1;
+            int pageNumber = quranStrategy.getPageNumberFromPagerPosition(position);
             fragment = new QuranPageFragment();
             bundle = new Bundle();
-            bundle.putInt("page_number", dualPagerPosition);
+            bundle.putInt("page_number", pageNumber);
             fragment.setArguments(bundle);
         }
 
@@ -55,15 +55,9 @@ public class QuranPageAdapter extends FragmentStateAdapter {
     @Override
     public int getItemCount() {
         if (!QuranActivity.isLandscape(orientation) && !isForceDualPage) {
-            if (mushafVersion == QuranSettings.MADANI15LINE)
-                return 604;
-            else
-                return 847;
+            return quranStrategy.getNumOfSinglePages();
         } else {
-            if (mushafVersion == QuranSettings.MADANI15LINE)
-                return QuranConstants.madani15LineDualPageSets.length;
-            else
-                return QuranConstants.naskh13LineDualPageSets.length;
+            return quranStrategy.getNumOfDualPages();
         }
     }
 }

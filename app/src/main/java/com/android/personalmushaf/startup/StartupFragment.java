@@ -17,13 +17,13 @@ import androidx.preference.PreferenceManager;
 
 import com.android.personalmushaf.QuranSettings;
 import com.android.personalmushaf.R;
+import com.android.personalmushaf.model.mushafs.mushafmetadata.MushafMetadataFactory;
+import com.android.personalmushaf.model.mushafs.mushafmetadata.MushafMetadata;
 import com.android.personalmushaf.navigation.NavigationActivity;
 import com.android.personalmushaf.navigation.navigationdata.QuranConstants;
 import com.android.personalmushaf.util.FileUtils;
-import com.android.personalmushaf.widgets.QuranSinglePage;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
@@ -31,7 +31,6 @@ import com.google.firebase.storage.StorageReference;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.logging.Logger;
 
 public class StartupFragment extends Fragment {
     public StartupFragment() {
@@ -42,71 +41,90 @@ public class StartupFragment extends Fragment {
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_startup, container, false);
 
-        int drawableID = getArguments().getInt("drawable_id");
-        final String mushafDirectory = getArguments().getString("mushaf_directory");
-        String mushafStyleTitle = getArguments().getString("mushaf_style_title");
-        String mushafStyleDescription = getArguments().getString("mushaf_style_description");
+        final int mushafIndex = getArguments().getInt("mushaf", QuranSettings.MADANI15LINE);
+
+        final MushafMetadata mushafMetadata = MushafMetadataFactory.getMushafMetadata(mushafIndex);
 
         ImageView imageView = v.findViewById(R.id.page1);
         TextView title = v.findViewById(R.id.mushafStyleTitle);
         TextView description = v.findViewById(R.id.mushafStyleDescription);
 
-        title.setText(mushafStyleTitle);
-        description.setText(mushafStyleDescription);
+        title.setText(mushafMetadata.getName());
+        description.setText(mushafMetadata.getDescription());
 
-        imageView.setImageDrawable(v.getResources().getDrawable(drawableID, null));
+        imageView.setImageDrawable(v.getResources().getDrawable(mushafMetadata.getPreviewDrawableIDs()[0], null));
 
         final ProgressBar progressBar = v.findViewById(R.id.progress_horizontal);
         final Window window = getActivity().getWindow();
         v.findViewById(R.id.fab).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                window.setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
-                        WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
-                progressBar.setVisibility(View.VISIBLE);
-                FirebaseStorage storage = FirebaseStorage.getInstance();
-                StorageReference pathReference = storage.getReference().child(mushafDirectory + "/" + mushafDirectory + ".zip");
-                progressBar.setMax(100);
-                File root = new File(QuranConstants.ASSETSDIRECTORY);
-                if (!root.exists())
-                    root.mkdir();
-                else if (!root.isDirectory()){
-                    root.delete();
-                    root.mkdir();
+                if (QuranSettings.getInstance().isMushafAvailable(mushafIndex)) {
+                    updateQuranSettings(mushafIndex);
+                    startActivity(new Intent(getContext(), NavigationActivity.class));
+                    getActivity().finishAffinity();
+                } else {
+                    downloadAndUnpackZip(mushafMetadata.getDirectoryName(), mushafIndex, window, progressBar);
                 }
-                final File file = new File(QuranConstants.ASSETSDIRECTORY + "/" + mushafDirectory + ".zip");
-                pathReference.getFile(file).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-                    @Override
-                    public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                        File targetDir = new File(QuranConstants.ASSETSDIRECTORY);
-                        targetDir.mkdir();
-                        try {
-                            FileUtils.unzip(file, targetDir);
-                        } catch (IOException e) {
-                        } finally {
-                            SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getContext());
-                            window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
-                            pref.edit().putBoolean("firststart", false).apply();
-                            pref.edit().putString("mushaf", "0").apply();
-                            file.delete();
-                            startActivity(new Intent(getContext(), NavigationActivity.class));
-                            getActivity().finishAffinity();
-                        }
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
-                    }
-                }).addOnProgressListener(new OnProgressListener<FileDownloadTask.TaskSnapshot>() {
-                    @Override
-                    public void onProgress(@NonNull FileDownloadTask.TaskSnapshot taskSnapshot) {
-                        progressBar.setMax((int) taskSnapshot.getTotalByteCount());
-                        progressBar.setProgress((int) taskSnapshot.getBytesTransferred());
-                    }
-                });
             }
         });
         return v;
+    }
+
+    private void downloadAndUnpackZip(String mushafDirectory, final int mushafIndex, final Window window, final ProgressBar progressBar) {
+        setupUIForDownload(window, progressBar);
+        StorageReference pathReference = getZipStorageReference(mushafDirectory);
+        final File targetDir = new File(QuranConstants.ASSETSDIRECTORY);
+        FileUtils.validateDirectory(targetDir);
+        final File zipFile = new File(QuranConstants.ASSETSDIRECTORY + "/" + mushafDirectory + ".zip");
+        FileDownloadTask task = pathReference.getFile(zipFile);
+        progressBar.setMax((int) task.getSnapshot().getTotalByteCount());
+        task.addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                try {
+                    FileUtils.unzip(zipFile, targetDir, progressBar);
+                } catch (IOException e) {
+                } finally {
+                    resetUI(window, progressBar);
+                    updateQuranSettings(mushafIndex);
+                    zipFile.delete();
+                    startActivity(new Intent(getContext(), NavigationActivity.class));
+                    getActivity().finishAffinity();
+                }
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                resetUI(window, progressBar);
+            }
+        }).addOnProgressListener(new OnProgressListener<FileDownloadTask.TaskSnapshot>() {
+            @Override
+            public void onProgress(@NonNull FileDownloadTask.TaskSnapshot taskSnapshot) {
+                progressBar.setProgress((int) taskSnapshot.getBytesTransferred());
+            }
+        });
+    }
+
+    private StorageReference getZipStorageReference(String mushafDirectory) {
+        return FirebaseStorage.getInstance().getReference()
+                .child(mushafDirectory + "/" + mushafDirectory + ".zip");
+    }
+
+    private void setupUIForDownload(Window window, ProgressBar progressBar) {
+        window.setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+                WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+        progressBar.setVisibility(View.VISIBLE);
+    }
+
+    private void resetUI(Window window, ProgressBar progressBar) {
+        window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+        progressBar.setVisibility(View.GONE);
+    }
+
+    private void updateQuranSettings(int mushafIndex) {
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getContext());
+        pref.edit().putBoolean("firststart", false).apply();
+        pref.edit().putString("mushaf", Integer.toString(mushafIndex)).apply();
     }
 }

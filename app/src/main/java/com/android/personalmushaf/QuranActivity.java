@@ -1,5 +1,6 @@
 package com.android.personalmushaf;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
@@ -20,9 +21,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.viewpager2.widget.ViewPager2;
 
-import com.android.personalmushaf.quranactivitystrategies.MadaniQuranActivityStrategy;
-import com.android.personalmushaf.quranactivitystrategies.Naskh13QuranActivityStrategy;
-import com.android.personalmushaf.quranactivitystrategies.QuranActivityStrategy;
+import com.android.personalmushaf.model.mushafs.strategies.quranstrategies.QuranStrategy;
 import com.android.personalmushaf.quranpage.QuranPageAdapter;
 
 
@@ -46,7 +45,7 @@ public class QuranActivity extends AppCompatActivity {
 
     boolean isSmoothVolumeKeyNavigation;
     boolean isForceDualPage;
-    private QuranActivityStrategy strategy;
+    private QuranStrategy quranStrategy;
 
 
     @Override
@@ -221,16 +220,20 @@ public class QuranActivity extends AppCompatActivity {
 
     private void setupSinglePager() {
         pager = findViewById(R.id.pager);
-        pagerAdapter = new QuranPageAdapter(getSupportFragmentManager(), getLifecycle(), this, currentOrientation);
+
+        pagerAdapter = new QuranPageAdapter(getSupportFragmentManager(), getLifecycle(), quranStrategy,
+                                    this, currentOrientation);
         pager.setAdapter(pagerAdapter);
         pager.setOffscreenPageLimit(1);
         pager.setCurrentItem(pageNumberToSinglePagerPosition(pageNumber), false);
         pager.registerOnPageChangeCallback(singlePageChangeCallback);
     }
 
+    @SuppressLint("SourceLockedOrientationActivity")
     private void setupDualPager() {
         pager = findViewById(R.id.pager);
-        pagerAdapter = new QuranPageAdapter(getSupportFragmentManager(), getLifecycle(), this, currentOrientation);
+        pagerAdapter = new QuranPageAdapter(getSupportFragmentManager(), getLifecycle(), quranStrategy,
+                                this, currentOrientation);
         pager.setAdapter(pagerAdapter);
         pager.setOffscreenPageLimit(1);
         pager.setCurrentItem(pageNumberToDualPagerPosition(pageNumber), false);
@@ -325,36 +328,33 @@ public class QuranActivity extends AppCompatActivity {
     }
 
     private void setStrategy() {
-        if (QuranSettings.getInstance().getMushafVersion(this) == QuranSettings.MADANI15LINE)
-            strategy = new MadaniQuranActivityStrategy();
-        else
-            strategy = new Naskh13QuranActivityStrategy();
+        quranStrategy = QuranSettings.getInstance().getMushafStrategy(this).getQuranStrategy();
     }
 
     private int pageNumberToDualPagerPosition(int pageNumber) {
-        return strategy.pageNumberToDualPagerPosition(pageNumber);
+        return quranStrategy.pageNumberToDualPagerPosition(pageNumber);
     }
 
     private int dualPagerPositionToPageNumber(int dualPagerPosition) {
-        return strategy.dualPagerPositionToPageNumber(dualPagerPosition);
+        return quranStrategy.dualPagerPositionToPageNumber(dualPagerPosition);
     }
 
     private int pageNumberToSinglePagerPosition(int pageNumber) {
-        return strategy.pageNumberToSinglePagerPosition(pageNumber);
+        return quranStrategy.pageNumberToSinglePagerPosition(pageNumber);
     }
 
     private int singlePagerPositionToPageNumber(int position) {
-        return strategy.singlePagerPositionToPageNumber(position);
+        return quranStrategy.singlePagerPositionToPageNumber(position);
     }
 
     private void flipPageBackward(int pagesToFlip) {
-        if (pageNumber - pagesToFlip >= strategy.minPage()) {
+        if (pageNumber - pagesToFlip >= quranStrategy.minPage()) {
             pager.setCurrentItem(pageNumberToDualPagerPosition(pageNumber - pagesToFlip), isSmoothVolumeKeyNavigation);
         }
     }
 
     private void flipPageForward(int pagesToFlip) {
-        if (pageNumber + pagesToFlip <= strategy.maxPage()) {
+        if (pageNumber + pagesToFlip <= quranStrategy.maxPage()) {
             pager.setCurrentItem(pageNumberToDualPagerPosition(pageNumber + pagesToFlip), isSmoothVolumeKeyNavigation);
         }
     }

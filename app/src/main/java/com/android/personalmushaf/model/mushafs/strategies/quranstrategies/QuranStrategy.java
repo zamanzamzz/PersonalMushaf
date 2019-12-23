@@ -1,8 +1,8 @@
-package com.android.personalmushaf.quranactivitystrategies;
+package com.android.personalmushaf.model.mushafs.strategies.quranstrategies;
 
 
 
-public interface QuranActivityStrategy {
+public interface QuranStrategy {
     int pageNumberToDualPagerPosition(int pageNumber);
 
     int dualPagerPositionToPageNumber(int dualPagerPosition);
@@ -14,4 +14,10 @@ public interface QuranActivityStrategy {
     int minPage();
 
     int maxPage();
+
+    int getPageNumberFromPagerPosition(int position);
+
+    int getNumOfSinglePages();
+
+    int getNumOfDualPages();
 }

@@ -11,12 +11,12 @@
     </string-array>
 
     <string-array name="mushaf_entries">
-        <item>Madani 15 Line</item>
         <item>Naskh 13 Line</item>
+        <item>Madani 15 Line</item>
     </string-array>
 
     <string-array name="mushaf_values">
         <item>0</item>
-        <item>1</item>
+        <item>2</item>
     </string-array>
 </resources>

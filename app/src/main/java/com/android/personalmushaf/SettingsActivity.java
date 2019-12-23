@@ -101,7 +101,10 @@ public class SettingsActivity extends AppCompatActivity implements
             mushafVersion.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
                 @Override
                 public boolean onPreferenceChange(Preference preference, Object newValue) {
-                    QuranSettings.getInstance().setMushafVersion(Integer.parseInt((String) newValue));
+                    int mushaf = Integer.parseInt((String) newValue);
+                    QuranSettings.getInstance().setMushafVersion(mushaf);
+                    QuranSettings.getInstance().setMushafStrategy(mushaf);
+                    QuranSettings.getInstance().setMushafMetadata(mushaf);
                     return true;
                 }
             });

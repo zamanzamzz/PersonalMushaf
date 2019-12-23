@@ -1,8 +1,10 @@
-package com.android.personalmushaf.quranactivitystrategies;
+package com.android.personalmushaf.model.mushafs.strategies.quranstrategies;
 
-public class Naskh13QuranActivityStrategy implements QuranActivityStrategy {
+import com.android.personalmushaf.navigation.navigationdata.QuranConstants;
 
-    public Naskh13QuranActivityStrategy() {
+public class Naskh13QuranStrategy implements QuranStrategy {
+
+    public Naskh13QuranStrategy() {
 
     }
 
@@ -31,5 +33,17 @@ public class Naskh13QuranActivityStrategy implements QuranActivityStrategy {
 
     public int maxPage() {
         return 848;
+    }
+
+    public int getPageNumberFromPagerPosition(int position) {
+        return position + 1;
+    }
+
+    public int getNumOfSinglePages() {
+        return 847;
+    }
+
+    public int getNumOfDualPages() {
+        return QuranConstants.naskh13LineDualPageSets.length;
     }
 }

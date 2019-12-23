@@ -1,8 +1,6 @@
 package com.android.personalmushaf.navigation;
 
-import android.Manifest;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -13,13 +11,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.android.personalmushaf.QuranSettings;
 import com.android.personalmushaf.R;
 import com.android.personalmushaf.SettingsActivity;
+import com.android.personalmushaf.model.mushafs.strategies.navigationstrategies.NavigationStrategy;
 import com.android.personalmushaf.navigation.navigationdata.QuranConstants;
 import com.android.personalmushaf.navigation.tabs.juzquartertab.JuzQuarterFragment;
 import com.android.personalmushaf.navigation.tabs.juztab.JuzFragment;
@@ -28,21 +25,11 @@ import com.android.personalmushaf.navigation.tabs.surahtab.SurahFragment;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
-
 public class NavigationActivity extends AppCompatActivity {
-
-    Toolbar navigationToolbar;
-    TabLayout tabLayout;
-    ViewPager2 viewPager;
-    ViewPagerAdapter viewPagerAdapter;
-    JuzFragment juzFragment;
-    JuzQuarterFragment juzQuarterFragment;
-    RukuContentFragment rukuContentFragment;
-    SurahFragment surahFragment;
-    int mushafVersion;
-    TextView juzStart;
+    NavigationStrategy navigationStrategy;
     int juzNumber;
     int currentPagerPosition;
+    ViewPagerAdapter viewPagerAdapter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -50,19 +37,19 @@ public class NavigationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_navigation);
 
-        navigationToolbar = findViewById(R.id.navigation_toolbar);
+        Toolbar navigationToolbar = findViewById(R.id.navigation_toolbar);
         setSupportActionBar(navigationToolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
-        mushafVersion = QuranSettings.getInstance().getMushafVersion(this);
+        navigationStrategy = QuranSettings.getInstance().getMushafStrategy(this).getNavivationStrategy();
 
         Intent intent = getIntent();
 
-        this.juzNumber = intent.getIntExtra("juz number", -1);
-        this.currentPagerPosition = 0;
+        juzNumber = intent.getIntExtra("juz number", -1);
+        currentPagerPosition = 0;
 
-        tabLayout = findViewById(R.id.tab_layout);
-        viewPager = findViewById(R.id.viewpager);
+        TabLayout tabLayout = findViewById(R.id.tab_layout);
+        ViewPager2 viewPager = findViewById(R.id.viewpager);
         viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager(), getLifecycle());
 
         viewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
@@ -76,8 +63,8 @@ public class NavigationActivity extends AppCompatActivity {
             TextView title = findViewById(R.id.juz_title_toolbar);
             title.setText("Qur'an Contents");
 
-            juzFragment = new JuzFragment();
-            surahFragment = new SurahFragment();
+            JuzFragment juzFragment = new JuzFragment();
+            SurahFragment surahFragment = new SurahFragment();
 
             Bundle arguments = new Bundle();
             arguments.putInt("juz number", juzNumber);
@@ -88,30 +75,22 @@ public class NavigationActivity extends AppCompatActivity {
             viewPagerAdapter.addFragment(juzFragment, "Juz");
             viewPagerAdapter.addFragment(surahFragment, "Surah");
         } else {
-            String title;
-
-            if (mushafVersion == QuranSettings.NASKH13LINE)
-                title = QuranConstants.arabicNumerals[juzNumber - 1] + "  | " +
-                        QuranConstants.juzInfo[juzNumber - 1][0] + " pages";
-            else
-                title = QuranConstants.arabicNumerals[juzNumber - 1] + "  | " +
-                        QuranConstants.juzInfo[juzNumber - 1][1] + " pages";
 
             TextView juzTitle = findViewById(R.id.juz_title_toolbar);
-            juzTitle.setText(title);
+            setJuzTitle(juzTitle, juzNumber);
 
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_keyboard_backspace_black_24dp);
             getSupportActionBar().setDisplayShowTitleEnabled(false);
             getSupportActionBar().setHomeButtonEnabled(true);
 
-            juzStart = findViewById(R.id.juz_start_toolbar);
+            TextView juzStart = findViewById(R.id.juz_start_toolbar);
 
             juzStart.setText(juzStart.getResources().getStringArray(R.array.juz_names)[juzNumber - 1]);
 
-            juzQuarterFragment = new JuzQuarterFragment();
-            rukuContentFragment = new RukuContentFragment();
-            surahFragment = new SurahFragment();
+            JuzQuarterFragment juzQuarterFragment = new JuzQuarterFragment();
+            RukuContentFragment rukuContentFragment = new RukuContentFragment();
+            SurahFragment surahFragment = new SurahFragment();
 
             Bundle arguments = new Bundle();
             arguments.putInt("juz number", juzNumber);
@@ -121,8 +100,7 @@ public class NavigationActivity extends AppCompatActivity {
             surahFragment.setArguments(arguments);
 
             viewPagerAdapter.addFragment(juzQuarterFragment, "Quarter");
-            if (mushafVersion == QuranSettings.NASKH13LINE)
-                viewPagerAdapter.addFragment(rukuContentFragment, "Ruku");
+            navigationStrategy.setViewPagerTabs(viewPagerAdapter, rukuContentFragment);
             viewPagerAdapter.addFragment(surahFragment, "Surah");
         }
 
@@ -142,8 +120,6 @@ public class NavigationActivity extends AppCompatActivity {
             MenuInflater inflater = getMenuInflater();
 
             inflater.inflate(R.menu.settings, menu);
-        } else {
-            juzStart.setPadding(0, 0, 30, 0);
         }
         return true;
     }
@@ -168,5 +144,12 @@ public class NavigationActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void setJuzTitle(TextView juzTitle, int juzNumber) {
+        String title = QuranConstants.arabicNumerals[juzNumber - 1] + "  | " +
+                QuranConstants.juzInfo[juzNumber - 1][navigationStrategy.getJuzLengthIndex()] + " pages";
+
+        juzTitle.setText(title);
     }
 }

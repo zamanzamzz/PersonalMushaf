@@ -15,17 +15,12 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.preference.PreferenceManager;
 
+import com.android.personalmushaf.QuranSettings;
 import com.android.personalmushaf.R;
 import com.android.personalmushaf.navigation.NavigationActivity;
-import com.android.personalmushaf.navigation.navigationdata.QuranConstants;
-import com.android.personalmushaf.util.FileUtils;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 public class StartupMushafTypeActivity extends AppCompatActivity {
     private AlertDialog mushafTypeDialog;
@@ -50,7 +45,7 @@ public class StartupMushafTypeActivity extends AppCompatActivity {
     private void setMushafType() {
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
 
-        if(pref.getBoolean("firststart", true) || !isAnyMushafAvailable()){
+        if(!isAnyMushafAvailable() || pref.getBoolean("firststart", true)){
 
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setCancelable(false);
@@ -61,14 +56,7 @@ public class StartupMushafTypeActivity extends AppCompatActivity {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     Intent chooseMushafStyle = new Intent(getApplicationContext(), StartupMushafStyleActivity.class);
-                    switch (which) {
-                        case 0:
-                            chooseMushafStyle.putExtra("mushaf_type", 13);// 13 Lines
-                            break;
-                        case 1:
-                            chooseMushafStyle.putExtra("mushaf_type", 15);// 13 Lines
-                            break;// 15 Lines
-                    }
+                    chooseMushafStyle.putExtra("mushaf_type", which);
                     startActivity(chooseMushafStyle);
                 }
             });
@@ -82,10 +70,7 @@ public class StartupMushafTypeActivity extends AppCompatActivity {
     }
 
     private boolean isAnyMushafAvailable() {
-        if (FileUtils.checkRootDataDirectory())
-            return FileUtils.getAvailableMushafs(FileUtils.getExistingMushafDirectories()).size() != 0;
-
-        return false;
+        return QuranSettings.getInstance().updateAvailableMushafs();
     }
 
     private boolean checkPermission(){
