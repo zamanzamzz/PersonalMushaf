@@ -11,7 +11,7 @@ import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 import com.android.personalmushaf.QuranActivity;
 import com.android.personalmushaf.QuranSettings;
-import com.android.personalmushaf.model.mushafs.strategies.quranstrategies.QuranStrategy;
+import com.android.personalmushaf.mushafinterfaces.strategies.QuranStrategy;
 
 public class QuranPageAdapter extends FragmentStateAdapter {
 

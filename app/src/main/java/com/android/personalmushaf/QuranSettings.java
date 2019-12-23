@@ -5,8 +5,8 @@ import android.content.SharedPreferences;
 
 import androidx.preference.PreferenceManager;
 
-import com.android.personalmushaf.model.mushafs.strategies.mushafstrategies.MushafStrategy;
-import com.android.personalmushaf.model.mushafs.strategies.mushafstrategies.MushafStrategyFactory;
+import com.android.personalmushaf.mushafinterfaces.strategies.MushafStrategy;
+import com.android.personalmushaf.mushafinterfaces.strategies.MushafStrategyFactory;
 import com.android.personalmushaf.navigation.navigationdata.QuranConstants;
 import com.android.personalmushaf.util.FileUtils;
 

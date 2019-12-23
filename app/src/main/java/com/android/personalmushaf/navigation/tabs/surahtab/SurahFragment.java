@@ -12,8 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.personalmushaf.QuranSettings;
 import com.android.personalmushaf.R;
-import com.android.personalmushaf.model.mushafs.strategies.navigationstrategies.NavigationStrategy;
-import com.android.personalmushaf.navigation.navigationdata.QuranConstants;
+import com.android.personalmushaf.mushafinterfaces.strategies.NavigationStrategy;
 
 
 /**
@@ -31,7 +30,9 @@ public class SurahFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         int juzNumber = getArguments().getInt("juz number");
-        int[][] dataset = QuranConstants.getSurahsInJuz(juzNumber);
+        NavigationStrategy navigationStrategy = QuranSettings.getInstance().getMushafStrategy(getContext()).getNavivationStrategy();
+
+        int[][] dataset = navigationStrategy.getSurahsInJuz(juzNumber);
 
         View v = inflater.inflate(R.layout.fragment_tab, container, false);
         RecyclerView surahRecyclerView = v.findViewById(R.id.tab_recycler_view);
@@ -42,7 +43,6 @@ public class SurahFragment extends Fragment {
         if (dataset.length > 0)
             System.arraycopy(getResources().getStringArray(R.array.surah_names), dataset[0][0] - 1, prefixes, 0, dataset.length);
 
-        NavigationStrategy navigationStrategy = QuranSettings.getInstance().getMushafStrategy(getContext()).getNavivationStrategy();
         SurahAdapter adapter = new SurahAdapter(dataset, prefixes, navigationStrategy);
         surahRecyclerView.setAdapter(adapter);
         surahRecyclerView.setLayoutManager(surahLayoutManager);

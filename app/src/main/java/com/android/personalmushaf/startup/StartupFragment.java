@@ -18,8 +18,8 @@ import androidx.preference.PreferenceManager;
 
 import com.android.personalmushaf.QuranSettings;
 import com.android.personalmushaf.R;
-import com.android.personalmushaf.model.mushafs.mushafmetadata.MushafMetadata;
-import com.android.personalmushaf.model.mushafs.mushafmetadata.MushafMetadataFactory;
+import com.android.personalmushaf.mushafinterfaces.mushafmetadata.MushafMetadata;
+import com.android.personalmushaf.mushafinterfaces.mushafmetadata.MushafMetadataFactory;
 import com.android.personalmushaf.navigation.NavigationActivity;
 import com.android.personalmushaf.navigation.navigationdata.QuranConstants;
 import com.android.personalmushaf.util.FileUtils;

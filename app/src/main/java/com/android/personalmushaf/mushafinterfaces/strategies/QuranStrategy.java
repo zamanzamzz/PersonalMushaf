@@ -1,4 +1,4 @@
-package com.android.personalmushaf.model.mushafs.strategies.quranstrategies;
+package com.android.personalmushaf.mushafinterfaces.strategies;
 
 
 import com.android.personalmushaf.model.PageData;

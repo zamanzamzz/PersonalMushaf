@@ -1,11 +1,10 @@
-package com.android.personalmushaf.model.mushafs.strategies.mushafstrategies;
+package com.android.madani15;
 
 import com.android.personalmushaf.QuranSettings;
-import com.android.personalmushaf.model.mushafs.mushafmetadata.MushafMetadataFactory;
-import com.android.personalmushaf.model.mushafs.strategies.navigationstrategies.Madani15NavigationStrategy;
-import com.android.personalmushaf.model.mushafs.strategies.navigationstrategies.NavigationStrategy;
-import com.android.personalmushaf.model.mushafs.strategies.quranstrategies.Madani15QuranStrategy;
-import com.android.personalmushaf.model.mushafs.strategies.quranstrategies.QuranStrategy;
+import com.android.personalmushaf.mushafinterfaces.mushafmetadata.MushafMetadataFactory;
+import com.android.personalmushaf.mushafinterfaces.strategies.MushafStrategy;
+import com.android.personalmushaf.mushafinterfaces.strategies.NavigationStrategy;
+import com.android.personalmushaf.mushafinterfaces.strategies.QuranStrategy;
 
 public class Madani15Strategy implements MushafStrategy {
 

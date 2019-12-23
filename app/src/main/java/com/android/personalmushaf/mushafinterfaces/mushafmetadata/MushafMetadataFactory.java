@@ -1,5 +1,7 @@
-package com.android.personalmushaf.model.mushafs.mushafmetadata;
+package com.android.personalmushaf.mushafinterfaces.mushafmetadata;
 
+import com.android.madani15.Madani15MushafMetadata;
+import com.android.naskh13.Naskh13MushafMetadata;
 import com.android.personalmushaf.QuranSettings;
 
 public class MushafMetadataFactory {

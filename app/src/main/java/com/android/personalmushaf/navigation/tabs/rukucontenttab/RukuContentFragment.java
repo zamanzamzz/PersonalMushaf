@@ -10,22 +10,15 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.personalmushaf.QuranSettings;
 import com.android.personalmushaf.R;
-import com.android.personalmushaf.navigation.navigationdata.QuranConstants;
+import com.android.personalmushaf.mushafinterfaces.strategies.NavigationStrategy;
 
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class RukuContentFragment extends Fragment {
-
-    private View v;
-    private RecyclerView juzRecyclerView;
-    private RukuContentAdapter adapter;
-    private int[][] dataset;
-    private String[] prefixes;
-    private int juzNumber;
-
     public RukuContentFragment() {
         // Required empty public constructor
     }
@@ -34,17 +27,16 @@ public class RukuContentFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        v = inflater.inflate(R.layout.fragment_tab, container, false);
+        View v = inflater.inflate(R.layout.fragment_tab, container, false);
 
-        juzNumber = getArguments().getInt("juz number");
+        int juzNumber = getArguments().getInt("juz number");
 
-        juzRecyclerView = v.findViewById(R.id.tab_recycler_view);
+        NavigationStrategy navigationStrategy = QuranSettings.getInstance().getMushafStrategy(getContext()).getNavivationStrategy();
+
+        RecyclerView juzRecyclerView = v.findViewById(R.id.tab_recycler_view);
         juzRecyclerView.setHasFixedSize(true);
 
-        dataset = QuranConstants.rukuInfo[juzNumber-1];
-        prefixes = v.getResources().getStringArray(v.getResources().getIdentifier("juz_" + (juzNumber - 1), "array", v.getContext().getPackageName()));
-
-        adapter = new RukuContentAdapter(dataset, prefixes);
+        RukuContentAdapter adapter = navigationStrategy.getRukuContentAdapter(juzNumber-1, v);
         juzRecyclerView.setAdapter(adapter);
 
         LinearLayoutManager juzLayoutManager = new LinearLayoutManager(getContext());

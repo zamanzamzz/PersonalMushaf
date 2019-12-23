@@ -12,7 +12,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.andexert.library.RippleView;
 import com.android.personalmushaf.QuranActivity;
 import com.android.personalmushaf.R;
-import com.android.personalmushaf.navigation.navigationdata.QuranConstants;
 
 public class RukuContentAdapter extends RecyclerView.Adapter<RukuContentAdapter.JuzViewHolder> {
     private int[][] dataset;
@@ -54,7 +53,7 @@ public class RukuContentAdapter extends RecyclerView.Adapter<RukuContentAdapter.
 
         int[] rukuInfo = dataset[position];
 
-        rukuNumber.setText(QuranConstants.arabicNumerals[position]);
+        rukuNumber.setText(layout.getResources().getStringArray(R.array.arabic_numerals)[position]);
         ayahRange.setText(rukuInfo[0] + ":" + rukuInfo[1]);
         rukuPageNumber.setText(Integer.toString(rukuInfo[2]));
         rukuPrefix.setText(prefixes[position]);

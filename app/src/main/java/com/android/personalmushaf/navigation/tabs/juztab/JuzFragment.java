@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.personalmushaf.QuranSettings;
 import com.android.personalmushaf.R;
-import com.android.personalmushaf.model.mushafs.strategies.navigationstrategies.NavigationStrategy;
+import com.android.personalmushaf.mushafinterfaces.strategies.NavigationStrategy;
 
 
 /**

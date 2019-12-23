@@ -16,8 +16,7 @@ import androidx.viewpager2.widget.ViewPager2;
 import com.android.personalmushaf.QuranSettings;
 import com.android.personalmushaf.R;
 import com.android.personalmushaf.SettingsActivity;
-import com.android.personalmushaf.model.mushafs.strategies.navigationstrategies.NavigationStrategy;
-import com.android.personalmushaf.navigation.navigationdata.QuranConstants;
+import com.android.personalmushaf.mushafinterfaces.strategies.NavigationStrategy;
 import com.android.personalmushaf.navigation.tabs.juzquartertab.JuzQuarterFragment;
 import com.android.personalmushaf.navigation.tabs.juztab.JuzFragment;
 import com.android.personalmushaf.navigation.tabs.rukucontenttab.RukuContentFragment;
@@ -147,8 +146,7 @@ public class NavigationActivity extends AppCompatActivity {
     }
 
     public void setJuzTitle(TextView juzTitle, int juzNumber) {
-        String title = QuranConstants.arabicNumerals[juzNumber - 1] + "  | " +
-                QuranConstants.juzInfo[juzNumber - 1][navigationStrategy.getJuzLengthIndex()] + " pages";
+        String title = getResources().getStringArray(R.array.arabic_numerals)[juzNumber - 1] + "  | " + navigationStrategy.getJuzLength(juzNumber) + " pages";
 
         juzTitle.setText(title);
     }

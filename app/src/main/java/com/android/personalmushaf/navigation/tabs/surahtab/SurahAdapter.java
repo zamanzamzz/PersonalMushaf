@@ -13,12 +13,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.andexert.library.RippleView;
 import com.android.personalmushaf.QuranActivity;
 import com.android.personalmushaf.R;
-import com.android.personalmushaf.model.mushafs.strategies.navigationstrategies.NavigationStrategy;
-import com.android.personalmushaf.navigation.navigationdata.QuranConstants;
+import com.android.personalmushaf.mushafinterfaces.strategies.NavigationStrategy;
 
 public class SurahAdapter extends RecyclerView.Adapter<SurahAdapter.SurahViewHolder> {
     private int[][] dataset;
-    private int pageNumberIndex;
     private String[] prefixes;
 
     public static class SurahViewHolder extends RecyclerView.ViewHolder {
@@ -32,7 +30,6 @@ public class SurahAdapter extends RecyclerView.Adapter<SurahAdapter.SurahViewHol
     public SurahAdapter(int[][] dataset, String[] prefixes, NavigationStrategy navigationStrategy) {
         this.dataset = dataset;
         this.prefixes = prefixes;
-        this.pageNumberIndex = navigationStrategy.getSurahPageNumberIndex();
     }
 
     @Override
@@ -57,13 +54,13 @@ public class SurahAdapter extends RecyclerView.Adapter<SurahAdapter.SurahViewHol
 
         final int[] surahInfo = dataset[position];
 
-        String origin = surahInfo[2] == 1 ? "مكي" : "مدني";
+        String origin = surahInfo[1] == 1 ? "مكي" : "مدني";
 
-        final int pageNumber = surahInfo[pageNumberIndex];
+        final int pageNumber = surahInfo[2];
 
         surahStart.setText(prefixes[position]);
         surahPageNumber.setText(Integer.toString(pageNumber));
-        surahNumber.setText(QuranConstants.arabicNumeralsThreeDigits[position]);
+        surahNumber.setText(layout.getResources().getStringArray(R.array.three_digit_arabic_numerals)[position]);
         surahOrigin.setText(origin);
 
         alternateBackgroundColor(layout, position);

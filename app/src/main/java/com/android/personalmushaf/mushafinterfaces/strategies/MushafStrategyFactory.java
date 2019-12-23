@@ -1,5 +1,7 @@
-package com.android.personalmushaf.model.mushafs.strategies.mushafstrategies;
+package com.android.personalmushaf.mushafinterfaces.strategies;
 
+import com.android.madani15.Madani15Strategy;
+import com.android.naskh13.Naskh13Strategy;
 import com.android.personalmushaf.QuranSettings;
 
 public class MushafStrategyFactory {

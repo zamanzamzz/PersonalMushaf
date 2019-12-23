@@ -21,7 +21,7 @@ import com.android.personalmushaf.R;
 import com.android.personalmushaf.model.Ayah;
 import com.android.personalmushaf.model.AyahBounds;
 import com.android.personalmushaf.model.PageData;
-import com.android.personalmushaf.model.mushafs.strategies.quranstrategies.QuranStrategy;
+import com.android.personalmushaf.mushafinterfaces.strategies.QuranStrategy;
 import com.android.personalmushaf.util.ImageUtils;
 
 import java.util.List;

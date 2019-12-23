@@ -12,14 +12,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.andexert.library.RippleView;
 import com.android.personalmushaf.QuranActivity;
 import com.android.personalmushaf.R;
-import com.android.personalmushaf.model.mushafs.strategies.navigationstrategies.NavigationStrategy;
+import com.android.personalmushaf.mushafinterfaces.strategies.NavigationStrategy;
 import com.android.personalmushaf.navigation.NavigationActivity;
-import com.android.personalmushaf.navigation.navigationdata.QuranConstants;
 
 public class JuzAdapter extends RecyclerView.Adapter<JuzAdapter.JuzViewHolder> {
     private int[][] dataSet;
-    private int lengthIndex;
-    private int pageNumberIndex;
     private String[] juzNames;
 
     public static class JuzViewHolder extends RecyclerView.ViewHolder {
@@ -32,9 +29,7 @@ public class JuzAdapter extends RecyclerView.Adapter<JuzAdapter.JuzViewHolder> {
 
     public JuzAdapter(String[] juzNames, NavigationStrategy navigationStrategy) {
         this.juzNames = juzNames;
-        this.dataSet = QuranConstants.juzInfo;
-        this.lengthIndex = navigationStrategy.getJuzLengthIndex();
-        this.pageNumberIndex = navigationStrategy.getJuzPageNumberIndex();
+        this.dataSet = navigationStrategy.getJuzInfo();
     }
 
     @Override
@@ -60,12 +55,12 @@ public class JuzAdapter extends RecyclerView.Adapter<JuzAdapter.JuzViewHolder> {
 
         int[] juzInfo = dataSet[position];
 
-        String length = juzInfo[lengthIndex] + " pages";
+        String length = juzInfo[0] + " pages";
 
-        juz.setText(QuranConstants.arabicNumerals[position]);
+        juz.setText(layout.getResources().getStringArray(R.array.arabic_numerals)[position]);
         juzLength.setText(length);
         juzStart.setText(juzNames[position]);
-        juzPageNumber.setText(Integer.toString(juzInfo[pageNumberIndex]));
+        juzPageNumber.setText(Integer.toString(juzInfo[1]));
 
         alternateBackgroundColor(layout, position);
 
@@ -126,7 +121,7 @@ public class JuzAdapter extends RecyclerView.Adapter<JuzAdapter.JuzViewHolder> {
     private boolean juzToPage(RippleView rippleView, int juzNumber) {
         final Intent goToJuz = new Intent(rippleView.getContext(), QuranActivity.class);
 
-        goToJuz.putExtra("new page number", Integer.valueOf(dataSet[juzNumber-1][pageNumberIndex]));
+        goToJuz.putExtra("new page number", Integer.valueOf(dataSet[juzNumber-1][1]));
 
         rippleView.setOnRippleCompleteListener(new RippleView.OnRippleCompleteListener() {
             @Override

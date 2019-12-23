@@ -21,7 +21,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.viewpager2.widget.ViewPager2;
 
-import com.android.personalmushaf.model.mushafs.strategies.quranstrategies.QuranStrategy;
+import com.android.personalmushaf.mushafinterfaces.strategies.QuranStrategy;
 import com.android.personalmushaf.quranpage.QuranPageAdapter;
 
 

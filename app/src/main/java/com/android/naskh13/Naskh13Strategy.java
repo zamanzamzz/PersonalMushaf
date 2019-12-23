@@ -1,11 +1,10 @@
-package com.android.personalmushaf.model.mushafs.strategies.mushafstrategies;
+package com.android.naskh13;
 
 import com.android.personalmushaf.QuranSettings;
-import com.android.personalmushaf.model.mushafs.mushafmetadata.MushafMetadataFactory;
-import com.android.personalmushaf.model.mushafs.strategies.navigationstrategies.Naskh13NavigationStrategy;
-import com.android.personalmushaf.model.mushafs.strategies.navigationstrategies.NavigationStrategy;
-import com.android.personalmushaf.model.mushafs.strategies.quranstrategies.Naskh13QuranStrategy;
-import com.android.personalmushaf.model.mushafs.strategies.quranstrategies.QuranStrategy;
+import com.android.personalmushaf.mushafinterfaces.mushafmetadata.MushafMetadataFactory;
+import com.android.personalmushaf.mushafinterfaces.strategies.MushafStrategy;
+import com.android.personalmushaf.mushafinterfaces.strategies.NavigationStrategy;
+import com.android.personalmushaf.mushafinterfaces.strategies.QuranStrategy;
 
 public class Naskh13Strategy implements MushafStrategy {
 

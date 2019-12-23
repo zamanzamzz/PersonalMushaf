@@ -1,4 +1,4 @@
-package com.android.personalmushaf.model.mushafs.mushafmetadata;
+package com.android.personalmushaf.mushafinterfaces.mushafmetadata;
 
 public interface MushafMetadata {
     String getDirectoryName();
