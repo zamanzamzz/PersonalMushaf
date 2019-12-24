@@ -7,7 +7,7 @@ import androidx.preference.PreferenceManager;
 
 import com.android.personalmushaf.mushafinterfaces.strategies.MushafStrategy;
 import com.android.personalmushaf.mushafinterfaces.strategies.MushafStrategyFactory;
-import com.android.personalmushaf.navigation.navigationdata.QuranConstants;
+import com.android.personalmushaf.navigation.QuranConstants;
 import com.android.personalmushaf.util.FileUtils;
 
 import java.io.File;

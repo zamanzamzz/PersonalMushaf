@@ -12,7 +12,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.andexert.library.RippleView;
 import com.android.personalmushaf.QuranActivity;
 import com.android.personalmushaf.R;
-import com.android.personalmushaf.mushafinterfaces.strategies.NavigationStrategy;
 import com.android.personalmushaf.navigation.NavigationActivity;
 
 public class JuzAdapter extends RecyclerView.Adapter<JuzAdapter.JuzViewHolder> {
@@ -27,9 +26,9 @@ public class JuzAdapter extends RecyclerView.Adapter<JuzAdapter.JuzViewHolder> {
         }
     }
 
-    public JuzAdapter(String[] juzNames, NavigationStrategy navigationStrategy) {
+    public JuzAdapter(String[] juzNames, int[][] dataSet) {
         this.juzNames = juzNames;
-        this.dataSet = navigationStrategy.getJuzInfo();
+        this.dataSet = dataSet;
     }
 
     @Override

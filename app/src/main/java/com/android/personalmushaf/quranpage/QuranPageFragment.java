@@ -21,7 +21,8 @@ import com.android.personalmushaf.R;
 import com.android.personalmushaf.model.Ayah;
 import com.android.personalmushaf.model.AyahBounds;
 import com.android.personalmushaf.model.PageData;
-import com.android.personalmushaf.mushafinterfaces.strategies.QuranStrategy;
+import com.android.personalmushaf.mushafinterfaces.strategies.quranstrategies.QuranDualPageFragmentStrategy;
+import com.android.personalmushaf.mushafinterfaces.strategies.quranstrategies.QuranPageFragmentStrategy;
 import com.android.personalmushaf.util.ImageUtils;
 
 import java.util.List;
@@ -45,9 +46,9 @@ public class QuranPageFragment extends Fragment {
 
         ImageView imageView = v.findViewById(R.id.page1);
 
-        QuranStrategy quranStrategy = QuranSettings.getInstance().getMushafStrategy(imageView.getContext()).getQuranStrategy();
-        String path = quranStrategy.getPagePath(pageNumber);
-        pageData = quranStrategy.getPageData(pageNumber);
+        QuranPageFragmentStrategy quranPageFragmentStrategy = QuranSettings.getInstance().getMushafStrategy(imageView.getContext()).getQuranPageFragmentStrategy();
+        String path = quranPageFragmentStrategy.getPagePath(pageNumber);
+        pageData = quranPageFragmentStrategy.getPageData(pageNumber);
         ImageUtils.getInstance().loadBitmap(path, imageView);
         setHighlight(imageView, path);
 

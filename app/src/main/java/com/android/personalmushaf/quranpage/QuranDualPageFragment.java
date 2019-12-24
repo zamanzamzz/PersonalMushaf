@@ -21,7 +21,7 @@ import com.android.personalmushaf.R;
 import com.android.personalmushaf.model.Ayah;
 import com.android.personalmushaf.model.AyahBounds;
 import com.android.personalmushaf.model.PageData;
-import com.android.personalmushaf.mushafinterfaces.strategies.QuranStrategy;
+import com.android.personalmushaf.mushafinterfaces.strategies.quranstrategies.QuranDualPageFragmentStrategy;
 import com.android.personalmushaf.util.ImageUtils;
 
 import java.util.List;
@@ -46,19 +46,19 @@ public class QuranDualPageFragment extends Fragment {
 
         int dualPagerPosition = getArguments().getInt("dual_pager_position");
 
-        QuranStrategy quranStrategy = QuranSettings.getInstance().getMushafStrategy(getContext()).getQuranStrategy();
+        QuranDualPageFragmentStrategy quranDualPageFragmentStrategy = QuranSettings.getInstance().getMushafStrategy(getContext()).getQuranDualPageFragmentStrategy();
 
         final ImageView leftImage = v.findViewById(R.id.page1);
-        final String leftPagePath = quranStrategy.getLeftPagePath(dualPagerPosition);
-        leftPageData = quranStrategy.getLeftPageData(dualPagerPosition);
+        final String leftPagePath = quranDualPageFragmentStrategy.getLeftPagePath(dualPagerPosition);
+        leftPageData = quranDualPageFragmentStrategy.getLeftPageData(dualPagerPosition);
 
         final ImageView rightImage = v.findViewById(R.id.page2);
-        final String rightPagePath = quranStrategy.getRightPagePath(dualPagerPosition);
-        rightPageData = quranStrategy.getRightPageData(dualPagerPosition);
+        final String rightPagePath = quranDualPageFragmentStrategy.getRightPagePath(dualPagerPosition);
+        rightPageData = quranDualPageFragmentStrategy.getRightPageData(dualPagerPosition);
 
         loadImages(leftImage, rightImage, leftPagePath, rightPagePath);
 
-        if (!quranStrategy.isDanglingPage(dualPagerPosition)) {
+        if (!quranDualPageFragmentStrategy.isDanglingPage(dualPagerPosition)) {
             setHighlight(leftImage, rightImage, leftPagePath, rightPagePath);
         } else {
             leftImage.setVisibility(View.GONE);

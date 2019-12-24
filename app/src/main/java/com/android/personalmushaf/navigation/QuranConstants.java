@@ -1,4 +1,4 @@
-package com.android.personalmushaf.navigation.navigationdata;
+package com.android.personalmushaf.navigation;
 
 import android.os.Environment;
 
@@ -53,6 +53,10 @@ public class QuranConstants {
                 return surahInfoInJuz;
             }
         }
+    }
+
+    public static int getFirstSurahInJuz(int juzNumber) {
+        return surahsInJuz[juzNumber - 1][1];
     }
 }
 

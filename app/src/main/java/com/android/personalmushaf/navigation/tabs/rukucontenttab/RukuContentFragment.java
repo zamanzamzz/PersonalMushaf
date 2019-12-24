@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.personalmushaf.QuranSettings;
 import com.android.personalmushaf.R;
-import com.android.personalmushaf.mushafinterfaces.strategies.NavigationStrategy;
+import com.android.personalmushaf.mushafinterfaces.strategies.navigationstrategies.RukuContentStrategy;
 
 
 /**
@@ -31,12 +31,12 @@ public class RukuContentFragment extends Fragment {
 
         int juzNumber = getArguments().getInt("juz number");
 
-        NavigationStrategy navigationStrategy = QuranSettings.getInstance().getMushafStrategy(getContext()).getNavivationStrategy();
+        RukuContentStrategy rukuContentStrategy = QuranSettings.getInstance().getMushafStrategy(getContext()).getRukuContentStrategy();
 
         RecyclerView juzRecyclerView = v.findViewById(R.id.tab_recycler_view);
         juzRecyclerView.setHasFixedSize(true);
 
-        RukuContentAdapter adapter = navigationStrategy.getRukuContentAdapter(juzNumber-1, v);
+        RukuContentAdapter adapter = rukuContentStrategy.getRukuContentAdapter(juzNumber, v);
         juzRecyclerView.setAdapter(adapter);
 
         LinearLayoutManager juzLayoutManager = new LinearLayoutManager(getContext());

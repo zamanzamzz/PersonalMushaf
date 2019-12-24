@@ -2,7 +2,7 @@ package com.android.naskh13;
 
 import com.android.personalmushaf.R;
 import com.android.personalmushaf.mushafinterfaces.mushafmetadata.MushafMetadata;
-import com.android.personalmushaf.navigation.navigationdata.QuranConstants;
+import com.android.personalmushaf.navigation.QuranConstants;
 
 public class Naskh13MushafMetadata implements MushafMetadata {
     private String directoryName;

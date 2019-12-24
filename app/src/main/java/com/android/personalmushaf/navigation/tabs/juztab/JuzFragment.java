@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.personalmushaf.QuranSettings;
 import com.android.personalmushaf.R;
-import com.android.personalmushaf.mushafinterfaces.strategies.NavigationStrategy;
+import com.android.personalmushaf.mushafinterfaces.strategies.navigationstrategies.JuzStrategy;
 
 
 /**
@@ -36,15 +36,12 @@ public class JuzFragment extends Fragment {
 
         actionBar.setTitle("Qur'an Contents");
 
-        String[] juzNames = new String[30];
-        System.arraycopy(v.getResources().getStringArray(R.array.juz_names), 0, juzNames, 0, 30);
-
 
         RecyclerView juzRecyclerView = v.findViewById(R.id.tab_recycler_view);
         juzRecyclerView.setHasFixedSize(true);
         LinearLayoutManager juzLayoutManager = new LinearLayoutManager(getContext());
-        NavigationStrategy navigationStrategy = QuranSettings.getInstance().getMushafStrategy(getContext()).getNavivationStrategy();
-        JuzAdapter adapter = new JuzAdapter(juzNames, navigationStrategy);
+        JuzStrategy juzStrategy = QuranSettings.getInstance().getMushafStrategy(getContext()).getJuzStrategy();
+        JuzAdapter adapter = juzStrategy.getJuzAdapter(v);
 
         juzRecyclerView.setAdapter(adapter);
         juzRecyclerView.setLayoutManager(juzLayoutManager);

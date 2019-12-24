@@ -11,18 +11,18 @@ import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 import com.android.personalmushaf.QuranActivity;
 import com.android.personalmushaf.QuranSettings;
-import com.android.personalmushaf.mushafinterfaces.strategies.QuranStrategy;
+import com.android.personalmushaf.mushafinterfaces.strategies.quranstrategies.QuranPageAdapterStrategy;
 
 public class QuranPageAdapter extends FragmentStateAdapter {
 
-    private QuranStrategy quranStrategy;
+    private QuranPageAdapterStrategy quranPageAdapterStrategy;
     private int orientation;
     private boolean isForceDualPage;
 
-    public QuranPageAdapter(FragmentManager fm, Lifecycle lifecycle, QuranStrategy quranStrategy,
+    public QuranPageAdapter(FragmentManager fm, Lifecycle lifecycle, QuranPageAdapterStrategy quranPageAdapterStrategy,
                             Context context, int orientation) {
         super(fm, lifecycle);
-        this.quranStrategy = quranStrategy;
+        this.quranPageAdapterStrategy = quranPageAdapterStrategy;
         isForceDualPage = QuranSettings.getInstance().getIsForceDualPage(context);
         this.orientation = orientation;
     }
@@ -42,7 +42,7 @@ public class QuranPageAdapter extends FragmentStateAdapter {
             fragment.setArguments(bundle);
         } else {
             position++;
-            int pageNumber = quranStrategy.getPageNumberFromPagerPosition(position);
+            int pageNumber = quranPageAdapterStrategy.getPageNumberFromPagerPosition(position);
             fragment = new QuranPageFragment();
             bundle = new Bundle();
             bundle.putInt("page_number", pageNumber);
@@ -55,9 +55,9 @@ public class QuranPageAdapter extends FragmentStateAdapter {
     @Override
     public int getItemCount() {
         if (!QuranActivity.isLandscape(orientation) && !isForceDualPage) {
-            return quranStrategy.getNumOfSinglePages();
+            return quranPageAdapterStrategy.getNumOfSinglePages();
         } else {
-            return quranStrategy.getNumOfDualPages();
+            return quranPageAdapterStrategy.getNumOfDualPages();
         }
     }
 }

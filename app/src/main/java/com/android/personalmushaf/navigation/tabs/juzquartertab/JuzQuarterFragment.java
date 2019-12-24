@@ -29,13 +29,13 @@ public class JuzQuarterFragment extends Fragment {
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_tab, container, false);
 
-        int juzIndex = getArguments().getInt("juz number") - 1;
+        int juzNumber = getArguments().getInt("juz number");
 
 
         RecyclerView juzQuarterRecyclerView = v.findViewById(R.id.tab_recycler_view);
         juzQuarterRecyclerView.setHasFixedSize(true);
         LinearLayoutManager juzLayoutManager = new LinearLayoutManager(getContext());
-        JuzQuarterAdapter adapter = QuranSettings.getInstance().getMushafStrategy(getContext()).getNavivationStrategy().getJuzQuarterAdapter(juzIndex, v);
+        JuzQuarterAdapter adapter = QuranSettings.getInstance().getMushafStrategy(getContext()).getJuzQuarterStrategy().getJuzQuarterAdapter(juzNumber, v);
         juzQuarterRecyclerView.setAdapter(adapter);
         juzQuarterRecyclerView.setLayoutManager(juzLayoutManager);
         return v;

@@ -21,7 +21,7 @@ import com.android.personalmushaf.R;
 import com.android.personalmushaf.mushafinterfaces.mushafmetadata.MushafMetadata;
 import com.android.personalmushaf.mushafinterfaces.mushafmetadata.MushafMetadataFactory;
 import com.android.personalmushaf.navigation.NavigationActivity;
-import com.android.personalmushaf.navigation.navigationdata.QuranConstants;
+import com.android.personalmushaf.navigation.QuranConstants;
 import com.android.personalmushaf.util.FileUtils;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;

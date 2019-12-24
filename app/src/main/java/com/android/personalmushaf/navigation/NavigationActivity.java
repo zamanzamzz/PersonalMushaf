@@ -16,7 +16,7 @@ import androidx.viewpager2.widget.ViewPager2;
 import com.android.personalmushaf.QuranSettings;
 import com.android.personalmushaf.R;
 import com.android.personalmushaf.SettingsActivity;
-import com.android.personalmushaf.mushafinterfaces.strategies.NavigationStrategy;
+import com.android.personalmushaf.mushafinterfaces.strategies.navigationstrategies.NavigationActivityStrategy;
 import com.android.personalmushaf.navigation.tabs.juzquartertab.JuzQuarterFragment;
 import com.android.personalmushaf.navigation.tabs.juztab.JuzFragment;
 import com.android.personalmushaf.navigation.tabs.rukucontenttab.RukuContentFragment;
@@ -25,7 +25,7 @@ import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
 public class NavigationActivity extends AppCompatActivity {
-    NavigationStrategy navigationStrategy;
+    NavigationActivityStrategy navigationActivityStrategy;
     int juzNumber;
     int currentPagerPosition;
     ViewPagerAdapter viewPagerAdapter;
@@ -40,7 +40,7 @@ public class NavigationActivity extends AppCompatActivity {
         setSupportActionBar(navigationToolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
-        navigationStrategy = QuranSettings.getInstance().getMushafStrategy(this).getNavivationStrategy();
+        navigationActivityStrategy = QuranSettings.getInstance().getMushafStrategy(this).getNavigationActivityStrategy();
 
         Intent intent = getIntent();
 
@@ -99,7 +99,7 @@ public class NavigationActivity extends AppCompatActivity {
             surahFragment.setArguments(arguments);
 
             viewPagerAdapter.addFragment(juzQuarterFragment, "Quarter");
-            navigationStrategy.setViewPagerTabs(viewPagerAdapter, rukuContentFragment);
+            navigationActivityStrategy.setViewPagerTabs(viewPagerAdapter, rukuContentFragment);
             viewPagerAdapter.addFragment(surahFragment, "Surah");
         }
 
@@ -146,7 +146,7 @@ public class NavigationActivity extends AppCompatActivity {
     }
 
     public void setJuzTitle(TextView juzTitle, int juzNumber) {
-        String title = getResources().getStringArray(R.array.arabic_numerals)[juzNumber - 1] + "  | " + navigationStrategy.getJuzLength(juzNumber) + " pages";
+        String title = getResources().getStringArray(R.array.arabic_numerals)[juzNumber - 1] + "  | " + navigationActivityStrategy.getJuzLength(juzNumber) + " pages";
 
         juzTitle.setText(title);
     }

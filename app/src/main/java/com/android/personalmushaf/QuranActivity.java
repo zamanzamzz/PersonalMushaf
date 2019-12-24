@@ -21,7 +21,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.viewpager2.widget.ViewPager2;
 
-import com.android.personalmushaf.mushafinterfaces.strategies.QuranStrategy;
+import com.android.personalmushaf.mushafinterfaces.strategies.quranstrategies.QuranActivityStrategy;
+import com.android.personalmushaf.mushafinterfaces.strategies.quranstrategies.QuranPageAdapterStrategy;
 import com.android.personalmushaf.quranpage.QuranPageAdapter;
 
 
@@ -45,7 +46,7 @@ public class QuranActivity extends AppCompatActivity {
 
     boolean isSmoothVolumeKeyNavigation;
     boolean isForceDualPage;
-    private QuranStrategy quranStrategy;
+    private QuranActivityStrategy quranActivityStrategy;
 
 
     @Override
@@ -221,7 +222,8 @@ public class QuranActivity extends AppCompatActivity {
     private void setupSinglePager() {
         pager = findViewById(R.id.pager);
 
-        pagerAdapter = new QuranPageAdapter(getSupportFragmentManager(), getLifecycle(), quranStrategy,
+        QuranPageAdapterStrategy quranPageAdapterStrategy = QuranSettings.getInstance().getMushafStrategy(this).getQuranPageAdapterStrategy();
+        pagerAdapter = new QuranPageAdapter(getSupportFragmentManager(), getLifecycle(), quranPageAdapterStrategy,
                                     this, currentOrientation);
         pager.setAdapter(pagerAdapter);
         pager.setOffscreenPageLimit(1);
@@ -232,7 +234,8 @@ public class QuranActivity extends AppCompatActivity {
     @SuppressLint("SourceLockedOrientationActivity")
     private void setupDualPager() {
         pager = findViewById(R.id.pager);
-        pagerAdapter = new QuranPageAdapter(getSupportFragmentManager(), getLifecycle(), quranStrategy,
+        QuranPageAdapterStrategy quranPageAdapterStrategy = QuranSettings.getInstance().getMushafStrategy(this).getQuranPageAdapterStrategy();
+        pagerAdapter = new QuranPageAdapter(getSupportFragmentManager(), getLifecycle(), quranPageAdapterStrategy,
                                 this, currentOrientation);
         pager.setAdapter(pagerAdapter);
         pager.setOffscreenPageLimit(1);
@@ -328,33 +331,33 @@ public class QuranActivity extends AppCompatActivity {
     }
 
     private void setStrategy() {
-        quranStrategy = QuranSettings.getInstance().getMushafStrategy(this).getQuranStrategy();
+        quranActivityStrategy = QuranSettings.getInstance().getMushafStrategy(this).getQuranActivityStrategy();
     }
 
     private int pageNumberToDualPagerPosition(int pageNumber) {
-        return quranStrategy.pageNumberToDualPagerPosition(pageNumber);
+        return quranActivityStrategy.pageNumberToDualPagerPosition(pageNumber);
     }
 
     private int dualPagerPositionToPageNumber(int dualPagerPosition) {
-        return quranStrategy.dualPagerPositionToPageNumber(dualPagerPosition);
+        return quranActivityStrategy.dualPagerPositionToPageNumber(dualPagerPosition);
     }
 
     private int pageNumberToSinglePagerPosition(int pageNumber) {
-        return quranStrategy.pageNumberToSinglePagerPosition(pageNumber);
+        return quranActivityStrategy.pageNumberToSinglePagerPosition(pageNumber);
     }
 
     private int singlePagerPositionToPageNumber(int position) {
-        return quranStrategy.singlePagerPositionToPageNumber(position);
+        return quranActivityStrategy.singlePagerPositionToPageNumber(position);
     }
 
     private void flipPageBackward(int pagesToFlip) {
-        if (pageNumber - pagesToFlip >= quranStrategy.minPage()) {
+        if (pageNumber - pagesToFlip >= quranActivityStrategy.minPage()) {
             pager.setCurrentItem(pageNumberToDualPagerPosition(pageNumber - pagesToFlip), isSmoothVolumeKeyNavigation);
         }
     }
 
     private void flipPageForward(int pagesToFlip) {
-        if (pageNumber + pagesToFlip <= quranStrategy.maxPage()) {
+        if (pageNumber + pagesToFlip <= quranActivityStrategy.maxPage()) {
             pager.setCurrentItem(pageNumberToDualPagerPosition(pageNumber + pagesToFlip), isSmoothVolumeKeyNavigation);
         }
     }

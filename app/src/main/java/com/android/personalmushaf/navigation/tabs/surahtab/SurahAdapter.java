@@ -13,7 +13,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.andexert.library.RippleView;
 import com.android.personalmushaf.QuranActivity;
 import com.android.personalmushaf.R;
-import com.android.personalmushaf.mushafinterfaces.strategies.NavigationStrategy;
 
 public class SurahAdapter extends RecyclerView.Adapter<SurahAdapter.SurahViewHolder> {
     private int[][] dataset;
@@ -27,7 +26,7 @@ public class SurahAdapter extends RecyclerView.Adapter<SurahAdapter.SurahViewHol
         }
     }
 
-    public SurahAdapter(int[][] dataset, String[] prefixes, NavigationStrategy navigationStrategy) {
+    public SurahAdapter(int[][] dataset, String[] prefixes) {
         this.dataset = dataset;
         this.prefixes = prefixes;
     }
