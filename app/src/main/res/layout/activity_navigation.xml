@@ -55,10 +55,10 @@
 
     </com.google.android.material.tabs.TabLayout>
 
-    <androidx.viewpager2.widget.ViewPager2
+    <com.android.personalmushaf.navigation.NonSwipingViewPager
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/viewpager">
-    </androidx.viewpager2.widget.ViewPager2>
+    </com.android.personalmushaf.navigation.NonSwipingViewPager>
 
 </LinearLayout>

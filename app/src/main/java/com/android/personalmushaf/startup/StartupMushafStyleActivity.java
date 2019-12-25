@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.viewpager.widget.ViewPager;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.android.personalmushaf.QuranSettings;
@@ -18,8 +19,8 @@ public class StartupMushafStyleActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_startup);
-        final ViewPager2 viewPager = findViewById(R.id.startup_viewpager);
-        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager(), getLifecycle());
+        final ViewPager viewPager = findViewById(R.id.startup_viewpager);
+        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         int mushafType = getIntent().getIntExtra("mushaf_type", QuranSettings.MADANI15LINE);
 
         populateViewPager(adapter, mushafType);

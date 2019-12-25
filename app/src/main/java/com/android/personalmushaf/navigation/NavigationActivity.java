@@ -7,11 +7,10 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.viewpager2.widget.ViewPager2;
+import androidx.viewpager.widget.ViewPager;
 
 import com.android.personalmushaf.QuranSettings;
 import com.android.personalmushaf.R;
@@ -22,7 +21,6 @@ import com.android.personalmushaf.navigation.tabs.juztab.JuzFragment;
 import com.android.personalmushaf.navigation.tabs.rukucontenttab.RukuContentFragment;
 import com.android.personalmushaf.navigation.tabs.surahtab.SurahFragment;
 import com.google.android.material.tabs.TabLayout;
-import com.google.android.material.tabs.TabLayoutMediator;
 
 public class NavigationActivity extends AppCompatActivity {
     NavigationActivityStrategy navigationActivityStrategy;
@@ -48,15 +46,27 @@ public class NavigationActivity extends AppCompatActivity {
         currentPagerPosition = 0;
 
         TabLayout tabLayout = findViewById(R.id.tab_layout);
-        ViewPager2 viewPager = findViewById(R.id.viewpager);
-        viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager(), getLifecycle());
+        NonSwipingViewPager viewPager = findViewById(R.id.viewpager);
+        // viewPager.setSwipeEnabled(false);
+        viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
 
-        viewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
             @Override
             public void onPageSelected(int position) {
                 currentPagerPosition = position;
             }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
         });
+
 
         if (juzNumber < 0) {
             TextView title = findViewById(R.id.juz_title_toolbar);
@@ -105,12 +115,7 @@ public class NavigationActivity extends AppCompatActivity {
 
         viewPager.setAdapter(viewPagerAdapter);
         viewPager.setOffscreenPageLimit(3);
-        new TabLayoutMediator(tabLayout, viewPager, new TabLayoutMediator.TabConfigurationStrategy() {
-            @Override
-            public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
-                tab.setText(viewPagerAdapter.getPageTitle(position));
-            }
-        }).attach();
+        tabLayout.setupWithViewPager(viewPager);
     }
 
     @Override
