@@ -2,21 +2,21 @@ package com.android.madani15.quranstrategies;
 
 import com.android.personalmushaf.model.PageData;
 import com.android.personalmushaf.mushafinterfaces.mushafmetadata.MushafMetadata;
+import com.android.personalmushaf.mushafinterfaces.strategies.abstractquranstrategies.AbstractQuranPageFragmentStrategy;
 import com.android.personalmushaf.mushafinterfaces.strategies.quranstrategies.QuranPageFragmentStrategy;
-import com.android.personalmushaf.util.FileUtils;
 
-public class Madani15QuranPageFragmentStrategy implements QuranPageFragmentStrategy {
-    private MushafMetadata mushafMetadata;
+
+public class Madani15QuranPageFragmentStrategy extends AbstractQuranPageFragmentStrategy implements QuranPageFragmentStrategy {
 
     public Madani15QuranPageFragmentStrategy(MushafMetadata mushafMetadata) {
-        this.mushafMetadata = mushafMetadata;
+        super(mushafMetadata);
     }
 
     public String getPagePath(int pageNumber) {
-        return FileUtils.ASSETSDIRECTORY + "/" + mushafMetadata.getDirectoryName() + "/images/pg_" + pageNumber + ".png";
+        return super.getPagePath(pageNumber);
     }
 
     public PageData getPageData(int pageNumber) {
-        return new PageData(pageNumber, mushafMetadata.getDatabasePath());
+        return super.getPageData(pageNumber);
     }
 }

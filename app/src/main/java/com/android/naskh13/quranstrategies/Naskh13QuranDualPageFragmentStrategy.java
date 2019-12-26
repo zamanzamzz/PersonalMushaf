@@ -3,41 +3,32 @@ package com.android.naskh13.quranstrategies;
 import com.android.naskh13.Naskh13NavigationData;
 import com.android.personalmushaf.model.PageData;
 import com.android.personalmushaf.mushafinterfaces.mushafmetadata.MushafMetadata;
+import com.android.personalmushaf.mushafinterfaces.strategies.abstractquranstrategies.AbstractQuranPageFragmentStrategy;
 import com.android.personalmushaf.mushafinterfaces.strategies.quranstrategies.QuranDualPageFragmentStrategy;
-import com.android.personalmushaf.util.FileUtils;
 
-public class Naskh13QuranDualPageFragmentStrategy implements QuranDualPageFragmentStrategy {
-    private MushafMetadata mushafMetadata;
+public class Naskh13QuranDualPageFragmentStrategy extends AbstractQuranPageFragmentStrategy implements QuranDualPageFragmentStrategy {
 
     public Naskh13QuranDualPageFragmentStrategy(MushafMetadata mushafMetadata) {
-        this.mushafMetadata = mushafMetadata;
+        super(mushafMetadata);
     }
 
     public String getLeftPagePath(int dualPagerPosition) {
-        return getPagePath(Naskh13NavigationData.naskh13LineDualPageSets[dualPagerPosition][0]);
+        return getPagePath(Naskh13NavigationData.naskh13LineDualPageSets[dualPagerPosition][LEFTPAGEINDEX]);
     }
 
     public String getRightPagePath(int dualPagerPosition) {
-        return getPagePath(Naskh13NavigationData.naskh13LineDualPageSets[dualPagerPosition][1]);
+        return getPagePath(Naskh13NavigationData.naskh13LineDualPageSets[dualPagerPosition][RIGHTPAGEINDEX]);
     }
 
     public PageData getLeftPageData(int dualPagerPosition) {
-        return getPageData(Naskh13NavigationData.naskh13LineDualPageSets[dualPagerPosition][0]);
+        return getPageData(Naskh13NavigationData.naskh13LineDualPageSets[dualPagerPosition][LEFTPAGEINDEX]);
     }
 
     public PageData getRightPageData(int dualPagerPosition) {
-        return getPageData(Naskh13NavigationData.naskh13LineDualPageSets[dualPagerPosition][1]);
+        return getPageData(Naskh13NavigationData.naskh13LineDualPageSets[dualPagerPosition][RIGHTPAGEINDEX]);
     }
 
     public boolean isDanglingPage(int dualPagerPosition) {
         return dualPagerPosition == 423;
-    }
-
-    private String getPagePath(int pageNumber) {
-        return FileUtils.ASSETSDIRECTORY + "/" + mushafMetadata.getDirectoryName() + "/images/pg_" + pageNumber + ".png";
-    }
-
-    private PageData getPageData(int pageNumber) {
-        return new PageData(pageNumber, mushafMetadata.getDatabasePath());
     }
 }

@@ -3,42 +3,33 @@ package com.android.madani15.quranstrategies;
 import com.android.madani15.Madani15NavigationData;
 import com.android.personalmushaf.model.PageData;
 import com.android.personalmushaf.mushafinterfaces.mushafmetadata.MushafMetadata;
+import com.android.personalmushaf.mushafinterfaces.strategies.abstractquranstrategies.AbstractQuranPageFragmentStrategy;
 import com.android.personalmushaf.mushafinterfaces.strategies.quranstrategies.QuranDualPageFragmentStrategy;
-import com.android.personalmushaf.util.FileUtils;
 
-public class Madani15QuranDualPageFragmentStrategy implements QuranDualPageFragmentStrategy {
-    private MushafMetadata mushafMetadata;
+public class Madani15QuranDualPageFragmentStrategy extends AbstractQuranPageFragmentStrategy implements QuranDualPageFragmentStrategy {
 
     public Madani15QuranDualPageFragmentStrategy(MushafMetadata mushafMetadata) {
-        this.mushafMetadata = mushafMetadata;
+        super(mushafMetadata);
     }
 
     public String getLeftPagePath(int dualPagerPosition) {
-        return getPagePath(Madani15NavigationData.madani15LineDualPageSets[dualPagerPosition][0]);
+        return getPagePath(Madani15NavigationData.madani15LineDualPageSets[dualPagerPosition][LEFTPAGEINDEX]);
     }
 
     public String getRightPagePath(int dualPagerPosition) {
-        return getPagePath(Madani15NavigationData.madani15LineDualPageSets[dualPagerPosition][1]);
+        return getPagePath(Madani15NavigationData.madani15LineDualPageSets[dualPagerPosition][RIGHTPAGEINDEX]);
     }
 
 
     public PageData getLeftPageData(int dualPagerPosition) {
-        return getPageData(Madani15NavigationData.madani15LineDualPageSets[dualPagerPosition][0]);
+        return getPageData(Madani15NavigationData.madani15LineDualPageSets[dualPagerPosition][LEFTPAGEINDEX]);
     }
 
     public PageData getRightPageData(int dualPagerPosition) {
-        return getPageData(Madani15NavigationData.madani15LineDualPageSets[dualPagerPosition][1]);
+        return getPageData(Madani15NavigationData.madani15LineDualPageSets[dualPagerPosition][RIGHTPAGEINDEX]);
     }
 
     public boolean isDanglingPage(int dualPagerPosition) {
         return false;
-    }
-
-    private String getPagePath(int pageNumber) {
-        return FileUtils.ASSETSDIRECTORY + "/" + mushafMetadata.getDirectoryName() + "/images/pg_" + pageNumber + ".png";
-    }
-
-    private PageData getPageData(int pageNumber) {
-        return new PageData(pageNumber, mushafMetadata.getDatabasePath());
     }
 }

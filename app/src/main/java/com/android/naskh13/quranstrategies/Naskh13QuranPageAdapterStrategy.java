@@ -5,7 +5,7 @@ import com.android.personalmushaf.mushafinterfaces.strategies.quranstrategies.Qu
 
 public class Naskh13QuranPageAdapterStrategy implements QuranPageAdapterStrategy {
     public int getPageNumberFromPagerPosition(int position) {
-        return position + 1;
+        return position + 2;
     }
 
     public int getNumOfSinglePages() {

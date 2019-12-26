@@ -34,14 +34,11 @@ public class QuranPageAdapter extends FragmentStateAdapter {
         Bundle bundle;
 
         if (QuranActivity.isLandscape(orientation) || isForceDualPage) {
-            position++;
-            int pagerPosition = position - 1;
             fragment = new QuranDualPageFragment();
             bundle = new Bundle();
-            bundle.putInt("dual_pager_position", pagerPosition);
+            bundle.putInt("dual_pager_position", position);
             fragment.setArguments(bundle);
         } else {
-            position++;
             int pageNumber = quranPageAdapterStrategy.getPageNumberFromPagerPosition(position);
             fragment = new QuranPageFragment();
             bundle = new Bundle();
