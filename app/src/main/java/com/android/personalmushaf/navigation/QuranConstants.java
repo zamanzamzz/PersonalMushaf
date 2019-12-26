@@ -3,7 +3,6 @@ package com.android.personalmushaf.navigation;
 import android.os.Environment;
 
 public class QuranConstants {
-    public static final String ASSETSDIRECTORY = Environment.getExternalStorageDirectory() + "/personal_mushaf";
 
     // surah ayah
     public static int[][] naskhJuzLocations = {
@@ -1215,42 +1214,6 @@ public class QuranConstants {
                     {114, 1},
             },
     };
-
-    public static int[][] getSurahsInJuz(int[][] surahInfo, int juzNumber) {
-        if (juzNumber < 0)
-            return surahInfo;
-        else {
-            int[][] surahInfoInJuz;
-            if (surahsInJuz[juzNumber-1][0] == 0) {
-                surahInfoInJuz = new int[0][0];
-                return surahInfoInJuz;
-            } else {
-                surahInfoInJuz = new int[surahsInJuz[juzNumber-1][0]][5];
-                System.arraycopy(surahInfo, surahsInJuz[juzNumber-1][1], surahInfoInJuz, 0, surahsInJuz[juzNumber-1][0]);
-                return surahInfoInJuz;
-            }
-        }
-    }
-
-    public static int[] getSurahPageNumbersinJuz(int[] surahPageNumbers, int juzNumber) {
-        if (juzNumber < 0)
-            return surahPageNumbers;
-        else {
-            int[] surahPageNumbersInJuz;
-            if (surahsInJuz[juzNumber-1][0] == 0) {
-                surahPageNumbersInJuz = new int[0];
-                return surahPageNumbersInJuz;
-            } else {
-                surahPageNumbersInJuz = new int[surahsInJuz[juzNumber-1][0]];
-                System.arraycopy(surahPageNumbers, surahsInJuz[juzNumber-1][1], surahPageNumbersInJuz, 0, surahsInJuz[juzNumber-1][0]);
-                return surahPageNumbersInJuz;
-            }
-        }
-    }
-
-    public static int getFirstSurahInJuz(int juzNumber) {
-        return surahsInJuz[juzNumber - 1][1];
-    }
 }
 
 

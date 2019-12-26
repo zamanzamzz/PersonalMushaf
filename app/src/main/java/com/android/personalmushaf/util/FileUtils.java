@@ -1,8 +1,7 @@
 package com.android.personalmushaf.util;
 
+import android.os.Environment;
 import android.widget.ProgressBar;
-
-import com.android.personalmushaf.navigation.QuranConstants;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -15,8 +14,10 @@ import java.util.zip.ZipFile;
 import java.util.zip.ZipInputStream;
 
 public class FileUtils {
+    public static final String ASSETSDIRECTORY = Environment.getExternalStorageDirectory() + "/personal_mushaf";
+
     public static boolean checkRootDataDirectory() {
-        File dataDirectory = new File(QuranConstants.ASSETSDIRECTORY);
+        File dataDirectory = new File(ASSETSDIRECTORY);
         return dataDirectory.exists() && dataDirectory.isDirectory();
     }
 

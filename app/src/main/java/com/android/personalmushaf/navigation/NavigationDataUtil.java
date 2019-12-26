@@ -3,11 +3,13 @@ package com.android.personalmushaf.navigation;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.android.personalmushaf.util.FileUtils;
+
 public class NavigationDataUtil {
     public static String[][] fetchNavigationData(String[] colNames, String table, int juzNumber, boolean needLength) {
         String[][] dataSet;
         Cursor c;
-        SQLiteDatabase database = SQLiteDatabase.openDatabase(QuranConstants.ASSETSDIRECTORY + "databases/quran_metadata.db", null, SQLiteDatabase.OPEN_READONLY);
+        SQLiteDatabase database = SQLiteDatabase.openDatabase(FileUtils.ASSETSDIRECTORY + "databases/quran_metadata.db", null, SQLiteDatabase.OPEN_READONLY);
 
         c = juzNumber < 0 ? database.query(table, colNames, null, null, null, null, null) :
                             database.query(table, colNames, "Juz = " + juzNumber, null, null, null, null);

@@ -4,7 +4,7 @@ import com.android.madani15.Madani15NavigationData;
 import com.android.personalmushaf.model.PageData;
 import com.android.personalmushaf.mushafinterfaces.mushafmetadata.MushafMetadata;
 import com.android.personalmushaf.mushafinterfaces.strategies.quranstrategies.QuranDualPageFragmentStrategy;
-import com.android.personalmushaf.navigation.QuranConstants;
+import com.android.personalmushaf.util.FileUtils;
 
 public class Madani15QuranDualPageFragmentStrategy implements QuranDualPageFragmentStrategy {
     private MushafMetadata mushafMetadata;
@@ -35,7 +35,7 @@ public class Madani15QuranDualPageFragmentStrategy implements QuranDualPageFragm
     }
 
     private String getPagePath(int pageNumber) {
-        return QuranConstants.ASSETSDIRECTORY + "/" + mushafMetadata.getDirectoryName() + "/images/pg_" + pageNumber + ".png";
+        return FileUtils.ASSETSDIRECTORY + "/" + mushafMetadata.getDirectoryName() + "/images/pg_" + pageNumber + ".png";
     }
 
     private PageData getPageData(int pageNumber) {

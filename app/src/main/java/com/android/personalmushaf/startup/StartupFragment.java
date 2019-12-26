@@ -21,7 +21,6 @@ import com.android.personalmushaf.R;
 import com.android.personalmushaf.mushafinterfaces.mushafmetadata.MushafMetadata;
 import com.android.personalmushaf.mushafinterfaces.mushafmetadata.MushafMetadataFactory;
 import com.android.personalmushaf.navigation.NavigationActivity;
-import com.android.personalmushaf.navigation.QuranConstants;
 import com.android.personalmushaf.util.FileUtils;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -75,9 +74,9 @@ public class StartupFragment extends Fragment {
     private void downloadAndUnpackZip(String mushafDirectory, final int mushafIndex, final Window window, final ProgressBar progressBar) {
         setupUIForDownload(window, progressBar);
         StorageReference pathReference = getZipStorageReference(mushafDirectory);
-        final File targetDir = new File(QuranConstants.ASSETSDIRECTORY);
+        final File targetDir = new File(FileUtils.ASSETSDIRECTORY);
         FileUtils.validateDirectory(targetDir);
-        final File zipFile = new File(QuranConstants.ASSETSDIRECTORY + "/" + mushafDirectory + ".zip");
+        final File zipFile = new File(FileUtils.ASSETSDIRECTORY + "/" + mushafDirectory + ".zip");
         FileDownloadTask task = pathReference.getFile(zipFile);
         progressBar.setMax((int) task.getSnapshot().getTotalByteCount());
         task.addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {

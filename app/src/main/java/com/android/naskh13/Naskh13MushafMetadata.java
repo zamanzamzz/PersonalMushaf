@@ -2,7 +2,7 @@ package com.android.naskh13;
 
 import com.android.personalmushaf.R;
 import com.android.personalmushaf.mushafinterfaces.mushafmetadata.MushafMetadata;
-import com.android.personalmushaf.navigation.QuranConstants;
+import com.android.personalmushaf.util.FileUtils;
 
 public class Naskh13MushafMetadata implements MushafMetadata {
     private String directoryName;
@@ -13,7 +13,7 @@ public class Naskh13MushafMetadata implements MushafMetadata {
 
     public Naskh13MushafMetadata() {
         directoryName = "naskh_13_line";
-        databasePath = QuranConstants.ASSETSDIRECTORY + "/" + directoryName + "/databases/ayahinfo_13line.db";
+        databasePath = FileUtils.ASSETSDIRECTORY + "/" + directoryName + "/databases/ayahinfo_13line.db";
         name = "Modern 13 Line Naskh Mushaf";
         description = "Popular with huffadh in the Indian Subcontinent and South Africa.";
         previewDrawableIDs = new int[2];

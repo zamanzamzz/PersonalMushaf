@@ -2,7 +2,7 @@ package com.android.madani15;
 
 import com.android.personalmushaf.R;
 import com.android.personalmushaf.mushafinterfaces.mushafmetadata.MushafMetadata;
-import com.android.personalmushaf.navigation.QuranConstants;
+import com.android.personalmushaf.util.FileUtils;
 
 public class Madani15MushafMetadata implements MushafMetadata {
     private String directoryName;
@@ -13,7 +13,7 @@ public class Madani15MushafMetadata implements MushafMetadata {
 
     public Madani15MushafMetadata() {
         directoryName = "madani_15_line";
-        databasePath = QuranConstants.ASSETSDIRECTORY + "/" + directoryName + "/databases/ayahinfo_15line.db";
+        databasePath = FileUtils.ASSETSDIRECTORY + "/" + directoryName + "/databases/ayahinfo_15line.db";
         name = "Classic 15 Line Madani Mushaf";
         description = "The classic standard mushaf from Saudi Arabia.";
         previewDrawableIDs = new int[2];

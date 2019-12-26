@@ -7,7 +7,6 @@ import androidx.preference.PreferenceManager;
 
 import com.android.personalmushaf.mushafinterfaces.strategies.MushafStrategy;
 import com.android.personalmushaf.mushafinterfaces.strategies.MushafStrategyFactory;
-import com.android.personalmushaf.navigation.QuranConstants;
 import com.android.personalmushaf.util.FileUtils;
 
 import java.io.File;
@@ -95,9 +94,9 @@ public class QuranSettings {
 
         boolean rv = false;
         for (int i = NASKH13LINE; i <= NASKH15LINE + 1; i++) {
-            currentMushafDirectory = new File(QuranConstants.ASSETSDIRECTORY + "/" + expectedMushafDirectories[i]);
+            currentMushafDirectory = new File(FileUtils.ASSETSDIRECTORY + "/" + expectedMushafDirectories[i]);
             if (currentMushafDirectory.exists() && currentMushafDirectory.isDirectory()) {
-                currentImagesDirectory = new File(QuranConstants.ASSETSDIRECTORY + "/" + expectedMushafDirectories[i] + "/images");
+                currentImagesDirectory = new File(FileUtils.ASSETSDIRECTORY + "/" + expectedMushafDirectories[i] + "/images");
                 if ((currentImagesDirectory.exists() && currentImagesDirectory.isDirectory()) && currentImagesDirectory.list().length > 500)
                     getInstance().setAvailableMushaf(i, true);
                 rv = true;
