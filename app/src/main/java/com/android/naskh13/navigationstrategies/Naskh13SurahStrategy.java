@@ -10,27 +10,38 @@ import com.android.personalmushaf.navigation.tabs.surahtab.SurahAdapter;
 
 public class Naskh13SurahStrategy implements SurahStrategy {
     public SurahAdapter getSurahAdapter(int juzNumber, View v) {
-        int[][] dataset = getSurahsInJuz(juzNumber);
-        String[] prefixes = new String[dataset.length];
+        int[][] surahInfo = getSurahInfoInJuz(juzNumber);
+        int[] surahPageNumbersInJuz = getSurahPageNumbersInJuz(juzNumber);
+        String[] prefixes = getSurahPrefixesInJuz(juzNumber, surahInfo.length, v);
 
-        if (dataset.length > 0) {
+        return new SurahAdapter(surahInfo, surahPageNumbersInJuz, prefixes);
+    }
+
+    private int[][] getSurahInfoInJuz(int juzNumber) {
+        return QuranConstants.getSurahsInJuz(QuranConstants.surahInfo, juzNumber);
+    }
+
+    private int[] getSurahPageNumbersInJuz(int juzNumber) {
+        return QuranConstants.getSurahPageNumbersinJuz(Naskh13NavigationData.naskh13SurahPageNumbers, juzNumber);
+    }
+
+    private int getFirstSurahInJuz(int juzNumber) {
+        return QuranConstants.getFirstSurahInJuz(juzNumber);
+    }
+
+    private String[] getSurahPrefixesInJuz(int juzNumber, int length, View v) {
+        String[] prefixes = new String[length];
+
+        if (length > 0) {
             int firstSurahInJuz;
             if (juzNumber > 0)
                 firstSurahInJuz = getFirstSurahInJuz(juzNumber);
             else
                 firstSurahInJuz = 0;
 
-            System.arraycopy(v.getResources().getStringArray(R.array.surah_names), firstSurahInJuz, prefixes, 0, dataset.length);
+            System.arraycopy(v.getResources().getStringArray(R.array.surah_names), firstSurahInJuz, prefixes, 0, length);
         }
 
-        return new SurahAdapter(dataset, prefixes);
-    }
-
-    private int[][] getSurahsInJuz(int juzNumber) {
-        return QuranConstants.getSurahsInJuz(Naskh13NavigationData.surahInfo, juzNumber);
-    }
-
-    private int getFirstSurahInJuz(int juzNumber) {
-        return QuranConstants.getFirstSurahInJuz(juzNumber);
+        return prefixes;
     }
 }

@@ -9,6 +9,8 @@ import com.android.personalmushaf.navigation.tabs.juztab.JuzAdapter;
 
 public class Naskh13JuzStrategy implements JuzStrategy {
     public JuzAdapter getJuzAdapter(View v) {
-        return new JuzAdapter(v.getResources().getStringArray(R.array.juz_names), Naskh13NavigationData.juzInfo);
+        return new JuzAdapter(v.getResources().getStringArray(R.array.juz_names),
+                Naskh13NavigationData.naskh13JuzPageNumbers,
+                Naskh13NavigationData.naskh13JuzLengths);
     }
 }

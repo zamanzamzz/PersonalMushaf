@@ -15,7 +15,8 @@ import com.android.personalmushaf.QuranActivity;
 import com.android.personalmushaf.R;
 
 public class SurahAdapter extends RecyclerView.Adapter<SurahAdapter.SurahViewHolder> {
-    private int[][] dataset;
+    private int[][] surahInfo;
+    private int[] surahPageNumbers;
     private String[] prefixes;
 
     public static class SurahViewHolder extends RecyclerView.ViewHolder {
@@ -26,8 +27,9 @@ public class SurahAdapter extends RecyclerView.Adapter<SurahAdapter.SurahViewHol
         }
     }
 
-    public SurahAdapter(int[][] dataset, String[] prefixes) {
-        this.dataset = dataset;
+    public SurahAdapter(int[][] surahInfo, int[] surahPageNumbers, String[] prefixes) {
+        this.surahInfo = surahInfo;
+        this.surahPageNumbers = surahPageNumbers;
         this.prefixes = prefixes;
     }
 
@@ -51,11 +53,10 @@ public class SurahAdapter extends RecyclerView.Adapter<SurahAdapter.SurahViewHol
         TextView surahOrigin = (TextView) ((LinearLayout) layout.getChildAt(1)).getChildAt(0);
         TextView surahStart = (TextView) layout.getChildAt(2);
 
-        final int[] surahInfo = dataset[position];
 
-        String origin = surahInfo[1] == 1 ? "مكي" : "مدني";
+        String origin = surahInfo[position][1] == 1 ? "مكي" : "مدني";
 
-        final int pageNumber = surahInfo[2];
+        final int pageNumber = surahPageNumbers[position];
 
         surahStart.setText(prefixes[position]);
         surahPageNumber.setText(Integer.toString(pageNumber));
@@ -90,7 +91,7 @@ public class SurahAdapter extends RecyclerView.Adapter<SurahAdapter.SurahViewHol
 
     @Override
     public int getItemCount() {
-        return dataset.length;
+        return surahInfo.length;
     }
 
     private void alternateBackgroundColor(LinearLayout textView, int position) {

@@ -15,7 +15,8 @@ import com.android.personalmushaf.QuranActivity;
 import com.android.personalmushaf.R;
 
 public class JuzQuarterAdapter extends RecyclerView.Adapter<JuzQuarterAdapter.JuzViewHolder> {
-    private int[][] dataset;
+    private int[][] quarterInfo;
+    private int[] quarterPageNumbers;
     private String[] lengths;
     private String[] prefixes;
 
@@ -27,8 +28,9 @@ public class JuzQuarterAdapter extends RecyclerView.Adapter<JuzQuarterAdapter.Ju
         }
     }
 
-    public JuzQuarterAdapter(int[][] dataset, String[] prefixes, String[] lengths) {
-        this.dataset = dataset;
+    public JuzQuarterAdapter(int[][] quarterInfo, int[] quarterPageNumbers, String[] prefixes, String[] lengths) {
+        this.quarterInfo = quarterInfo;
+        this.quarterPageNumbers = quarterPageNumbers;
         this.prefixes = prefixes;
         this.lengths = lengths;
     }
@@ -72,7 +74,7 @@ public class JuzQuarterAdapter extends RecyclerView.Adapter<JuzQuarterAdapter.Ju
         if (getItemCount() == 4)
             quarterLength.setText(lengths[position]+ " pages");
 
-        quarterPageNumber.setText(dataset[position][3] + "\t\t\t\t" + dataset[position][1] + ":" + dataset[position][2]);
+        quarterPageNumber.setText(quarterPageNumbers[position] + "\t\t\t\t" + quarterInfo[position][1] + ":" + quarterInfo[position][2]);
         quarterPrefix.setText(prefixes[position]);
 
 
@@ -93,7 +95,7 @@ public class JuzQuarterAdapter extends RecyclerView.Adapter<JuzQuarterAdapter.Ju
 
     @Override
     public int getItemCount() {
-        return dataset.length;
+        return quarterInfo.length;
     }
 
 
@@ -109,7 +111,7 @@ public class JuzQuarterAdapter extends RecyclerView.Adapter<JuzQuarterAdapter.Ju
         final Intent goToJuz = new Intent(rippleView.getContext(), QuranActivity.class);
 
 
-        goToJuz.putExtra("new page number", Integer.valueOf(dataset[position][3]));
+        goToJuz.putExtra("new page number", Integer.valueOf(quarterPageNumbers[position]));
 
         rippleView.setOnRippleCompleteListener(new RippleView.OnRippleCompleteListener() {
             @Override

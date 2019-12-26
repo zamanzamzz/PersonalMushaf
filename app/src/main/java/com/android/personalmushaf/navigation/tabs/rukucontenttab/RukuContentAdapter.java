@@ -14,7 +14,8 @@ import com.android.personalmushaf.QuranActivity;
 import com.android.personalmushaf.R;
 
 public class RukuContentAdapter extends RecyclerView.Adapter<RukuContentAdapter.JuzViewHolder> {
-    private int[][] dataset;
+    private int[][] rukuInfo;
+    private int[] rukuPageNumbers;
     private String[] prefixes;
 
     public static class JuzViewHolder extends RecyclerView.ViewHolder {
@@ -25,8 +26,9 @@ public class RukuContentAdapter extends RecyclerView.Adapter<RukuContentAdapter.
         }
     }
 
-    public RukuContentAdapter(int[][] dataset, String[] prefixes) {
-        this.dataset = dataset;
+    public RukuContentAdapter(int[][] rukuInfo, int[] rukuPageNumbers, String[] prefixes) {
+        this.rukuInfo = rukuInfo;
+        this.rukuPageNumbers = rukuPageNumbers;
         this.prefixes = prefixes;
     }
 
@@ -51,11 +53,9 @@ public class RukuContentAdapter extends RecyclerView.Adapter<RukuContentAdapter.
         TextView ayahRange = (TextView) ((LinearLayout) layout.getChildAt(1)).getChildAt(0);
         TextView rukuPrefix = (TextView) layout.getChildAt(2);
 
-        int[] rukuInfo = dataset[position];
-
         rukuNumber.setText(layout.getResources().getStringArray(R.array.arabic_numerals)[position]);
-        ayahRange.setText(rukuInfo[0] + ":" + rukuInfo[1]);
-        rukuPageNumber.setText(Integer.toString(rukuInfo[2]));
+        ayahRange.setText(rukuInfo[position][0] + ":" + rukuInfo[position][1]);
+        rukuPageNumber.setText(Integer.toString(rukuPageNumbers[position]));
         rukuPrefix.setText(prefixes[position]);
 
         alternateBackgroundColor(layout, position);
@@ -74,7 +74,7 @@ public class RukuContentAdapter extends RecyclerView.Adapter<RukuContentAdapter.
 
     @Override
     public int getItemCount() {
-        return dataset.length;
+        return rukuInfo.length;
     }
 
 
@@ -92,7 +92,7 @@ public class RukuContentAdapter extends RecyclerView.Adapter<RukuContentAdapter.
 
         goToRukuAyah.putExtra("from", "NavigationActivity");
 
-        int pageNumber = Integer.valueOf(dataset[selectedRuku][2]);
+        int pageNumber = Integer.valueOf(rukuPageNumbers[selectedRuku]);
 
         goToRukuAyah.putExtra("new page number", pageNumber);
 

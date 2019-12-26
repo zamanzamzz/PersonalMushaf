@@ -15,7 +15,8 @@ import com.android.personalmushaf.R;
 import com.android.personalmushaf.navigation.NavigationActivity;
 
 public class JuzAdapter extends RecyclerView.Adapter<JuzAdapter.JuzViewHolder> {
-    private int[][] dataSet;
+    private int[] juzPageNumbers;
+    private int[] juzLengths;
     private String[] juzNames;
 
     public static class JuzViewHolder extends RecyclerView.ViewHolder {
@@ -26,9 +27,10 @@ public class JuzAdapter extends RecyclerView.Adapter<JuzAdapter.JuzViewHolder> {
         }
     }
 
-    public JuzAdapter(String[] juzNames, int[][] dataSet) {
+    public JuzAdapter(String[] juzNames, int[] juzPageNumbers, int[] juzLengths) {
         this.juzNames = juzNames;
-        this.dataSet = dataSet;
+        this.juzPageNumbers = juzPageNumbers;
+        this.juzLengths = juzLengths;
     }
 
     @Override
@@ -52,18 +54,14 @@ public class JuzAdapter extends RecyclerView.Adapter<JuzAdapter.JuzViewHolder> {
         TextView juzLength = (TextView) ((LinearLayout) layout.getChildAt(1)).getChildAt(0);
         TextView juzStart = (TextView) layout.getChildAt(2);
 
-        int[] juzInfo = dataSet[position];
-
-        String length = juzInfo[0] + " pages";
+        String length = juzLengths[position] + " pages";
 
         juz.setText(layout.getResources().getStringArray(R.array.arabic_numerals)[position]);
         juzLength.setText(length);
         juzStart.setText(juzNames[position]);
-        juzPageNumber.setText(Integer.toString(juzInfo[1]));
+        juzPageNumber.setText(Integer.toString(juzPageNumbers[position]));
 
         alternateBackgroundColor(layout, position);
-
-        final int juzNumber = position + 1;
 
         holder.rippleView.setOnClickListener(new RippleView.OnClickListener() {
             @Override
@@ -71,7 +69,7 @@ public class JuzAdapter extends RecyclerView.Adapter<JuzAdapter.JuzViewHolder> {
                 RippleView rippleView = (RippleView) view;
                 rippleView.setRippleDuration(75);
                 rippleView.setFrameRate(10);
-                juzToJuzContentProcedure(rippleView, juzNumber);
+                juzToJuzContentProcedure(rippleView, position + 1);
 
             }
         });
@@ -83,7 +81,7 @@ public class JuzAdapter extends RecyclerView.Adapter<JuzAdapter.JuzViewHolder> {
                 rippleView.setRippleDuration(75);
                 rippleView.setFrameRate(10);
 
-                return juzToPage(rippleView, juzNumber);
+                return juzToPage(rippleView, position);
             }
         });
 
@@ -91,7 +89,7 @@ public class JuzAdapter extends RecyclerView.Adapter<JuzAdapter.JuzViewHolder> {
 
     @Override
     public int getItemCount() {
-        return dataSet.length;
+        return juzPageNumbers.length;
     }
 
 
@@ -120,7 +118,7 @@ public class JuzAdapter extends RecyclerView.Adapter<JuzAdapter.JuzViewHolder> {
     private boolean juzToPage(RippleView rippleView, int juzNumber) {
         final Intent goToJuz = new Intent(rippleView.getContext(), QuranActivity.class);
 
-        goToJuz.putExtra("new page number", Integer.valueOf(dataSet[juzNumber-1][1]));
+        goToJuz.putExtra("new page number", Integer.valueOf(juzPageNumbers[juzNumber]));
 
         rippleView.setOnRippleCompleteListener(new RippleView.OnRippleCompleteListener() {
             @Override
