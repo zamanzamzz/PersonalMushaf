@@ -1,7 +1,5 @@
 package com.android.personalmushaf.navigation;
 
-import android.os.Environment;
-
 public class QuranConstants {
 
     // surah ayah

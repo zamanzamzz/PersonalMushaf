@@ -6,7 +6,7 @@
     tools:context=".QuranActivity"
     android:orientation="horizontal">
 
-    <ImageView
+    <com.android.personalmushaf.widgets.HighlightingImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/page1"
@@ -14,7 +14,7 @@
         android:onClick="SystemUIListener"
         />
 
-    <ImageView
+    <com.android.personalmushaf.widgets.HighlightingImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/page2"

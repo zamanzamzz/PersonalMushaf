@@ -18,6 +18,10 @@ public class Ayah {
         return ayahBounds;
     }
 
+    public String getKey() {
+        return key;
+    }
+
     @Override
     public boolean equals(@Nullable Object obj) {
         if (obj.getClass() == Ayah.class) {

@@ -24,6 +24,7 @@ public class PageData {
     private static final String MAX_Y = "max_y";
     private static final String GLYPHS_TABLE = "glyphs";
     private Map<String, List<AyahBounds>> ayahBounds;
+    private AyahCoordinates ayahCoordinates;
 
     public PageData(final int pageNumber, final String databasePath) {
         new Thread(new Runnable() {
@@ -63,6 +64,7 @@ public class PageData {
                         }
                         ayahBounds.put(key, bounds);
                     }
+                    ayahCoordinates = new AyahCoordinates(pageNumber, ayahBounds);
                 } finally {
                     c.close();
                     database.close();
@@ -158,5 +160,7 @@ public class PageData {
         return new Ayah(key, bounds);
     }
 
-
+    public AyahCoordinates getAyahCoordinates() {
+        return ayahCoordinates;
+    }
 }

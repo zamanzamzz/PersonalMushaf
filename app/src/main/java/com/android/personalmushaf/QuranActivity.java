@@ -19,11 +19,13 @@ import android.view.WindowManager;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.viewpager.widget.ViewPager;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.android.personalmushaf.mushafinterfaces.strategies.quranstrategies.QuranActivityStrategy;
 import com.android.personalmushaf.mushafinterfaces.strategies.quranstrategies.QuranPageAdapterStrategy;
 import com.android.personalmushaf.quranpage.QuranPageAdapter;
+import com.duolingo.open.rtlviewpager.RtlViewPager;
 
 
 public class QuranActivity extends AppCompatActivity {
@@ -36,10 +38,10 @@ public class QuranActivity extends AppCompatActivity {
 
     private int currentOrientation;
 
-    private ViewPager2 pager;
+    private RtlViewPager pager;
 
-    private ViewPager2.OnPageChangeCallback singlePageChangeCallback;
-    private ViewPager2.OnPageChangeCallback dualPageChangeCallback;
+    private ViewPager.OnPageChangeListener singlePageChangeListener;
+    private ViewPager.OnPageChangeListener dualPageChangeListener;
 
 
     private QuranPageAdapter pagerAdapter;
@@ -187,28 +189,48 @@ public class QuranActivity extends AppCompatActivity {
 
 
     private void setupInitialPager() {
-        singlePageChangeCallback = new ViewPager2.OnPageChangeCallback() {
+
+        singlePageChangeListener = new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
             @Override
             public void onPageSelected(int position) {
-                super.onPageSelected(position);
                 pageNumber = singlePagerPositionToPageNumber(position);
                 pagesTurned++;
                 if (pagesTurned >= 8){
                     System.gc();
                     pagesTurned = 0;
                 }
-            }};
+            }
 
-        dualPageChangeCallback = new ViewPager2.OnPageChangeCallback() {
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        };
+
+        dualPageChangeListener = new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
             @Override
             public void onPageSelected(int position) {
-            super.onPageSelected(position);
                 pageNumber = dualPagerPositionToPageNumber(position);
                 pagesTurned += 2;
                 if (pagesTurned >= 8){
                     System.gc();
                     pagesTurned = 0;
                 }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
             }
         };
 
@@ -223,37 +245,38 @@ public class QuranActivity extends AppCompatActivity {
         pager = findViewById(R.id.pager);
 
         QuranPageAdapterStrategy quranPageAdapterStrategy = QuranSettings.getInstance().getMushafStrategy(this).getQuranPageAdapterStrategy();
-        pagerAdapter = new QuranPageAdapter(getSupportFragmentManager(), getLifecycle(), quranPageAdapterStrategy,
+        pagerAdapter = new QuranPageAdapter(getSupportFragmentManager(), quranPageAdapterStrategy,
                                     this, currentOrientation);
         pager.setAdapter(pagerAdapter);
         pager.setOffscreenPageLimit(1);
         pager.setCurrentItem(pageNumberToSinglePagerPosition(pageNumber), false);
-        pager.registerOnPageChangeCallback(singlePageChangeCallback);
+        pager.addOnPageChangeListener(singlePageChangeListener);
     }
 
     @SuppressLint("SourceLockedOrientationActivity")
     private void setupDualPager() {
         pager = findViewById(R.id.pager);
         QuranPageAdapterStrategy quranPageAdapterStrategy = QuranSettings.getInstance().getMushafStrategy(this).getQuranPageAdapterStrategy();
-        pagerAdapter = new QuranPageAdapter(getSupportFragmentManager(), getLifecycle(), quranPageAdapterStrategy,
+        pagerAdapter = new QuranPageAdapter(getSupportFragmentManager(), quranPageAdapterStrategy,
                                 this, currentOrientation);
         pager.setAdapter(pagerAdapter);
         pager.setOffscreenPageLimit(1);
         pager.setCurrentItem(pageNumberToDualPagerPosition(pageNumber), false);
-        pager.registerOnPageChangeCallback(dualPageChangeCallback);
+        pager.addOnPageChangeListener(dualPageChangeListener);
         if (isForceDualPage)
             this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
     }
 
     private void destroyPager() {
         if (isLandscape(currentOrientation))
-            pager.unregisterOnPageChangeCallback(dualPageChangeCallback);
+            pager.removeOnPageChangeListener(dualPageChangeListener);
         else
-            pager.unregisterOnPageChangeCallback(singlePageChangeCallback);
+            pager.removeOnPageChangeListener(singlePageChangeListener);
         pagerAdapter = null;
         pager = null;
         System.gc();
     }
+
 
 
 

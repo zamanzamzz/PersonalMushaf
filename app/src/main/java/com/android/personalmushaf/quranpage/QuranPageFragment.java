@@ -15,24 +15,44 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentStatePagerAdapter;
 
 import com.android.personalmushaf.QuranSettings;
 import com.android.personalmushaf.R;
 import com.android.personalmushaf.model.Ayah;
 import com.android.personalmushaf.model.AyahBounds;
+import com.android.personalmushaf.model.HighlightType;
 import com.android.personalmushaf.model.PageData;
-import com.android.personalmushaf.mushafinterfaces.strategies.quranstrategies.QuranDualPageFragmentStrategy;
 import com.android.personalmushaf.mushafinterfaces.strategies.quranstrategies.QuranPageFragmentStrategy;
 import com.android.personalmushaf.util.ImageUtils;
+import com.android.personalmushaf.widgets.HighlightingImageView;
 
 import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
 
-public class QuranPageFragment extends Fragment {
+public class QuranPageFragment extends QuranPage {
+
+    private HighlightingImageView imageView;
     private PageData pageData;
-    private Ayah highlightedAyah = null;
-    private boolean isHighlighted = false;
     private float x;
     private float y;
+
+    public static QuranPageFragment newInstance(int pageNumber, int position, Integer highlightedSurah, Integer highlightedAyah) {
+        QuranPageFragment fragment = new QuranPageFragment();
+        Bundle bundle = new Bundle();
+        bundle.putInt("page_number", pageNumber);
+        bundle.putInt("position", position);
+
+        if (highlightedSurah != null && highlightedAyah != null) {
+            bundle.putInt("highlighted_surah", highlightedSurah);
+            bundle.putInt("highlighted_ayah", highlightedAyah);
+        }
+
+        fragment.setArguments(bundle);
+
+        return fragment;
+    }
 
     public QuranPageFragment () {
     }
@@ -43,20 +63,28 @@ public class QuranPageFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_page, container, false);
 
         int pageNumber = getArguments().getInt("page_number");
+        int position = getArguments().getInt("position");
 
-        ImageView imageView = v.findViewById(R.id.page1);
+        int highlightedSurah = getArguments().getInt("highlighted_surah", 0);
+        int highlightedAyah = getArguments().getInt("highlighted_ayah", 0);
+
+        imageView = v.findViewById(R.id.page1);
 
         QuranPageFragmentStrategy quranPageFragmentStrategy = QuranSettings.getInstance().getMushafStrategy(imageView.getContext()).getQuranPageFragmentStrategy();
         String path = quranPageFragmentStrategy.getPagePath(pageNumber);
         pageData = quranPageFragmentStrategy.getPageData(pageNumber);
+        imageView.setAyahData(pageData.getAyahCoordinates());
         ImageUtils.getInstance().loadBitmap(path, imageView);
-        setHighlight(imageView, path);
+        setHighlight(imageView, position);
+
+        if (highlightedSurah != 0 && highlightedAyah != 0)
+            highlightAyah(highlightedSurah, highlightedAyah, HighlightType.SELECTION);
 
         return v;
     }
 
     @SuppressLint("ClickableViewAccessibility")
-    private void setHighlight(final ImageView imageView, final String path) {
+    private void setHighlight(final HighlightingImageView imageView, final int position) {
         final Matrix inverse = new Matrix();
 
         imageView.setOnTouchListener(new View.OnTouchListener() {
@@ -76,40 +104,22 @@ public class QuranPageFragment extends Fragment {
         imageView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                Bitmap myBitmap = BitmapFactory.decodeFile(path);
                 Ayah ayah = pageData.getAyahFromCoordinates(imageView, x, y);
-                List<AyahBounds> ayahBounds = ayah.getAyahBounds();
 
-
-                Paint myPaint = new Paint();
-                myPaint.setStyle(Paint.Style.FILL);
-                myPaint.setColor(Color.BLUE);
-                myPaint.setAlpha(50);
-
-                Bitmap tempBitmap = Bitmap.createBitmap(myBitmap.getWidth(), myBitmap.getHeight(), Bitmap.Config.RGB_565);
-                Canvas tempCanvas = new Canvas(tempBitmap);
-
-
-                //Draw the image bitmap into the canvas
-                tempCanvas.drawBitmap(myBitmap, 0, 0, null);
-
-                if (isHighlighted && ayah.equals(highlightedAyah)) {
-                    highlightedAyah = null;
-                    isHighlighted = false;
-                }
-                else {
-                    highlightedAyah = ayah;
-                    isHighlighted = true;
-                    for (AyahBounds bounds: ayahBounds){
-                        tempCanvas.drawRoundRect(bounds.getBounds(), 2, 2, myPaint);
-                    }
-                }
-
-
-                imageView.setImageBitmap(tempBitmap);
-
+                updateAdapter(ayah, position);
                 return true;
             }
         });
+    }
+
+    @Override
+    public void highlightAyah(int sura, int ayah, HighlightType highlightType) {
+        imageView.highlightAyah(sura, ayah, HighlightType.SELECTION);
+        imageView.invalidate();
+    }
+
+    @Override
+    public void unhighlightAyah(int sura, int ayah, HighlightType highlightType) {
+        imageView.unHighlight(sura, ayah, HighlightType.SELECTION);
     }
 }
