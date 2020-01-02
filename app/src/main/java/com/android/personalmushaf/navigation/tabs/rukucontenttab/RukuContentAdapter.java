@@ -94,6 +94,8 @@ public class RukuContentAdapter extends RecyclerView.Adapter<RukuContentAdapter.
 
         int pageNumber = Integer.valueOf(rukuPageNumbers[selectedRuku]);
 
+        goToRukuAyah.putExtra("surah", rukuInfo[selectedRuku][0]);
+        goToRukuAyah.putExtra("ayah", rukuInfo[selectedRuku][1]);
         goToRukuAyah.putExtra("new page number", pageNumber);
 
         rippleView.setOnRippleCompleteListener(new RippleView.OnRippleCompleteListener() {

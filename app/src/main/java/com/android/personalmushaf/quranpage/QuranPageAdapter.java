@@ -18,22 +18,21 @@ import com.android.personalmushaf.mushafinterfaces.strategies.quranstrategies.Qu
 import java.util.Observable;
 import java.util.Observer;
 
-public class QuranPageAdapter extends FragmentStatePagerAdapter implements Observer {
+public class QuranPageAdapter extends FragmentStatePagerAdapter {
 
     private SparseArray<QuranPage> registeredFragments = new SparseArray<>();
     private QuranPageAdapterStrategy quranPageAdapterStrategy;
     private int orientation;
     private boolean isForceDualPage;
-    protected Integer highlightedSurah = null;
-    protected Integer highlightedAyah = null;
-    protected boolean isHighlighted = false;
+    private QuranActivity quranActivity;
 
     public QuranPageAdapter(FragmentManager fm, QuranPageAdapterStrategy quranPageAdapterStrategy,
-                            Context context, int orientation) {
+                            QuranActivity context, int orientation) {
         super(fm, FragmentStatePagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
         this.quranPageAdapterStrategy = quranPageAdapterStrategy;
         isForceDualPage = QuranSettings.getInstance().getIsForceDualPage(context);
         this.orientation = orientation;
+        this.quranActivity = context;
     }
 
     @NonNull
@@ -42,12 +41,12 @@ public class QuranPageAdapter extends FragmentStatePagerAdapter implements Obser
         QuranPage fragment;
 
         if (QuranActivity.isLandscape(orientation) || isForceDualPage) {
-            fragment = QuranDualPageFragment.newInstance(position, highlightedSurah, highlightedAyah);
-            fragment.addObserver(this);
+            fragment = QuranDualPageFragment.newInstance(position, quranActivity.highlightedSurah, quranActivity.highlightedAyah);
+            fragment.addObserver(quranActivity);
         } else {
             int pageNumber = quranPageAdapterStrategy.getPageNumberFromPagerPosition(position);
-            fragment = QuranPageFragment.newInstance(pageNumber, position, highlightedSurah, highlightedAyah);
-            fragment.addObserver(this);
+            fragment = QuranPageFragment.newInstance(pageNumber, position, quranActivity.highlightedSurah, quranActivity.highlightedAyah);
+            fragment.addObserver(quranActivity);
         }
 
 
@@ -63,31 +62,7 @@ public class QuranPageAdapter extends FragmentStatePagerAdapter implements Obser
         }
     }
 
-    public void update(Observable o, Object arg) {
-        Bundle arguments = (Bundle) arg;
-        String[] ayahKey = arguments.getString("ayah_key").split(":");
-        int position = arguments.getInt("position");
-        Integer selectedSurah = Integer.parseInt(ayahKey[0]);
-        Integer selectedAyah = Integer.parseInt(ayahKey[1]);
-        if (!isHighlighted) {
-            highlightVisiblePages(position, selectedSurah, selectedAyah);
-            highlightedSurah = selectedSurah;
-            highlightedAyah = selectedAyah;
-            isHighlighted = true;
-        } else if (selectedSurah.equals(highlightedSurah) && selectedAyah.equals(highlightedAyah)) {
-            unhighlightVisiblePages(position, selectedSurah, selectedAyah);
-            highlightedSurah = null;
-            highlightedAyah = null;
-            isHighlighted = false;
-        } else {
-            highlightVisiblePages(position, selectedSurah, selectedAyah);
-            highlightedSurah = selectedSurah;
-            highlightedAyah = selectedAyah;
-            isHighlighted = true;
-        }
-    }
-
-    private void highlightVisiblePages(int position, int selectedSurah, int selectedAyah) {
+    public void highlightVisiblePages(int position, int selectedSurah, int selectedAyah) {
         getRegisteredFragment(position).highlightAyah(selectedSurah, selectedAyah, HighlightType.SELECTION);
         if (position > 0)
             getRegisteredFragment(position - 1).highlightAyah(selectedSurah, selectedAyah, HighlightType.SELECTION);
@@ -95,7 +70,7 @@ public class QuranPageAdapter extends FragmentStatePagerAdapter implements Obser
             getRegisteredFragment(position + 1).highlightAyah(selectedSurah, selectedAyah, HighlightType.SELECTION);
     }
 
-    private void unhighlightVisiblePages(int position, int selectedSurah, int selectedAyah) {
+    public void unhighlightVisiblePages(int position, int selectedSurah, int selectedAyah) {
         getRegisteredFragment(position).unhighlightAyah(selectedSurah, selectedAyah, HighlightType.SELECTION);
         if (position > 0)
             getRegisteredFragment(position - 1).unhighlightAyah(selectedSurah, selectedAyah, HighlightType.SELECTION);

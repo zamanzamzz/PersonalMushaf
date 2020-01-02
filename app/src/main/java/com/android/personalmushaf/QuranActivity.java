@@ -27,10 +27,17 @@ import com.android.personalmushaf.mushafinterfaces.strategies.quranstrategies.Qu
 import com.android.personalmushaf.quranpage.QuranPageAdapter;
 import com.duolingo.open.rtlviewpager.RtlViewPager;
 
+import java.util.Observable;
+import java.util.Observer;
 
-public class QuranActivity extends AppCompatActivity {
+
+public class QuranActivity extends AppCompatActivity implements Observer {
 
     private Toolbar toolbar;
+
+    public Integer highlightedSurah = null;
+    public Integer highlightedAyah = null;
+    public boolean isHighlighted = false;
 
     private int pageNumber;
     private int receivedPageNumber;
@@ -239,6 +246,8 @@ public class QuranActivity extends AppCompatActivity {
         } else {
             setupDualPager();
         }
+
+        highlightAyahFromNavigation();
     }
 
     private void setupSinglePager() {
@@ -265,6 +274,7 @@ public class QuranActivity extends AppCompatActivity {
         pager.addOnPageChangeListener(dualPageChangeListener);
         if (isForceDualPage)
             this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+
     }
 
     private void destroyPager() {
@@ -385,4 +395,48 @@ public class QuranActivity extends AppCompatActivity {
         }
     }
 
+    public void update(Observable o, Object arg) {
+        Bundle arguments = (Bundle) arg;
+        String[] ayahKey = arguments.getString("ayah_key").split(":");
+        int position = arguments.getInt("position");
+        Integer selectedSurah = Integer.parseInt(ayahKey[0]);
+        Integer selectedAyah = Integer.parseInt(ayahKey[1]);
+        if (!isHighlighted) {
+            toolbar.setTitle(selectedSurah + ":" + selectedAyah);
+            pagerAdapter.highlightVisiblePages(position, selectedSurah, selectedAyah);
+            highlightedSurah = selectedSurah;
+            highlightedAyah = selectedAyah;
+            isHighlighted = true;
+        } else if (selectedSurah.equals(highlightedSurah) && selectedAyah.equals(highlightedAyah)) {
+            toolbar.setTitle("");
+            pagerAdapter.unhighlightVisiblePages(position, selectedSurah, selectedAyah);
+            highlightedSurah = null;
+            highlightedAyah = null;
+            isHighlighted = false;
+        } else {
+            toolbar.setTitle(selectedSurah + ":" + selectedAyah);
+            pagerAdapter.highlightVisiblePages(position, selectedSurah, selectedAyah);
+            highlightedSurah = selectedSurah;
+            highlightedAyah = selectedAyah;
+            isHighlighted = true;
+        }
+    }
+
+    private void highlightAyahFromNavigation() {
+        final int surahFromNavigation = getIntent().getIntExtra("surah", 0);
+        final int ayahFromNavigation = getIntent().getIntExtra("ayah", 0);
+
+        pager.post(new Runnable() {
+            @Override
+            public void run() {
+                if (surahFromNavigation != 0) {
+                    highlightedSurah = surahFromNavigation;
+                    highlightedAyah = ayahFromNavigation;
+                    isHighlighted = true;
+                    pagerAdapter.highlightVisiblePages(pager.getCurrentItem(), highlightedSurah, highlightedAyah);
+                    toolbar.setTitle(highlightedSurah + ":" + highlightedAyah);
+                }
+            }
+        });
+    }
 }

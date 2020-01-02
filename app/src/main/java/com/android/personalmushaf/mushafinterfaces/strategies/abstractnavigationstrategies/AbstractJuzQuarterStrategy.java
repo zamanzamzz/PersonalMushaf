@@ -14,6 +14,12 @@ public abstract class AbstractJuzQuarterStrategy {
         return quarterPageNumbers;
     }
 
+    protected double[] getQuarterLengths(int juzNumber, double[] source, int numOfQuarters) {
+        double[] quarterLengths = new double[numOfQuarters];
+        System.arraycopy(source, (juzNumber - 1) * numOfQuarters, quarterLengths, 0, numOfQuarters);
+        return quarterLengths;
+    }
+
     protected String[] getQuarterStringResource(int juzNumber, String[] source, int numOfQuarters) {
         String[] quarterPrefixes = new String[numOfQuarters];
         System.arraycopy(source, (juzNumber - 1)*numOfQuarters, quarterPrefixes, 0, numOfQuarters);

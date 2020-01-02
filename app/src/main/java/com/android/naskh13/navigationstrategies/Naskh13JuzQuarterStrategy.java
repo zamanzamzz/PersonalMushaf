@@ -15,7 +15,7 @@ public class Naskh13JuzQuarterStrategy extends AbstractJuzQuarterStrategy implem
         int[][] quarterInfo = getQuarterInfo(juzNumber, QuranConstants.naskhQuarterInfo, NUMOFQUARTERS);
         int[] pageNumbers   = getQuarterPageNumbers(juzNumber, Naskh13NavigationData.naskh13QuarterPageNumbers, NUMOFQUARTERS);
         String[] prefixes   = getQuarterStringResource(juzNumber, v.getResources().getStringArray(R.array.naskh_quarter_prefixes), NUMOFQUARTERS);
-        String[] lengths    = getQuarterStringResource(juzNumber, v.getResources().getStringArray(R.array.naskh_quarter_lengths), NUMOFQUARTERS);
+        double[] lengths    = getQuarterLengths(juzNumber, Naskh13NavigationData.naskhQuarterLengths, NUMOFQUARTERS);
         return new JuzQuarterAdapter(quarterInfo, pageNumbers, prefixes, lengths);
     }
 }

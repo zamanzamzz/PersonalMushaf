@@ -17,7 +17,7 @@ import com.android.personalmushaf.R;
 public class JuzQuarterAdapter extends RecyclerView.Adapter<JuzQuarterAdapter.JuzViewHolder> {
     private int[][] quarterInfo;
     private int[] quarterPageNumbers;
-    private String[] lengths;
+    private double[] lengths;
     private String[] prefixes;
 
     public static class JuzViewHolder extends RecyclerView.ViewHolder {
@@ -28,7 +28,7 @@ public class JuzQuarterAdapter extends RecyclerView.Adapter<JuzQuarterAdapter.Ju
         }
     }
 
-    public JuzQuarterAdapter(int[][] quarterInfo, int[] quarterPageNumbers, String[] prefixes, String[] lengths) {
+    public JuzQuarterAdapter(int[][] quarterInfo, int[] quarterPageNumbers, String[] prefixes, double[] lengths) {
         this.quarterInfo = quarterInfo;
         this.quarterPageNumbers = quarterPageNumbers;
         this.prefixes = prefixes;
@@ -71,8 +71,7 @@ public class JuzQuarterAdapter extends RecyclerView.Adapter<JuzQuarterAdapter.Ju
         TextView quarterPageNumber = (TextView) ((LinearLayout) layout.getChildAt(1)).getChildAt(1);
         TextView quarterPrefix = (TextView) layout.getChildAt(2);
 
-        if (getItemCount() == 4)
-            quarterLength.setText(lengths[position]+ " pages");
+        quarterLength.setText(String.format("%.2f", lengths[position])+ " pages");
 
         quarterPageNumber.setText(quarterPageNumbers[position] + "\t\t\t\t" + quarterInfo[position][1] + ":" + quarterInfo[position][2]);
         quarterPrefix.setText(prefixes[position]);
@@ -110,8 +109,9 @@ public class JuzQuarterAdapter extends RecyclerView.Adapter<JuzQuarterAdapter.Ju
     private void juzContentProcedure(RippleView rippleView, int position) {
         final Intent goToJuz = new Intent(rippleView.getContext(), QuranActivity.class);
 
-
-        goToJuz.putExtra("new page number", Integer.valueOf(quarterPageNumbers[position]));
+        goToJuz.putExtra("surah", quarterInfo[position][1]);
+        goToJuz.putExtra("ayah", quarterInfo[position][2]);
+        goToJuz.putExtra("new page number", quarterPageNumbers[position]);
 
         rippleView.setOnRippleCompleteListener(new RippleView.OnRippleCompleteListener() {
             @Override

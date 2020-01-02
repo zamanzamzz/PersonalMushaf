@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 
+import com.android.personalmushaf.QuranActivity;
 import com.android.personalmushaf.model.Ayah;
 import com.android.personalmushaf.model.HighlightType;
 
@@ -13,8 +14,8 @@ import java.util.Observer;
 public abstract class QuranPage extends Fragment {
     private FragmentObserver mObservers = new FragmentObserver();
 
-    public void addObserver(FragmentStatePagerAdapter adapter) {
-        mObservers.addObserver((Observer) (adapter));
+    public void addObserver(QuranActivity quranActivity) {
+        mObservers.addObserver(quranActivity);
     }
 
     protected void updateAdapter(Ayah ayah, int position) {

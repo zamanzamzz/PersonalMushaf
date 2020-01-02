@@ -54,13 +54,13 @@ public class SurahAdapter extends RecyclerView.Adapter<SurahAdapter.SurahViewHol
         TextView surahStart = (TextView) layout.getChildAt(2);
 
 
-        String origin = surahInfo[position][1] == 1 ? "مكي" : "مدني";
+        String origin = surahInfo[position][2] == 1 ? "مكي" : "مدني";
 
         final int pageNumber = surahPageNumbers[position];
 
         surahStart.setText(prefixes[position]);
         surahPageNumber.setText(Integer.toString(pageNumber));
-        surahNumber.setText(layout.getResources().getStringArray(R.array.three_digit_arabic_numerals)[position]);
+        surahNumber.setText(layout.getResources().getStringArray(R.array.three_digit_arabic_numerals)[surahInfo[position][0] - 1]);
         surahOrigin.setText(origin);
 
         alternateBackgroundColor(layout, position);
