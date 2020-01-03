@@ -16,6 +16,7 @@ import com.android.personalmushaf.R;
 public class RukuContentAdapter extends RecyclerView.Adapter<RukuContentAdapter.JuzViewHolder> {
     private int[][] rukuInfo;
     private int[] rukuPageNumbers;
+    private double[] rukuLengths;
     private String[] prefixes;
 
     public static class JuzViewHolder extends RecyclerView.ViewHolder {
@@ -26,9 +27,10 @@ public class RukuContentAdapter extends RecyclerView.Adapter<RukuContentAdapter.
         }
     }
 
-    public RukuContentAdapter(int[][] rukuInfo, int[] rukuPageNumbers, String[] prefixes) {
+    public RukuContentAdapter(int[][] rukuInfo, int[] rukuPageNumbers, double[] rukuLengths, String[] prefixes) {
         this.rukuInfo = rukuInfo;
         this.rukuPageNumbers = rukuPageNumbers;
+        this.rukuLengths = rukuLengths;
         this.prefixes = prefixes;
     }
 
@@ -50,12 +52,13 @@ public class RukuContentAdapter extends RecyclerView.Adapter<RukuContentAdapter.
 
         TextView rukuNumber = (TextView) layout.getChildAt(0);
         TextView rukuPageNumber = (TextView) ((LinearLayout) layout.getChildAt(1)).getChildAt(1);
-        TextView ayahRange = (TextView) ((LinearLayout) layout.getChildAt(1)).getChildAt(0);
+        TextView rukuLength = (TextView) ((LinearLayout) layout.getChildAt(1)).getChildAt(0);
         TextView rukuPrefix = (TextView) layout.getChildAt(2);
 
+
         rukuNumber.setText(layout.getResources().getStringArray(R.array.arabic_numerals)[position]);
-        ayahRange.setText(rukuInfo[position][0] + ":" + rukuInfo[position][1]);
-        rukuPageNumber.setText(Integer.toString(rukuPageNumbers[position]));
+        rukuLength.setText(String.format("%.2f", rukuLengths[position]) + " pages");
+        rukuPageNumber.setText(rukuPageNumbers[position] + "\t\t\t\t" + rukuInfo[position][0] + ":" + rukuInfo[position][1]);
         rukuPrefix.setText(prefixes[position]);
 
         alternateBackgroundColor(layout, position);

@@ -18,6 +18,7 @@ public class SurahAdapter extends RecyclerView.Adapter<SurahAdapter.SurahViewHol
     private int[][] surahInfo;
     private int[] surahPageNumbers;
     private String[] prefixes;
+    private double[] surahLengthsInJuz;
 
     public static class SurahViewHolder extends RecyclerView.ViewHolder {
         public RippleView rippleView;
@@ -27,10 +28,11 @@ public class SurahAdapter extends RecyclerView.Adapter<SurahAdapter.SurahViewHol
         }
     }
 
-    public SurahAdapter(int[][] surahInfo, int[] surahPageNumbers, String[] prefixes) {
+    public SurahAdapter(int[][] surahInfo, int[] surahPageNumbers, String[] prefixes, double[] surahLengthsInJuz) {
         this.surahInfo = surahInfo;
         this.surahPageNumbers = surahPageNumbers;
         this.prefixes = prefixes;
+        this.surahLengthsInJuz = surahLengthsInJuz;
     }
 
     @Override
@@ -49,8 +51,9 @@ public class SurahAdapter extends RecyclerView.Adapter<SurahAdapter.SurahViewHol
         LinearLayout layout = (LinearLayout) holder.rippleView.getChildAt(0);
 
         TextView surahNumber = (TextView) layout.getChildAt(0);
-        TextView surahPageNumber = (TextView) ((LinearLayout) layout.getChildAt(1)).getChildAt(1);
-        TextView surahOrigin = (TextView) ((LinearLayout) layout.getChildAt(1)).getChildAt(0);
+        TextView surahLength = (TextView) ((LinearLayout) layout.getChildAt(1)).getChildAt(0);
+        TextView surahPageNumber = (TextView) ((LinearLayout) ((LinearLayout) layout.getChildAt(1)).getChildAt(1)).getChildAt(1);
+        TextView surahOrigin = (TextView) ((LinearLayout) ((LinearLayout) layout.getChildAt(1)).getChildAt(1)).getChildAt(0);
         TextView surahStart = (TextView) layout.getChildAt(2);
 
 
@@ -59,6 +62,7 @@ public class SurahAdapter extends RecyclerView.Adapter<SurahAdapter.SurahViewHol
         final int pageNumber = surahPageNumbers[position];
 
         surahStart.setText(prefixes[position]);
+        surahLength.setText(String.format("%.2f", surahLengthsInJuz[position]) + " pages");
         surahPageNumber.setText(Integer.toString(pageNumber));
         surahNumber.setText(layout.getResources().getStringArray(R.array.three_digit_arabic_numerals)[surahInfo[position][0] - 1]);
         surahOrigin.setText(origin);

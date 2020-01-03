@@ -15,7 +15,7 @@ public class Madani15JuzQuarterStrategy extends AbstractJuzQuarterStrategy imple
         int[][] hizbInfo      = getQuarterInfo(juzNumber, QuranConstants.madaniHizbInfo, NUMOFQUARTERS);
         int[] hizbPageNumbers = getQuarterPageNumbers(juzNumber, Madani15NavigationData.madani15HizbPageNumbers, NUMOFQUARTERS);
         String[] prefixes     = getQuarterStringResource(juzNumber, v.getResources().getStringArray(R.array.madani_quarter_prefixes), NUMOFQUARTERS);
-        double[] lengths      = getQuarterLengths(juzNumber, Madani15NavigationData.madaniQuarterLengths, NUMOFQUARTERS);
+        double[] lengths      = getQuarterLengths(juzNumber, Madani15NavigationData.madani15HizbLengths, NUMOFQUARTERS);
         return new JuzQuarterAdapter(hizbInfo, hizbPageNumbers, prefixes, lengths);
     }
 }

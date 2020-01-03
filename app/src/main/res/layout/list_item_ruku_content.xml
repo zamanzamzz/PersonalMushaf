@@ -28,7 +28,7 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <TextView android:id="@+id/ruku_ayah_range"
+            <TextView android:id="@+id/ruku_length"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingLeft="@dimen/list_item_left_margin"

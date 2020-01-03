@@ -151,7 +151,8 @@ public class NavigationActivity extends AppCompatActivity {
     }
 
     public void setJuzTitle(TextView juzTitle, int juzNumber) {
-        String title = getResources().getStringArray(R.array.arabic_numerals)[juzNumber - 1] + "  | " + navigationActivityStrategy.getJuzLength(juzNumber) + " pages";
+        String length = String.format("%.2f", navigationActivityStrategy.getJuzLength(juzNumber));
+        String title = getResources().getStringArray(R.array.arabic_numerals)[juzNumber - 1] + "  | " + length + " pages";
 
         juzTitle.setText(title);
     }

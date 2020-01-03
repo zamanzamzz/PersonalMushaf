@@ -16,7 +16,7 @@ import com.android.personalmushaf.navigation.NavigationActivity;
 
 public class JuzAdapter extends RecyclerView.Adapter<JuzAdapter.JuzViewHolder> {
     private int[] juzPageNumbers;
-    private int[] juzLengths;
+    private double[] juzLengths;
     private String[] juzNames;
 
     public static class JuzViewHolder extends RecyclerView.ViewHolder {
@@ -27,7 +27,7 @@ public class JuzAdapter extends RecyclerView.Adapter<JuzAdapter.JuzViewHolder> {
         }
     }
 
-    public JuzAdapter(String[] juzNames, int[] juzPageNumbers, int[] juzLengths) {
+    public JuzAdapter(String[] juzNames, int[] juzPageNumbers, double[] juzLengths) {
         this.juzNames = juzNames;
         this.juzPageNumbers = juzPageNumbers;
         this.juzLengths = juzLengths;
@@ -54,7 +54,7 @@ public class JuzAdapter extends RecyclerView.Adapter<JuzAdapter.JuzViewHolder> {
         TextView juzLength = (TextView) ((LinearLayout) layout.getChildAt(1)).getChildAt(0);
         TextView juzStart = (TextView) layout.getChildAt(2);
 
-        String length = juzLengths[position] + " pages";
+        String length = String.format("%.2f", juzLengths[position]) + " pages";
 
         juz.setText(layout.getResources().getStringArray(R.array.arabic_numerals)[position]);
         juzLength.setText(length);

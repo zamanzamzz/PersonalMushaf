@@ -14,8 +14,9 @@ public class Naskh13SurahStrategy extends AbstractSurahStrategy implements Surah
         int[][] surahInfo = getSurahInfoInJuz(juzNumber);
         int[] surahPageNumbersInJuz = getSurahPageNumbersinJuz(Naskh13NavigationData.naskh13SurahPageNumbers, juzNumber);
         String[] surahNamesInJuz = getSurahNamesInJuz(juzNumber, surahInfo.length, v.getResources().getStringArray(R.array.surah_names));
+        double[] surahLengthsInJuz = getSurahLengthsInJuz(Naskh13NavigationData.naskh13SurahLengths, juzNumber);
 
-        return new SurahAdapter(surahInfo, surahPageNumbersInJuz, surahNamesInJuz);
+        return new SurahAdapter(surahInfo, surahPageNumbersInJuz, surahNamesInJuz, surahLengthsInJuz);
     }
 
 }

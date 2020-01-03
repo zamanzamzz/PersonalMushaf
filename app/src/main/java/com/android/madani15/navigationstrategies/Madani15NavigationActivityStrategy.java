@@ -6,7 +6,7 @@ import com.android.personalmushaf.navigation.ViewPagerAdapter;
 import com.android.personalmushaf.navigation.tabs.rukucontenttab.RukuContentFragment;
 
 public class Madani15NavigationActivityStrategy implements NavigationActivityStrategy {
-    public int getJuzLength(int juzNumber) {
+    public double getJuzLength(int juzNumber) {
         return Madani15NavigationData.madani15JuzLengths[juzNumber - 1];
     }
 

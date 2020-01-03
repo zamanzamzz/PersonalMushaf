@@ -56,4 +56,20 @@ public abstract class AbstractSurahStrategy {
 
         return surahNames;
     }
+
+    protected double[] getSurahLengthsInJuz(double[] source, int juzNumber) {
+        if (juzNumber < 0)
+            return source;
+        else {
+            double[] surahLengthsInJuz;
+            if (surahsInJuz[juzNumber-1][0] == 0) {
+                surahLengthsInJuz = new double[0];
+                return surahLengthsInJuz;
+            } else {
+                surahLengthsInJuz = new double[surahsInJuz[juzNumber-1][0]];
+                System.arraycopy(source, surahsInJuz[juzNumber-1][1], surahLengthsInJuz, 0, surahsInJuz[juzNumber-1][0]);
+                return surahLengthsInJuz;
+            }
+        }
+    }
 }

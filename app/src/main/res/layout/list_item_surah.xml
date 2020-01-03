@@ -27,7 +27,7 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <TextView android:id="@+id/surah_origin"
+            <TextView android:id="@+id/surah_length"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingLeft="@dimen/list_item_left_margin"
@@ -40,18 +40,37 @@
                 xmlns:android="http://schemas.android.com/apk/res/android"
                 xmlns:tools="http://schemas.android.com/tools" />
 
-            <TextView android:id="@+id/surah_page_number"
+            <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="fill_parent"
-                android:paddingLeft="@dimen/list_item_left_margin"
-                android:paddingBottom="8dp"
-                android:textSize="12sp"
-                android:gravity="bottom|start"
-                tools:text="Juz "
-                android:textColor="#FFF"
-                android:textDirection="ltr"
-                xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:tools="http://schemas.android.com/tools" />
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+                <TextView android:id="@+id/surah_origin"
+                    android:layout_width="60dp"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="@dimen/list_item_left_margin"
+                    android:paddingBottom="8dp"
+                    android:textSize="14sp"
+                    android:gravity="bottom|start"
+                    tools:text="Juz "
+                    android:textColor="#FFF"
+                    android:textDirection="ltr"
+                    xmlns:android="http://schemas.android.com/apk/res/android"
+                    xmlns:tools="http://schemas.android.com/tools" />
+
+                <TextView android:id="@+id/surah_page_number"
+                    android:layout_width="wrap_content"
+                    android:layout_height="fill_parent"
+                    android:paddingLeft="@dimen/list_item_left_margin"
+                    android:paddingBottom="8dp"
+                    android:textSize="12sp"
+                    android:gravity="bottom|start"
+                    tools:text="Juz "
+                    android:textColor="#FFF"
+                    android:textDirection="ltr"
+                    xmlns:android="http://schemas.android.com/apk/res/android"
+                    xmlns:tools="http://schemas.android.com/tools" />
+            </LinearLayout>
+
 
         </LinearLayout>
 

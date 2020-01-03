@@ -6,7 +6,7 @@ import com.android.personalmushaf.navigation.ViewPagerAdapter;
 import com.android.personalmushaf.navigation.tabs.rukucontenttab.RukuContentFragment;
 
 public class Naskh13NavigationActivityStrategy implements NavigationActivityStrategy {
-    public int getJuzLength(int juzNumber) {
+    public double getJuzLength(int juzNumber) {
         return Naskh13NavigationData.naskh13JuzLengths[juzNumber - 1];
     }
 

@@ -14,8 +14,9 @@ public class Madani15SurahStrategy extends AbstractSurahStrategy implements Sura
         int[][] surahInfo = getSurahInfoInJuz(juzNumber);
         int[] surahPageNumbersInJuz = getSurahPageNumbersinJuz(Madani15NavigationData.madani15SurahPageNumbers, juzNumber);
         String[] surahNamesInJuz = getSurahNamesInJuz(juzNumber, surahInfo.length, v.getResources().getStringArray(R.array.surah_names));
+        double[] surahLengthsInJuz = getSurahLengthsInJuz(Madani15NavigationData.madani15SurahLengths, juzNumber);
 
-        return new SurahAdapter(surahInfo, surahPageNumbersInJuz, surahNamesInJuz);
+        return new SurahAdapter(surahInfo, surahPageNumbersInJuz, surahNamesInJuz, surahLengthsInJuz);
     }
 
 }
