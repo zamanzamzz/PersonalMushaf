@@ -34,7 +34,7 @@ public class Naskh13Strategy implements MushafStrategy {
     private Naskh13QuranDualPageFragmentStrategy quranDualPageFragmentStrategy;
 
     public Naskh13Strategy() {
-        mushafMetadata = MushafMetadataFactory.getMushafMetadata(QuranSettings.NASKH13LINE);
+        mushafMetadata = MushafMetadataFactory.getMushafMetadata(QuranSettings.MODERN_NASKH_13_LINE);
         navigationActivityStrategy = new Naskh13NavigationActivityStrategy();
         juzQuarterStrategy = new Naskh13JuzQuarterStrategy();
         juzStrategy = new Naskh13JuzStrategy();

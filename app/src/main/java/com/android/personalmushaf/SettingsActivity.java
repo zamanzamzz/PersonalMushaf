@@ -95,6 +95,7 @@ public class SettingsActivity extends AppCompatActivity implements
         public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
             setPreferencesFromResource(R.xml.header_preferences, rootKey);
             ListPreference mushafVersion = findPreference("mushaf");
+            ListPreference landmarkSystem = findPreference("landmark");
             SwitchPreferenceCompat isForceDualPages = findPreference("force_dual_page");
             SwitchPreferenceCompat isSmoothKeyNavigation = findPreference("smoothpageturn");
 
@@ -105,6 +106,15 @@ public class SettingsActivity extends AppCompatActivity implements
                     int mushaf = Integer.parseInt((String) newValue);
                     QuranSettings.getInstance().setMushafVersion(mushaf);
                     QuranSettings.getInstance().setMushafStrategy(mushaf);
+                    return true;
+                }
+            });
+
+            landmarkSystem.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+                @Override
+                public boolean onPreferenceChange(Preference preference, Object newValue) {
+                    int landmarkSystem = Integer.parseInt((String) newValue);
+                    QuranSettings.getInstance().setLandmarkSystem(landmarkSystem);
                     return true;
                 }
             });

@@ -12,14 +12,18 @@ import com.android.personalmushaf.util.FileUtils;
 import java.io.File;
 
 public class QuranSettings {
-    public static final int NASKH13LINE = 0;
-    public static final int NASKH15LINE = 1;
-    public static final int MADANI15LINE = 2;
+    public static final int MODERN_NASKH_13_LINE = 0;
+    public static final int CLASSIC_NASKH_15_LINE = 1;
+    public static final int CLASSIC_MADANI_15_LINE = 2;
+    public static final int DEFAULT_LANDMARK_SYSTEM = 0;
+    public static final int RUKU = 1;
+    public static final int HIZB = 2;
     private static boolean[] availableMushafs = {false, false, false};
     private static QuranSettings quranSettings;
     private MushafStrategy mushafStrategy;
     private SharedPreferences preferences;
     private Integer mushafVersion;
+    private Integer landmarkSystem;
     private Boolean isForceDualPage;
 
     private Boolean isSmoothKeyNavigation;
@@ -40,7 +44,7 @@ public class QuranSettings {
     public int getMushafVersion(Context context) {
         if (mushafVersion == null) {
             setPreference(context);
-            mushafVersion = Integer.parseInt(preferences.getString("mushaf", Integer.toString(MADANI15LINE)));
+            mushafVersion = Integer.parseInt(preferences.getString("mushaf", Integer.toString(CLASSIC_MADANI_15_LINE)));
         }
 
         return mushafVersion;
@@ -48,6 +52,19 @@ public class QuranSettings {
 
     public void setMushafVersion(Integer mushafVersion) {
         this.mushafVersion = mushafVersion;
+    }
+
+    public int getLandMarkSystem(Context context) {
+        if (landmarkSystem == null) {
+            setPreference(context);
+            landmarkSystem = Integer.parseInt(preferences.getString("landmark", Integer.toString(DEFAULT_LANDMARK_SYSTEM)));
+        }
+
+        return landmarkSystem;
+    }
+
+    public void setLandmarkSystem(Integer landmarkSystem) {
+        this.landmarkSystem = landmarkSystem;
     }
 
     public MushafStrategy getMushafStrategy(Context context) {
@@ -59,6 +76,8 @@ public class QuranSettings {
     public void setMushafStrategy(int mushaf) {
         mushafStrategy = MushafStrategyFactory.getMushafStrategy(mushaf);
     }
+
+
 
     public Boolean getIsForceDualPage(Context context) {
         if (isForceDualPage == null) {
@@ -86,14 +105,14 @@ public class QuranSettings {
         if (!FileUtils.checkRootDataDirectory())
             return false;
 
-        String[] expectedMushafDirectories = {"naskh_13_line", "naskh_15_line", "madani_15_line"};
+        String[] expectedMushafDirectories = {"modern_naskh_13_line", "classic_naskh_15_line", "classic_madani_15_line"};
         File currentMushafDirectory;
         File currentImagesDirectory;
 
         getInstance().initialAvailableMushafs();
 
         boolean rv = false;
-        for (int i = NASKH13LINE; i <= NASKH15LINE + 1; i++) {
+        for (int i = MODERN_NASKH_13_LINE; i <= CLASSIC_NASKH_15_LINE + 1; i++) {
             currentMushafDirectory = new File(FileUtils.ASSETSDIRECTORY + "/" + expectedMushafDirectories[i]);
             if (currentMushafDirectory.exists() && currentMushafDirectory.isDirectory()) {
                 currentImagesDirectory = new File(FileUtils.ASSETSDIRECTORY + "/" + expectedMushafDirectories[i] + "/images");
@@ -105,6 +124,7 @@ public class QuranSettings {
 
         return rv;
     }
+
 
     public void setForceDualPage(Boolean forceDualPage) {
         isForceDualPage = forceDualPage;

@@ -11,12 +11,26 @@
     </string-array>
 
     <string-array name="mushaf_entries">
-        <item>Naskh 13 Line</item>
-        <item>Madani 15 Line</item>
+        <item>Modern Naskh 13 Line</item>
+        <item>Classic Naskh 15 Line</item>
+        <item>Classic Madani 15 Line</item>
     </string-array>
 
     <string-array name="mushaf_values">
         <item>0</item>
+        <item>1</item>
+        <item>2</item>
+    </string-array>
+
+    <string-array name="landmark_system_entries">
+        <item>Default</item>
+        <item>Ruku</item>
+        <item>Hizb</item>
+    </string-array>
+
+    <string-array name="landmark_system_values">
+        <item>0</item>
+        <item>1</item>
         <item>2</item>
     </string-array>
 

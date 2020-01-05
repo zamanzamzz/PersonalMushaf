@@ -41,7 +41,7 @@ public class StartupFragment extends Fragment {
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_startup, container, false);
 
-        final int mushafIndex = getArguments().getInt("mushaf", QuranSettings.MADANI15LINE);
+        final int mushafIndex = getArguments().getInt("mushaf", QuranSettings.CLASSIC_MADANI_15_LINE);
 
         final MushafMetadata mushafMetadata = MushafMetadataFactory.getMushafMetadata(mushafIndex);
 
@@ -108,7 +108,7 @@ public class StartupFragment extends Fragment {
 
     private StorageReference getZipStorageReference(String mushafDirectory) {
         return FirebaseStorage.getInstance().getReference()
-                .child(mushafDirectory + "/" + mushafDirectory + ".zip");
+                .child(mushafDirectory + ".zip");
     }
 
     private void setupUIForDownload(Window window, ProgressBar progressBar) {

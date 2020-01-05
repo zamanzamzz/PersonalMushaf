@@ -20,7 +20,7 @@ public class StartupMushafStyleActivity extends AppCompatActivity {
         setContentView(R.layout.activity_startup);
         final ViewPager viewPager = findViewById(R.id.startup_viewpager);
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        int mushafType = getIntent().getIntExtra("mushaf_type", QuranSettings.MADANI15LINE);
+        int mushafType = getIntent().getIntExtra("mushaf_type", QuranSettings.CLASSIC_MADANI_15_LINE);
 
         populateViewPager(adapter, mushafType);
 

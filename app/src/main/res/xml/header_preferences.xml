@@ -17,12 +17,20 @@
 <androidx.preference.PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <ListPreference
-        app:defaultValue="madani_15_line"
+        app:defaultValue="0"
         app:entries="@array/mushaf_entries"
         app:entryValues="@array/mushaf_values"
         app:icon="@drawable/ic_book_white_24dp"
         app:key="mushaf"
         app:title="@string/mushaf_title"
+        app:useSimpleSummaryProvider="true" />
+
+    <ListPreference
+        app:defaultValue="0"
+        app:entries="@array/landmark_system_entries"
+        app:entryValues="@array/landmark_system_values"
+        app:key="landmark"
+        app:title="Landmark System"
         app:useSimpleSummaryProvider="true" />
 
     <SwitchPreferenceCompat

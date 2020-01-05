@@ -33,7 +33,7 @@ public class Madani15Strategy implements MushafStrategy {
     private Madani15QuranDualPageFragmentStrategy quranDualPageFragmentStrategy;
 
     public Madani15Strategy() {
-        mushafMetadata = MushafMetadataFactory.getMushafMetadata(QuranSettings.MADANI15LINE);
+        mushafMetadata = MushafMetadataFactory.getMushafMetadata(QuranSettings.CLASSIC_MADANI_15_LINE);
         navigationActivityStrategy = new Madani15NavigationActivityStrategy();
         juzQuarterStrategy = new Madani15JuzQuarterStrategy();
         juzStrategy = new Madani15JuzStrategy();

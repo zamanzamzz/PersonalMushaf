@@ -1,24 +1,24 @@
-package com.android.naskh13;
+package com.android.madani15;
 
 import com.android.personalmushaf.R;
 import com.android.personalmushaf.mushafinterfaces.mushafmetadata.MushafMetadata;
 import com.android.personalmushaf.util.FileUtils;
 
-public class Naskh13MushafMetadata implements MushafMetadata {
+public class ClassicMadani15MushafMetadata implements MushafMetadata {
     private String directoryName;
     private String databasePath;
     private String name;
     private String description;
     private int[] previewDrawableIDs;
 
-    public Naskh13MushafMetadata() {
-        directoryName = "naskh_13_line";
-        databasePath = FileUtils.ASSETSDIRECTORY + "/" + directoryName + "/databases/ayahinfo_13line.db";
-        name = "Modern 13 Line Naskh Mushaf";
-        description = "Popular with huffadh in the Indian Subcontinent and South Africa.";
+    public ClassicMadani15MushafMetadata() {
+        directoryName = "classic_madani_15_line";
+        databasePath = FileUtils.ASSETSDIRECTORY + "/" + directoryName + "/databases/ayahinfo_classicmadani15line.db";
+        name = "Classic 15 Line Madani Mushaf";
+        description = "The classic standard mushaf from Saudi Arabia.";
         previewDrawableIDs = new int[2];
-        previewDrawableIDs[0] = R.drawable.naskh_13_line_preview1;
-        previewDrawableIDs[1] = R.drawable.naskh_13_line_preview2;
+        previewDrawableIDs[0] = R.drawable.classic_madani_15_line_preview1;
+        previewDrawableIDs[1] = R.drawable.classic_madani_15_line_preview2;
     }
 
     public String getDirectoryName() {

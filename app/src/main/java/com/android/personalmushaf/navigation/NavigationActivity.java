@@ -109,7 +109,7 @@ public class NavigationActivity extends AppCompatActivity {
             surahFragment.setArguments(arguments);
 
             viewPagerAdapter.addFragment(juzQuarterFragment, "Quarter");
-            navigationActivityStrategy.setViewPagerTabs(viewPagerAdapter, rukuContentFragment);
+            navigationActivityStrategy.setViewPagerTabs(viewPagerAdapter, rukuContentFragment, this);
             viewPagerAdapter.addFragment(surahFragment, "Surah");
         }
 

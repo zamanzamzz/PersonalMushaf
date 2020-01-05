@@ -40,9 +40,10 @@ public class FileUtils {
                     continue;
                 FileOutputStream fout = new FileOutputStream(file);
                 try {
-                    while ((count = zis.read(buffer)) != -1)
+                    while ((count = zis.read(buffer)) != -1) {
                         progressBar.incrementProgressBy(count);
                         fout.write(buffer, 0, count);
+                    }
                 } finally {
                     fout.close();
                 }
