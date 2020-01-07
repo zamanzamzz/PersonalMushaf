@@ -46,7 +46,7 @@ public class NavigationActivity extends AppCompatActivity {
         currentPagerPosition = 0;
 
         TabLayout tabLayout = findViewById(R.id.tab_layout);
-        NonSwipingViewPager viewPager = findViewById(R.id.viewpager);
+        ViewPager viewPager = findViewById(R.id.viewpager);
         // viewPager.setSwipeEnabled(false);
         viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
 

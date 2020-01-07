@@ -20,6 +20,7 @@ public class ModernNaskh13MushafMetadata extends MushafMetadata {
         minPage = 2;
         maxPage = 848;
         danglingDualPage = 423;
+        doesAyahSpanPages = true;
     }
 
 

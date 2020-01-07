@@ -11,6 +11,7 @@ public abstract class MushafMetadata {
     protected NavigationData navigationData;
     protected int danglingDualPage;
 
+    protected boolean doesAyahSpanPages;
     protected int minPage;
     protected int maxPage;
 
@@ -44,6 +45,10 @@ public abstract class MushafMetadata {
 
     public int getDanglingDualPage() {
         return danglingDualPage;
+    }
+
+    public boolean doesAyahSpanPages() {
+        return doesAyahSpanPages;
     }
 
     public abstract NavigationData getNavigationData();
