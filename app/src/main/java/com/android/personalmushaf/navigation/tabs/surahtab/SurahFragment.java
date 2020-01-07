@@ -12,7 +12,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.personalmushaf.QuranSettings;
 import com.android.personalmushaf.R;
-import com.android.personalmushaf.mushafinterfaces.strategies.navigationstrategies.SurahStrategy;
+import com.android.personalmushaf.mushafmetadata.MushafMetadata;
+
+import static com.android.personalmushaf.navigation.QuranConstants.surahInfo;
+import static com.android.personalmushaf.navigation.QuranConstants.surahsInJuz;
 
 
 /**
@@ -30,17 +33,96 @@ public class SurahFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         int juzNumber = getArguments().getInt("juz number");
-        SurahStrategy surahStrategy = QuranSettings.getInstance().getMushafStrategy(getContext()).getSurahStrategy();
+        MushafMetadata mushafMetadata = QuranSettings.getInstance().getMushafMetadata(getContext());
 
         View v = inflater.inflate(R.layout.fragment_tab, container, false);
         RecyclerView surahRecyclerView = v.findViewById(R.id.tab_recycler_view);
         surahRecyclerView.setHasFixedSize(true);
         LinearLayoutManager surahLayoutManager = new LinearLayoutManager(getContext());
 
-        SurahAdapter adapter = surahStrategy.getSurahAdapter(juzNumber, v);
+        SurahAdapter adapter = getSurahAdapter(juzNumber, mushafMetadata);
         surahRecyclerView.setAdapter(adapter);
         surahRecyclerView.setLayoutManager(surahLayoutManager);
 
         return v;
     }
+
+    private SurahAdapter getSurahAdapter(int juzNumber, MushafMetadata mushafMetadata) {
+        int[][] surahInfo = getSurahInfoInJuz(juzNumber);
+        int[] surahPageNumbersInJuz = getSurahPageNumbersinJuz(mushafMetadata.getNavigationData().getSurahPageNumbers(), juzNumber);
+        String[] surahNamesInJuz = getSurahNamesInJuz(juzNumber, surahInfo.length, getResources().getStringArray(R.array.surah_names));
+        double[] surahLengthsInJuz = getSurahLengthsInJuz(mushafMetadata.getNavigationData().getSurahLengths(), juzNumber);
+
+        return new SurahAdapter(surahInfo, surahPageNumbersInJuz, surahNamesInJuz, surahLengthsInJuz);
+    }
+
+    private int getFirstSurahInJuz(int juzNumber) {
+        return surahsInJuz[juzNumber - 1][1];
+    }
+
+    private int[][] getSurahInfoInJuz(int juzNumber) {
+        if (juzNumber < 0)
+            return surahInfo;
+        else {
+            int[][] surahInfoInJuz;
+            if (surahsInJuz[juzNumber-1][0] == 0) {
+                surahInfoInJuz = new int[0][0];
+                return surahInfoInJuz;
+            } else {
+                surahInfoInJuz = new int[surahsInJuz[juzNumber-1][0]][2];
+                System.arraycopy(surahInfo, surahsInJuz[juzNumber-1][1], surahInfoInJuz, 0, surahsInJuz[juzNumber-1][0]);
+                return surahInfoInJuz;
+            }
+        }
+    }
+
+    private int[] getSurahPageNumbersinJuz(int[] source, int juzNumber) {
+        if (juzNumber < 0)
+            return source;
+        else {
+            int[] surahPageNumbersInJuz;
+            if (surahsInJuz[juzNumber-1][0] == 0) {
+                surahPageNumbersInJuz = new int[0];
+                return surahPageNumbersInJuz;
+            } else {
+                surahPageNumbersInJuz = new int[surahsInJuz[juzNumber-1][0]];
+                System.arraycopy(source, surahsInJuz[juzNumber-1][1], surahPageNumbersInJuz, 0, surahsInJuz[juzNumber-1][0]);
+                return surahPageNumbersInJuz;
+            }
+        }
+    }
+
+    private String[] getSurahNamesInJuz(int juzNumber, int numOfSurahs, String[] source) {
+        String[] surahNames = new String[numOfSurahs];
+
+        if (numOfSurahs > 0) {
+            int firstSurahInJuz;
+            if (juzNumber > 0)
+                firstSurahInJuz = getFirstSurahInJuz(juzNumber);
+            else
+                firstSurahInJuz = 0;
+
+            System.arraycopy(source, firstSurahInJuz, surahNames, 0, numOfSurahs);
+        }
+
+        return surahNames;
+    }
+
+    private double[] getSurahLengthsInJuz(double[] source, int juzNumber) {
+        if (juzNumber < 0)
+            return source;
+        else {
+            double[] surahLengthsInJuz;
+            if (surahsInJuz[juzNumber-1][0] == 0) {
+                surahLengthsInJuz = new double[0];
+                return surahLengthsInJuz;
+            } else {
+                surahLengthsInJuz = new double[surahsInJuz[juzNumber-1][0]];
+                System.arraycopy(source, surahsInJuz[juzNumber-1][1], surahLengthsInJuz, 0, surahsInJuz[juzNumber-1][0]);
+                return surahLengthsInJuz;
+            }
+        }
+    }
+
+
 }

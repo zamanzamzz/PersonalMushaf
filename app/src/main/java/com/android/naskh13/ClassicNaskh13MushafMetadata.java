@@ -1,7 +1,5 @@
 package com.android.naskh13;
 
-import com.android.personalmushaf.R;
-import com.android.personalmushaf.mushafinterfaces.mushafmetadata.MushafMetadata;
 import com.android.personalmushaf.util.FileUtils;
 
 public class ClassicNaskh13MushafMetadata extends ModernNaskh13MushafMetadata {

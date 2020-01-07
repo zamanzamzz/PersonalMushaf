@@ -1,7 +1,5 @@
 package com.android.personalmushaf.quranpage;
 
-import android.content.Context;
-import android.os.Bundle;
 import android.util.SparseArray;
 import android.view.ViewGroup;
 
@@ -13,26 +11,28 @@ import androidx.fragment.app.FragmentStatePagerAdapter;
 import com.android.personalmushaf.QuranActivity;
 import com.android.personalmushaf.QuranSettings;
 import com.android.personalmushaf.model.HighlightType;
-import com.android.personalmushaf.mushafinterfaces.strategies.quranstrategies.QuranPageAdapterStrategy;
-
-import java.util.Observable;
-import java.util.Observer;
+import com.android.personalmushaf.mushafmetadata.MushafMetadata;
 
 public class QuranPageAdapter extends FragmentStatePagerAdapter {
 
     private SparseArray<QuranPage> registeredFragments = new SparseArray<>();
-    private QuranPageAdapterStrategy quranPageAdapterStrategy;
+    private MushafMetadata mushafMetadata;
+    private int numOfSinglePages;
+    private int numOfDualPages;
+
     private int orientation;
     private boolean isForceDualPage;
     private QuranActivity quranActivity;
 
-    public QuranPageAdapter(FragmentManager fm, QuranPageAdapterStrategy quranPageAdapterStrategy,
-                            QuranActivity context, int orientation) {
+    public QuranPageAdapter(FragmentManager fm, QuranActivity context, int orientation) {
         super(fm, FragmentStatePagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
-        this.quranPageAdapterStrategy = quranPageAdapterStrategy;
+        this.mushafMetadata = QuranSettings.getInstance().getMushafMetadata(context);
         isForceDualPage = QuranSettings.getInstance().getIsForceDualPage(context);
         this.orientation = orientation;
         this.quranActivity = context;
+
+        numOfSinglePages = mushafMetadata.getMaxPage() - mushafMetadata.getMinPage() + 1;
+        numOfDualPages = numOfSinglePages % 2 == 0 ? numOfSinglePages / 2 : numOfSinglePages / 2 + 1;
     }
 
     @NonNull
@@ -44,7 +44,7 @@ public class QuranPageAdapter extends FragmentStatePagerAdapter {
             fragment = QuranDualPageFragment.newInstance(position, quranActivity.highlightedSurah, quranActivity.highlightedAyah);
             fragment.addObserver(quranActivity);
         } else {
-            int pageNumber = quranPageAdapterStrategy.getPageNumberFromPagerPosition(position);
+            int pageNumber = getPageNumberFromPagerPosition(position);
             fragment = QuranPageFragment.newInstance(pageNumber, position, quranActivity.highlightedSurah, quranActivity.highlightedAyah);
             fragment.addObserver(quranActivity);
         }
@@ -56,9 +56,9 @@ public class QuranPageAdapter extends FragmentStatePagerAdapter {
     @Override
     public int getCount() {
         if (!QuranActivity.isLandscape(orientation) && !isForceDualPage) {
-            return quranPageAdapterStrategy.getNumOfSinglePages();
+            return numOfSinglePages;
         } else {
-            return quranPageAdapterStrategy.getNumOfDualPages();
+            return numOfDualPages;
         }
     }
 
@@ -95,5 +95,9 @@ public class QuranPageAdapter extends FragmentStatePagerAdapter {
 
     public QuranPage getRegisteredFragment(int position) {
         return registeredFragments.get(position);
+    }
+
+    private int getPageNumberFromPagerPosition(int position) {
+        return position + mushafMetadata.getMinPage();
     }
 }

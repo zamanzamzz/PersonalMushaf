@@ -1,6 +1,6 @@
 package com.android.madani15;
 
-import com.android.personalmushaf.mushafinterfaces.NavigationData;
+import com.android.personalmushaf.navigation.NavigationData;
 
 public class Madani15NavigationData extends NavigationData {
 

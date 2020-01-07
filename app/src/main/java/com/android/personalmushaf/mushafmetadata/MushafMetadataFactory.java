@@ -1,4 +1,4 @@
-package com.android.personalmushaf.mushafinterfaces.mushafmetadata;
+package com.android.personalmushaf.mushafmetadata;
 
 import com.android.madani15.ClassicMadani15MushafMetadata;
 import com.android.naskh13.ModernNaskh13MushafMetadata;

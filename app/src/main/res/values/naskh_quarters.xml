@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string-array name="naskh_quarter_prefixes">
+    <string-array name="quarter_prefixes">
         <item>الم</item>
         <item>يَا بَنِي إِسْرَائِيلَ اذْكُرُوا</item>
         <item>وَإِذْ أَخَذْنَا مِيثَاقَ</item>

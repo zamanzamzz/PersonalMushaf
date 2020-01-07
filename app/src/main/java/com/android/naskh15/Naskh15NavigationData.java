@@ -1,7 +1,7 @@
 package com.android.naskh15;
 
 
-import com.android.personalmushaf.mushafinterfaces.NavigationData;
+import com.android.personalmushaf.navigation.NavigationData;
 
 public class Naskh15NavigationData extends NavigationData {
 

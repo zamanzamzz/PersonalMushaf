@@ -1,6 +1,6 @@
 package com.android.naskh13;
 
-import com.android.personalmushaf.mushafinterfaces.NavigationData;
+import com.android.personalmushaf.navigation.NavigationData;
 
 public class Naskh13NavigationData extends NavigationData {
 

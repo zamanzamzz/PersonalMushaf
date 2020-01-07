@@ -12,7 +12,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.personalmushaf.QuranSettings;
 import com.android.personalmushaf.R;
-import com.android.personalmushaf.mushafinterfaces.strategies.navigationstrategies.RukuContentStrategy;
+import com.android.personalmushaf.mushafmetadata.MushafMetadata;
+import com.android.personalmushaf.navigation.QuranConstants;
 
 
 /**
@@ -31,18 +32,26 @@ public class RukuContentFragment extends Fragment {
 
         int juzNumber = getArguments().getInt("juz number");
 
-        RukuContentStrategy rukuContentStrategy = QuranSettings.getInstance().getMushafStrategy(getContext()).getRukuContentStrategy();
+        MushafMetadata mushafMetadata = QuranSettings.getInstance().getMushafMetadata(getContext());
 
         RecyclerView juzRecyclerView = v.findViewById(R.id.tab_recycler_view);
         juzRecyclerView.setHasFixedSize(true);
 
-        RukuContentAdapter adapter = rukuContentStrategy.getRukuContentAdapter(juzNumber, v);
+        RukuContentAdapter adapter = getRukuContentAdapter(juzNumber, mushafMetadata);
         juzRecyclerView.setAdapter(adapter);
 
         LinearLayoutManager juzLayoutManager = new LinearLayoutManager(getContext());
 
         juzRecyclerView.setLayoutManager(juzLayoutManager);
         return v;
+    }
+
+    private RukuContentAdapter getRukuContentAdapter(int juzNumber, MushafMetadata mushafMetadata) {
+        int[][] rukuInfo = QuranConstants.rukuInfo[(juzNumber - 1)];
+        int[] rukuPageNumbers = mushafMetadata.getNavigationData().getRukuPageNumbers()[juzNumber - 1];
+        double[] rukuLengths = mushafMetadata.getNavigationData().getRukuLengths()[juzNumber - 1];
+        String[] prefixes = getResources().getStringArray(getResources().getIdentifier("juz_" + ((juzNumber - 1)), "array", getContext().getPackageName()));
+        return new RukuContentAdapter(rukuInfo, rukuPageNumbers, rukuLengths, prefixes);
     }
 
 }

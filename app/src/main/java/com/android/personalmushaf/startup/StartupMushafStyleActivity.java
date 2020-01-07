@@ -9,7 +9,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.android.personalmushaf.QuranSettings;
 import com.android.personalmushaf.R;
-import com.android.personalmushaf.mushafinterfaces.mushafmetadata.MushafMetadataFactory;
+import com.android.personalmushaf.mushafmetadata.MushafMetadataFactory;
 import com.android.personalmushaf.navigation.ViewPagerAdapter;
 
 public class StartupMushafStyleActivity extends AppCompatActivity {

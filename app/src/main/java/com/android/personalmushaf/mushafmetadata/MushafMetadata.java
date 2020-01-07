@@ -1,6 +1,6 @@
-package com.android.personalmushaf.mushafinterfaces.mushafmetadata;
+package com.android.personalmushaf.mushafmetadata;
 
-import com.android.personalmushaf.mushafinterfaces.NavigationData;
+import com.android.personalmushaf.navigation.NavigationData;
 
 public abstract class MushafMetadata {
     protected String directoryName;

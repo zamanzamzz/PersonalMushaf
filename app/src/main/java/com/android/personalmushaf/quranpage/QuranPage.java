@@ -3,13 +3,13 @@ package com.android.personalmushaf.quranpage;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentStatePagerAdapter;
 
 import com.android.personalmushaf.QuranActivity;
 import com.android.personalmushaf.model.Ayah;
 import com.android.personalmushaf.model.HighlightType;
-
-import java.util.Observer;
+import com.android.personalmushaf.model.PageData;
+import com.android.personalmushaf.mushafmetadata.MushafMetadata;
+import com.android.personalmushaf.util.FileUtils;
 
 public abstract class QuranPage extends Fragment {
     private FragmentObserver mObservers = new FragmentObserver();
@@ -29,4 +29,13 @@ public abstract class QuranPage extends Fragment {
     public abstract void highlightAyah(int sura, int ayah, HighlightType highlightType);
 
     public abstract void unhighlightAyah(int sura, int ayah, HighlightType highlightType);
+
+    protected String getPagePath(int pageNumber, MushafMetadata mushafMetadata) {
+        return FileUtils.ASSETSDIRECTORY + "/" + mushafMetadata.getDirectoryName() + "/images/pg_" + pageNumber + ".png";
+    }
+
+    protected PageData getPageData(int pageNumber, MushafMetadata mushafMetadata) {
+        return new PageData(pageNumber, mushafMetadata.getDatabasePath());
+    }
+
 }

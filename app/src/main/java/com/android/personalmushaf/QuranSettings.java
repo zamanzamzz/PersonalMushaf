@@ -5,9 +5,8 @@ import android.content.SharedPreferences;
 
 import androidx.preference.PreferenceManager;
 
-import com.android.personalmushaf.mushafinterfaces.mushafmetadata.MushafMetadataFactory;
-import com.android.personalmushaf.mushafinterfaces.strategies.ConcreteMushafStrategy;
-import com.android.personalmushaf.mushafinterfaces.strategies.MushafStrategy;
+import com.android.personalmushaf.mushafmetadata.MushafMetadata;
+import com.android.personalmushaf.mushafmetadata.MushafMetadataFactory;
 import com.android.personalmushaf.util.FileUtils;
 
 import java.io.File;
@@ -21,7 +20,7 @@ public class QuranSettings {
     public static final int HIZB = 2;
     private static boolean[] availableMushafs = {false, false, false};
     private static QuranSettings quranSettings;
-    private MushafStrategy mushafStrategy;
+    private MushafMetadata mushafMetadata;
     private SharedPreferences preferences;
     private Integer mushafVersion;
     private Integer landmarkSystem;
@@ -68,14 +67,15 @@ public class QuranSettings {
         this.landmarkSystem = landmarkSystem;
     }
 
-    public MushafStrategy getMushafStrategy(Context context) {
-        if (mushafStrategy == null)
-            mushafStrategy = new ConcreteMushafStrategy(MushafMetadataFactory.getMushafMetadata(getMushafVersion(context)));
-        return mushafStrategy;
+
+    public MushafMetadata getMushafMetadata(Context context) {
+        if (mushafMetadata == null)
+            mushafMetadata = MushafMetadataFactory.getMushafMetadata(getMushafVersion(context));
+        return mushafMetadata;
     }
 
-    public void setMushafStrategy(int mushaf) {
-        mushafStrategy = new ConcreteMushafStrategy(MushafMetadataFactory.getMushafMetadata(mushaf));
+    public void setMushafMetadata(int mushaf) {
+        mushafMetadata = MushafMetadataFactory.getMushafMetadata(mushaf);
     }
 
 

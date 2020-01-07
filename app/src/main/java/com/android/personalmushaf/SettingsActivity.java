@@ -105,7 +105,7 @@ public class SettingsActivity extends AppCompatActivity implements
                 public boolean onPreferenceChange(Preference preference, Object newValue) {
                     int mushaf = Integer.parseInt((String) newValue);
                     QuranSettings.getInstance().setMushafVersion(mushaf);
-                    QuranSettings.getInstance().setMushafStrategy(mushaf);
+                    QuranSettings.getInstance().setMushafMetadata(mushaf);
                     return true;
                 }
             });

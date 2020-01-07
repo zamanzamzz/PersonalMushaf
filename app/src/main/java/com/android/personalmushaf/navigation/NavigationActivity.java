@@ -15,7 +15,7 @@ import androidx.viewpager.widget.ViewPager;
 import com.android.personalmushaf.QuranSettings;
 import com.android.personalmushaf.R;
 import com.android.personalmushaf.SettingsActivity;
-import com.android.personalmushaf.mushafinterfaces.strategies.navigationstrategies.NavigationActivityStrategy;
+import com.android.personalmushaf.mushafmetadata.MushafMetadata;
 import com.android.personalmushaf.navigation.tabs.juzquartertab.JuzQuarterFragment;
 import com.android.personalmushaf.navigation.tabs.juztab.JuzFragment;
 import com.android.personalmushaf.navigation.tabs.rukucontenttab.RukuContentFragment;
@@ -23,7 +23,7 @@ import com.android.personalmushaf.navigation.tabs.surahtab.SurahFragment;
 import com.google.android.material.tabs.TabLayout;
 
 public class NavigationActivity extends AppCompatActivity {
-    NavigationActivityStrategy navigationActivityStrategy;
+    MushafMetadata mushafMetadata;
     int juzNumber;
     int currentPagerPosition;
     ViewPagerAdapter viewPagerAdapter;
@@ -38,7 +38,7 @@ public class NavigationActivity extends AppCompatActivity {
         setSupportActionBar(navigationToolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
-        navigationActivityStrategy = QuranSettings.getInstance().getMushafStrategy(this).getNavigationActivityStrategy();
+        mushafMetadata = QuranSettings.getInstance().getMushafMetadata(this);
 
         Intent intent = getIntent();
 
@@ -109,7 +109,7 @@ public class NavigationActivity extends AppCompatActivity {
             surahFragment.setArguments(arguments);
 
             viewPagerAdapter.addFragment(juzQuarterFragment, "Quarter");
-            navigationActivityStrategy.setViewPagerTabs(viewPagerAdapter, rukuContentFragment, this);
+            setViewPagerTabs(viewPagerAdapter, rukuContentFragment);
             viewPagerAdapter.addFragment(surahFragment, "Surah");
         }
 
@@ -151,9 +151,19 @@ public class NavigationActivity extends AppCompatActivity {
     }
 
     public void setJuzTitle(TextView juzTitle, int juzNumber) {
-        String length = String.format("%.2f", navigationActivityStrategy.getJuzLength(juzNumber));
+        String length = String.format("%.2f", getJuzLength(juzNumber));
         String title = getResources().getStringArray(R.array.arabic_numerals)[juzNumber - 1] + "  | " + length + " pages";
 
         juzTitle.setText(title);
+    }
+
+    private double getJuzLength(int juzNumber) {
+        return mushafMetadata.getNavigationData().getJuzLengths()[juzNumber - 1];
+    }
+
+    private void setViewPagerTabs(ViewPagerAdapter viewPagerAdapter, RukuContentFragment rukuContentFragment) {
+        int landmarkSystem = QuranSettings.getInstance().getLandMarkSystem(this);
+        if (mushafMetadata.getShouldDoRuku(landmarkSystem))
+            viewPagerAdapter.addFragment(rukuContentFragment, "Ruku");
     }
 }

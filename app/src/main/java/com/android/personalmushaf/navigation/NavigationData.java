@@ -1,4 +1,4 @@
-package com.android.personalmushaf.mushafinterfaces;
+package com.android.personalmushaf.navigation;
 
 public abstract class NavigationData {
     protected int[] juzPageNumbers;

@@ -1,35 +1,21 @@
 package com.android.personalmushaf.quranpage;
 
 import android.annotation.SuppressLint;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Matrix;
-import android.graphics.Paint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentStatePagerAdapter;
 
 import com.android.personalmushaf.QuranSettings;
 import com.android.personalmushaf.R;
 import com.android.personalmushaf.model.Ayah;
-import com.android.personalmushaf.model.AyahBounds;
 import com.android.personalmushaf.model.HighlightType;
 import com.android.personalmushaf.model.PageData;
-import com.android.personalmushaf.mushafinterfaces.strategies.quranstrategies.QuranPageFragmentStrategy;
+import com.android.personalmushaf.mushafmetadata.MushafMetadata;
 import com.android.personalmushaf.util.ImageUtils;
 import com.android.personalmushaf.widgets.HighlightingImageView;
-
-import java.util.List;
-import java.util.Observable;
-import java.util.Observer;
 
 public class QuranPageFragment extends QuranPage {
 
@@ -70,9 +56,9 @@ public class QuranPageFragment extends QuranPage {
 
         imageView = v.findViewById(R.id.page1);
 
-        QuranPageFragmentStrategy quranPageFragmentStrategy = QuranSettings.getInstance().getMushafStrategy(imageView.getContext()).getQuranPageFragmentStrategy();
-        String path = quranPageFragmentStrategy.getPagePath(pageNumber);
-        pageData = quranPageFragmentStrategy.getPageData(pageNumber);
+        MushafMetadata mushafMetadata = QuranSettings.getInstance().getMushafMetadata(getContext());
+        String path = getPagePath(pageNumber, mushafMetadata);
+        pageData = getPageData(pageNumber, mushafMetadata);
         imageView.setAyahData(pageData.getAyahCoordinates());
         ImageUtils.getInstance().loadBitmap(path, imageView);
         setHighlight(imageView, position);

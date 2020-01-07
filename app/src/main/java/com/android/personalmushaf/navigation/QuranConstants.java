@@ -224,7 +224,7 @@ public class QuranConstants {
     };
 
     // Type Surah Ayah
-    public static int[][] naskhQuarterInfo = {
+    public static int[][] quarterInfo = {
             {1, 2, 1},
             {2, 2, 47},
             {3, 2, 83},
@@ -348,7 +348,7 @@ public class QuranConstants {
     };
 
     // Type Surah Ayah
-    public static int[][] madaniHizbInfo = {
+    public static int[][] hizbInfo = {
             {1, 1, 1},
             {2, 2, 26},
             {3, 2, 44},

@@ -1,12 +1,7 @@
 package com.android.personalmushaf.quranpage;
 
 import android.annotation.SuppressLint;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Matrix;
-import android.graphics.Paint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -14,22 +9,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentStatePagerAdapter;
-
 import com.android.personalmushaf.QuranSettings;
 import com.android.personalmushaf.R;
 import com.android.personalmushaf.model.Ayah;
-import com.android.personalmushaf.model.AyahBounds;
 import com.android.personalmushaf.model.HighlightType;
 import com.android.personalmushaf.model.PageData;
-import com.android.personalmushaf.mushafinterfaces.strategies.quranstrategies.QuranDualPageFragmentStrategy;
+import com.android.personalmushaf.mushafmetadata.MushafMetadata;
 import com.android.personalmushaf.util.ImageUtils;
 import com.android.personalmushaf.widgets.HighlightingImageView;
-
-import java.util.List;
-import java.util.Observable;
-import java.util.Observer;
 
 public class QuranDualPageFragment extends QuranPage {
 
@@ -66,18 +53,18 @@ public class QuranDualPageFragment extends QuranPage {
         int highlightedSurah = getArguments().getInt("highlighted_surah", 0);
         int highlightedAyah = getArguments().getInt("highlighted_ayah", 0);
 
-        QuranDualPageFragmentStrategy quranDualPageFragmentStrategy = QuranSettings.getInstance().getMushafStrategy(getContext()).getQuranDualPageFragmentStrategy();
+        MushafMetadata mushafMetadata = QuranSettings.getInstance().getMushafMetadata(getContext());
 
         leftImage = v.findViewById(R.id.page1);
-        final String leftPagePath = quranDualPageFragmentStrategy.getLeftPagePath(dualPagerPosition);
-        leftPageData = quranDualPageFragmentStrategy.getLeftPageData(dualPagerPosition);
+        final String leftPagePath = getLeftPagePath(dualPagerPosition, mushafMetadata);
+        leftPageData = getLeftPageData(dualPagerPosition, mushafMetadata);
 
         rightImage = v.findViewById(R.id.page2);
-        final String rightPagePath = quranDualPageFragmentStrategy.getRightPagePath(dualPagerPosition);
-        rightPageData = quranDualPageFragmentStrategy.getRightPageData(dualPagerPosition);
+        final String rightPagePath = getRightPagePath(dualPagerPosition, mushafMetadata);
+        rightPageData = getRightPageData(dualPagerPosition, mushafMetadata);
 
 
-        if (!quranDualPageFragmentStrategy.isDanglingPage(dualPagerPosition)) {
+        if (!isDanglingPage(dualPagerPosition, mushafMetadata)) {
             loadImages(leftImage, rightImage, leftPagePath, rightPagePath);
             setHighlightSingle(leftImage, leftPageData, dualPagerPosition);
             setHighlightSingle(rightImage, rightPageData, dualPagerPosition);
@@ -130,7 +117,6 @@ public class QuranDualPageFragment extends QuranPage {
         });
     }
 
-    @Override
     public void highlightAyah(int sura, int ayah, HighlightType highlightType) {
         rightImage.highlightAyah(sura, ayah, HighlightType.SELECTION);
         leftImage.highlightAyah(sura, ayah, HighlightType.SELECTION);
@@ -138,9 +124,38 @@ public class QuranDualPageFragment extends QuranPage {
         leftImage.invalidate();
     }
 
-    @Override
     public void unhighlightAyah(int sura, int ayah, HighlightType highlightType) {
         rightImage.unHighlight(sura, ayah, HighlightType.SELECTION);
         leftImage.unHighlight(sura, ayah, HighlightType.SELECTION);
     }
+
+    private String getLeftPagePath(int dualPagerPosition, MushafMetadata mushafMetadata) {
+        return getPagePath(dualPagerPositionToPageNumber(dualPagerPosition, mushafMetadata), mushafMetadata);
+    }
+
+    private String getRightPagePath(int dualPagerPosition, MushafMetadata mushafMetadata) {
+        return getPagePath(dualPagerPositionToPageNumber(dualPagerPosition, mushafMetadata) + 1, mushafMetadata);
+    }
+
+    private PageData getLeftPageData(int dualPagerPosition, MushafMetadata mushafMetadata) {
+        return getPageData(dualPagerPositionToPageNumber(dualPagerPosition, mushafMetadata), mushafMetadata);
+    }
+
+    private PageData getRightPageData(int dualPagerPosition, MushafMetadata mushafMetadata) {
+        return getPageData(dualPagerPositionToPageNumber(dualPagerPosition, mushafMetadata) + 1, mushafMetadata);
+    }
+
+    private boolean isDanglingPage(int dualPagerPosition, MushafMetadata mushafMetadata) {
+        if (mushafMetadata.getDanglingDualPage() < 0)
+            return false;
+        else
+            return dualPagerPosition == mushafMetadata.getDanglingDualPage();
+    }
+
+    private int dualPagerPositionToPageNumber(int dualPagerPosition, MushafMetadata mushafMetadata) {
+        return dualPagerPosition * 2 + mushafMetadata.getMinPage();
+    }
+
+
+
 }

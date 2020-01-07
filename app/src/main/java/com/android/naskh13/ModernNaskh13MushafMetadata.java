@@ -2,8 +2,8 @@ package com.android.naskh13;
 
 import com.android.personalmushaf.QuranSettings;
 import com.android.personalmushaf.R;
-import com.android.personalmushaf.mushafinterfaces.NavigationData;
-import com.android.personalmushaf.mushafinterfaces.mushafmetadata.MushafMetadata;
+import com.android.personalmushaf.mushafmetadata.MushafMetadata;
+import com.android.personalmushaf.navigation.NavigationData;
 import com.android.personalmushaf.util.FileUtils;
 
 public class ModernNaskh13MushafMetadata extends MushafMetadata {
