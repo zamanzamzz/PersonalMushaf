@@ -1,6 +1,8 @@
 package com.android.personalmushaf.mushafinterfaces.strategies.abstractnavigationstrategies;
 
 public abstract class AbstractJuzQuarterStrategy {
+    protected static int RUKUNUMOFQUARTERS = 4;
+    protected static int MADANINUMOFQUARTERS = 8;
 
     protected int[][] getQuarterInfo(int juzNumber, int[][] source, int numOfQuarters) {
         int[][] quarterInfo = new int[numOfQuarters][3];

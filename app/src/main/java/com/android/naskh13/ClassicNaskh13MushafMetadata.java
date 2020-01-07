@@ -4,7 +4,7 @@ import com.android.personalmushaf.R;
 import com.android.personalmushaf.mushafinterfaces.mushafmetadata.MushafMetadata;
 import com.android.personalmushaf.util.FileUtils;
 
-public class ClassicNaskh13MushafMetadata extends MushafMetadata {
+public class ClassicNaskh13MushafMetadata extends ModernNaskh13MushafMetadata {
 
     public ClassicNaskh13MushafMetadata() {
         directoryName = "classic_naskh_13_line";

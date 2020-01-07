@@ -1,6 +1,8 @@
 package com.android.naskh15;
 
+import com.android.personalmushaf.QuranSettings;
 import com.android.personalmushaf.R;
+import com.android.personalmushaf.mushafinterfaces.NavigationData;
 import com.android.personalmushaf.mushafinterfaces.mushafmetadata.MushafMetadata;
 import com.android.personalmushaf.util.FileUtils;
 
@@ -14,5 +16,21 @@ public class ClassicNaskh15MushafMetadata extends MushafMetadata {
         previewDrawableIDs = new int[2];
         previewDrawableIDs[0] = R.drawable.classic_naskh_15_line_preview1;
         previewDrawableIDs[1] = R.drawable.classic_naskh_15_line_preview2;
+
+        minPage = 2;
+        maxPage = 611;
+        danglingDualPage = -1;
+    }
+
+
+    public NavigationData getNavigationData() {
+        if (navigationData == null)
+            navigationData = new Naskh15NavigationData();
+
+        return navigationData;
+    }
+
+    public boolean getShouldDoRuku(int landmarkSystem) {
+        return landmarkSystem == QuranSettings.DEFAULT_LANDMARK_SYSTEM || landmarkSystem == QuranSettings.RUKU;
     }
 }

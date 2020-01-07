@@ -9,7 +9,7 @@ public interface QuranActivityStrategy {
 
     int singlePagerPositionToPageNumber(int position);
 
-    int minPage();
+    int getMinPage();
 
-    int maxPage();
+    int getMaxPage();
 }

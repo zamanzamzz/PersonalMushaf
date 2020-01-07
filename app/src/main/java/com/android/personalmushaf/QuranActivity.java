@@ -20,7 +20,6 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.viewpager.widget.ViewPager;
-import androidx.viewpager2.widget.ViewPager2;
 
 import com.android.personalmushaf.mushafinterfaces.strategies.quranstrategies.QuranActivityStrategy;
 import com.android.personalmushaf.mushafinterfaces.strategies.quranstrategies.QuranPageAdapterStrategy;
@@ -384,13 +383,13 @@ public class QuranActivity extends AppCompatActivity implements Observer {
     }
 
     private void flipPageBackward(int pagesToFlip) {
-        if (pageNumber - pagesToFlip >= quranActivityStrategy.minPage()) {
+        if (pageNumber - pagesToFlip >= quranActivityStrategy.getMinPage()) {
             pager.setCurrentItem(pageNumberToDualPagerPosition(pageNumber - pagesToFlip), isSmoothVolumeKeyNavigation);
         }
     }
 
     private void flipPageForward(int pagesToFlip) {
-        if (pageNumber + pagesToFlip <= quranActivityStrategy.maxPage()) {
+        if (pageNumber + pagesToFlip <= quranActivityStrategy.getMaxPage()) {
             pager.setCurrentItem(pageNumberToDualPagerPosition(pageNumber + pagesToFlip), isSmoothVolumeKeyNavigation);
         }
     }

@@ -1,10 +1,8 @@
 package com.android.madani15;
 
-import com.android.personalmushaf.R;
-import com.android.personalmushaf.mushafinterfaces.mushafmetadata.MushafMetadata;
 import com.android.personalmushaf.util.FileUtils;
 
-public class ModernMadani15MushafMetadata extends MushafMetadata {
+public class ModernMadani15MushafMetadata extends ClassicMadani15MushafMetadata {
 
     public ModernMadani15MushafMetadata() {
         directoryName = "modern_madani_15_line";

@@ -5,7 +5,7 @@ import com.android.personalmushaf.mushafinterfaces.mushafmetadata.MushafMetadata
 import com.android.personalmushaf.util.FileUtils;
 
 public abstract class AbstractQuranPageFragmentStrategy {
-    private MushafMetadata mushafMetadata;
+    protected MushafMetadata mushafMetadata;
 
     protected static final int LEFTPAGEINDEX = 0;
     protected static final int RIGHTPAGEINDEX = 1;

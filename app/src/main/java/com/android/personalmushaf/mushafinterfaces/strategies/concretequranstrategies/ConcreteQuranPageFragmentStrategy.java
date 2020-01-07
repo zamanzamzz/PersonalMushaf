@@ -1,14 +1,13 @@
-package com.android.madani15.quranstrategies;
+package com.android.personalmushaf.mushafinterfaces.strategies.concretequranstrategies;
 
 import com.android.personalmushaf.model.PageData;
 import com.android.personalmushaf.mushafinterfaces.mushafmetadata.MushafMetadata;
 import com.android.personalmushaf.mushafinterfaces.strategies.abstractquranstrategies.AbstractQuranPageFragmentStrategy;
 import com.android.personalmushaf.mushafinterfaces.strategies.quranstrategies.QuranPageFragmentStrategy;
 
+public class ConcreteQuranPageFragmentStrategy extends AbstractQuranPageFragmentStrategy implements QuranPageFragmentStrategy {
 
-public class Madani15QuranPageFragmentStrategy extends AbstractQuranPageFragmentStrategy implements QuranPageFragmentStrategy {
-
-    public Madani15QuranPageFragmentStrategy(MushafMetadata mushafMetadata) {
+    public ConcreteQuranPageFragmentStrategy(MushafMetadata mushafMetadata) {
         super(mushafMetadata);
     }
 

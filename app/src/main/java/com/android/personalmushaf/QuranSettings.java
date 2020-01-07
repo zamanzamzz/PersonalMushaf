@@ -5,8 +5,9 @@ import android.content.SharedPreferences;
 
 import androidx.preference.PreferenceManager;
 
+import com.android.personalmushaf.mushafinterfaces.mushafmetadata.MushafMetadataFactory;
+import com.android.personalmushaf.mushafinterfaces.strategies.ConcreteMushafStrategy;
 import com.android.personalmushaf.mushafinterfaces.strategies.MushafStrategy;
-import com.android.personalmushaf.mushafinterfaces.strategies.MushafStrategyFactory;
 import com.android.personalmushaf.util.FileUtils;
 
 import java.io.File;
@@ -69,12 +70,12 @@ public class QuranSettings {
 
     public MushafStrategy getMushafStrategy(Context context) {
         if (mushafStrategy == null)
-            mushafStrategy = MushafStrategyFactory.getMushafStrategy(getMushafVersion(context));
+            mushafStrategy = new ConcreteMushafStrategy(MushafMetadataFactory.getMushafMetadata(getMushafVersion(context)));
         return mushafStrategy;
     }
 
     public void setMushafStrategy(int mushaf) {
-        mushafStrategy = MushafStrategyFactory.getMushafStrategy(mushaf);
+        mushafStrategy = new ConcreteMushafStrategy(MushafMetadataFactory.getMushafMetadata(mushaf));
     }
 
 
