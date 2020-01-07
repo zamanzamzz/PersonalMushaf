@@ -4,14 +4,10 @@ import com.android.personalmushaf.model.PageData;
 import com.android.personalmushaf.mushafinterfaces.mushafmetadata.MushafMetadata;
 import com.android.personalmushaf.util.FileUtils;
 
-public abstract class AbstractQuranPageFragmentStrategy {
-    protected MushafMetadata mushafMetadata;
-
-    protected static final int LEFTPAGEINDEX = 0;
-    protected static final int RIGHTPAGEINDEX = 1;
+public abstract class AbstractQuranPageFragmentStrategy extends AbstractSinglePageToDualPage {
 
     protected AbstractQuranPageFragmentStrategy(MushafMetadata mushafMetadata) {
-        this.mushafMetadata = mushafMetadata;
+        super(mushafMetadata);
     }
 
     protected String getPagePath(int pageNumber) {

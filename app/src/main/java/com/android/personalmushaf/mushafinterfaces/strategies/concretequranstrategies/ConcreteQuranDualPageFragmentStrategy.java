@@ -6,27 +6,25 @@ import com.android.personalmushaf.mushafinterfaces.strategies.abstractquranstrat
 import com.android.personalmushaf.mushafinterfaces.strategies.quranstrategies.QuranDualPageFragmentStrategy;
 
 public class ConcreteQuranDualPageFragmentStrategy extends AbstractQuranPageFragmentStrategy implements QuranDualPageFragmentStrategy {
-    private int[][] dualPageSets;
 
     public ConcreteQuranDualPageFragmentStrategy(MushafMetadata mushafMetadata) {
         super(mushafMetadata);
-        dualPageSets = mushafMetadata.getNavigationData().getDualPageSets();
     }
 
     public String getLeftPagePath(int dualPagerPosition) {
-        return getPagePath(dualPageSets[dualPagerPosition][LEFTPAGEINDEX]);
+        return getPagePath(dualPagerPositionToPageNumber(dualPagerPosition));
     }
 
     public String getRightPagePath(int dualPagerPosition) {
-        return getPagePath(dualPageSets[dualPagerPosition][RIGHTPAGEINDEX]);
+        return getPagePath(dualPagerPositionToPageNumber(dualPagerPosition) + 1);
     }
 
     public PageData getLeftPageData(int dualPagerPosition) {
-        return getPageData(dualPageSets[dualPagerPosition][LEFTPAGEINDEX]);
+        return getPageData(dualPagerPositionToPageNumber(dualPagerPosition));
     }
 
     public PageData getRightPageData(int dualPagerPosition) {
-        return getPageData(dualPageSets[dualPagerPosition][RIGHTPAGEINDEX]);
+        return getPageData(dualPagerPositionToPageNumber(dualPagerPosition) + 1);
     }
 
     public boolean isDanglingPage(int dualPagerPosition) {

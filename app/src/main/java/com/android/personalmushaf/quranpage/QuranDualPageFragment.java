@@ -76,14 +76,15 @@ public class QuranDualPageFragment extends QuranPage {
         final String rightPagePath = quranDualPageFragmentStrategy.getRightPagePath(dualPagerPosition);
         rightPageData = quranDualPageFragmentStrategy.getRightPageData(dualPagerPosition);
 
-        loadImages(leftImage, rightImage, leftPagePath, rightPagePath);
 
         if (!quranDualPageFragmentStrategy.isDanglingPage(dualPagerPosition)) {
+            loadImages(leftImage, rightImage, leftPagePath, rightPagePath);
             setHighlightSingle(leftImage, leftPageData, dualPagerPosition);
             setHighlightSingle(rightImage, rightPageData, dualPagerPosition);
         } else {
-            leftImage.setVisibility(View.GONE);
-            setHighlightSingle(rightImage, rightPageData, dualPagerPosition);
+            rightImage.setVisibility(View.GONE);
+            ImageUtils.getInstance().loadBitmap(leftPagePath, leftImage);
+            setHighlightSingle(leftImage, leftPageData, dualPagerPosition);
         }
 
         if (highlightedSurah != 0 && highlightedAyah != 0)

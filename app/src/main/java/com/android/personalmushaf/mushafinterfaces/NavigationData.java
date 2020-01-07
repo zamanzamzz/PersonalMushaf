@@ -11,8 +11,6 @@ public abstract class NavigationData {
     protected double[] quarterLengths;
     protected double[] hizbLengths;
     protected double[][] rukuLengths;
-    protected int[][] dualPageSets;
-
 
     public int[] getJuzPageNumbers() {
         return juzPageNumbers;
@@ -52,9 +50,5 @@ public abstract class NavigationData {
 
     public double[][] getRukuLengths() {
         return rukuLengths;
-    }
-
-    public int[][] getDualPageSets() {
-        return dualPageSets;
     }
 }

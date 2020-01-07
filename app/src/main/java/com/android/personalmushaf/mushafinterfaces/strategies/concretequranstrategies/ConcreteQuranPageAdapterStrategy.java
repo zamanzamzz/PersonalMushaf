@@ -5,9 +5,13 @@ import com.android.personalmushaf.mushafinterfaces.strategies.quranstrategies.Qu
 
 public class ConcreteQuranPageAdapterStrategy implements QuranPageAdapterStrategy {
     private MushafMetadata mushafMetadata;
+    private int numOfSinglePages;
+    private int numOfDualPages;
 
     public ConcreteQuranPageAdapterStrategy(MushafMetadata mushafMetadata) {
         this.mushafMetadata = mushafMetadata;
+        numOfSinglePages = mushafMetadata.getMaxPage() - mushafMetadata.getMinPage() + 1;
+        numOfDualPages = numOfSinglePages % 2 == 0 ? numOfSinglePages / 2 : numOfSinglePages / 2 + 1;
     }
 
     public int getPageNumberFromPagerPosition(int position) {
@@ -15,10 +19,10 @@ public class ConcreteQuranPageAdapterStrategy implements QuranPageAdapterStrateg
     }
 
     public int getNumOfSinglePages() {
-        return mushafMetadata.getMaxPage() - mushafMetadata.getMinPage() + 1;
+        return numOfSinglePages;
     }
 
     public int getNumOfDualPages() {
-        return mushafMetadata.getNavigationData().getDualPageSets().length;
+        return numOfDualPages;
     }
 }
