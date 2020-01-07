@@ -4,12 +4,7 @@ import com.android.personalmushaf.R;
 import com.android.personalmushaf.mushafinterfaces.mushafmetadata.MushafMetadata;
 import com.android.personalmushaf.util.FileUtils;
 
-public class ModernNaskh13MushafMetadata implements MushafMetadata {
-    private String directoryName;
-    private String databasePath;
-    private String name;
-    private String description;
-    private int[] previewDrawableIDs;
+public class ModernNaskh13MushafMetadata extends MushafMetadata {
 
     public ModernNaskh13MushafMetadata() {
         directoryName = "modern_naskh_13_line";
@@ -19,25 +14,5 @@ public class ModernNaskh13MushafMetadata implements MushafMetadata {
         previewDrawableIDs = new int[2];
         previewDrawableIDs[0] = R.drawable.modern_naskh_13_line_preview1;
         previewDrawableIDs[1] = R.drawable.modern_naskh_13_line_preview2;
-    }
-
-    public String getDirectoryName() {
-        return directoryName;
-    }
-
-    public String getDatabasePath() {
-        return databasePath;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public int[] getPreviewDrawableIDs() {
-        return previewDrawableIDs;
     }
 }
