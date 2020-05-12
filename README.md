@@ -1,5 +1,5 @@
 # Personal Mushaf
-*Screenshots of working build are available below ![here](#screenshots).*
+*Screenshots of working build are available below [here](#screenshots).*
 ## Purpose
 To streamline the process of memorizing the Qur'an by:
 * providing tools that make memorizing more engaging and more sustainable to do consistently than current conventional methods
