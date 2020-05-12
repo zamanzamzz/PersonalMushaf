@@ -1,11 +1,11 @@
 # Personal Mushaf
-
+*Screenshots of working build are available below ![here](#screenshots).*
 ## Purpose
 To streamline the process of memorizing the Qur'an by:
 * providing tools that make memorizing more engaging and more sustainable to do consistently than current conventional methods
 * making self-testing a viable option
 
-### How will Personal Mushaf ___?
+### How will Personal Mushaf _______?
 
 #### make memorizing more engaging
 
@@ -19,5 +19,32 @@ Consistency is arguably the most difficult aspect of Qur'an memorization. This i
 
 <img src="/personalmushafreadmegraph.svg"
      style="float: center: 15px;" />
+     
+Personal Mushaf will minimize this difficulty by doing the following 2 things:
+* 
 
 #### make self-testing a viable option
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+## Screenshots
