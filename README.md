@@ -15,6 +15,8 @@ To do that, this app will model the philosophy of the program Anki. Anki is wide
 
 #### make memorizing more sustainable to do consistently
 
-Consistency is arguably the most difficult aspect of Qur'an memorization. This is because the backlog of memorized material that one needs to review to keep it memorized grows larger 
+Consistency is arguably the most difficult aspect of Qur'an memorization. This is because the backlog of material that one needs to review to keep it memorized grows larger as they memorize a set amount every single day.
+
+![alt text](https://github.com/ammanz/PersonalMushaf/edit/master/personalmushafreadmegraph.png "Logo Title Text 1")
 
 #### make self-testing a viable option
