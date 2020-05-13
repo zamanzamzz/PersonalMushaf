@@ -42,11 +42,7 @@ Personal Mushaf is a barebones functional Qur'an reader application at the momen
 
 ## Screenshots
 
-<img src="/firstscreen.gif"
-     style="float: center: 15px;" />
-     
-<img src="/secondscreen.gif"
-     style="float: center: 15px;" />
+![](/firstscreen.gif)  ![](/secondscreen.gif)
 
 ### Development Challenges:
 
