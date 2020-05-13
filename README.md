@@ -17,7 +17,7 @@ To do that, this app will model the philosophy of the program Anki. Anki is wide
 
 Consistency is arguably the most difficult aspect of Qur'an memorization. This is because the backlog of material that one needs to review to keep it memorized grows larger as they memorize a set amount every single day. The main way Personal Mushaf will make memorizing more sustainable to do consistently is by making self-testing a viable option.
 
-<img src="/personalmushafreadmegraph.svg"
+<img src="/readme-images/personalmushafreadmegraph.svg"
      style="float: center: 15px;" />
      
 Self-testing revision material is heavily discouraged by experts, mainly due to the danger of reinforcing mistakes that are not caught. The only way around this is to record yourself for the whole duration of testing, then listening to the recording. This doubles the time needed to revise versus having a teacher of classmate test you, which is why it is such a rare practice. 
@@ -48,8 +48,8 @@ Personal Mushaf is a barebones functional Qur'an reader application at the momen
      <td>Second Level of Navigation Menu</td>
   </tr>
   <tr>
-    <td><img src="/firstscreen.gif" width=320 height=693></td>
-    <td><img src="/secondscreen.gif" width=320 height=693></td>
+    <td><img src="/readme-images/firstscreen.gif" width=320 height=693></td>
+    <td><img src="/readme-images/secondscreen.gif" width=320 height=693></td>
   </tr>
  </table>
  
@@ -58,7 +58,7 @@ Personal Mushaf is a barebones functional Qur'an reader application at the momen
     <td>Main Reading Screen</td>
   </tr>
   <tr>
-    <td><img src="/pager.gif" width=320 height=693></td>
+    <td><img src="/readme-images/pager.gif" width=320 height=693></td>
   </tr>
  </table>
  
@@ -67,7 +67,7 @@ Personal Mushaf is a barebones functional Qur'an reader application at the momen
     <td>Dual Page Functionality</td>
   </tr>
   <tr>
-    <td><img src="/dualpage.gif" width=693 height=320></td>
+    <td><img src="/readme-images/dualpage.gif" width=693 height=320></td>
   </tr>
  </table>
  
