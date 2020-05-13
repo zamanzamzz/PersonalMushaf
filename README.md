@@ -26,7 +26,7 @@ Once the review backlog grows large enough, the challenge of finding a tester wi
 
 It is unfortunate that revision is the first thing that is sacrificed due to all of these time-limiting constraints. Once the strength of one's revision inevitably becomes weak enough, they fall into a vicious cycle of rememorizing revision that has been forgotten, while still not getting in enough general revision. Now if one were able to test themselves, the root cause of this issue is resolved.
 
-#### make self-testing a viable option
+##### Self-testing
 
 
 
