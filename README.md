@@ -28,6 +28,12 @@ It is unfortunate that revision is the first thing that is sacrificed due to all
 
 ##### Self-testing
 
-Due to the fundamental nature of revision and memorization, this app will have a separate mode for each. 
+Due to the fundamental differences in nature between memorization and revision, this app will have a separate mode for each. Self-testing is a crucial component for both of these modes. 
+
+At a high level, the user's voice will be recorded for each verse, but for the user to progress to the next verse, they will need to tell the app how confident they are in reciting that specific verse correctly. In the best case scenario, where the user is able to fluently recite from beginning to end of some arbitrary portion of the Qur'an, they would only need to refer to the recording of the verses which they felt unconfident about. The app will keep track of how many times the user has revised that particular portion, and will recommend that the user listens to the whole recording once in a while to catch mistakes which ocurred in verses which they felt confident about.
+
+However, for the average case, where the user possibly skips a verse, gets confused with a similar verse, or simply doesn't know what comes next, the app will have specific routines to help the user get back on track while giving the minimum amount of hints, while keeping track of the location and nature of the mistake. For example, if the user is stuck, the app will give the option of "peeking" the current verse visually and will flag the specific parts uncovered to the user as weak.
+
+All mistakes caught in self-testing will be reiterated into the memorization mode to correct them, also with specific routines for each distinct type of mistake. For example, if the user mixes up a verse with another similar verse, the app will show a color coded difference between the two verses, and then will have the user memorize all the differences visually.
 
 ## Screenshots
