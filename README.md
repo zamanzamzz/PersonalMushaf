@@ -36,4 +36,15 @@ However, for the average case, where the user possibly skips a verse, gets confu
 
 All mistakes caught in self-testing will be reiterated into the memorization mode to correct them, also with specific routines for each distinct type of mistake. For example, if the user mixes up a verse with another similar verse, the app will show a color coded difference between the two verses, and then will have the user memorize all the differences visually.
 
+## Current Progress
+
+Personal Mushaf is a barebones functional Qur'an reader application at the moment. It's structure right now is simply a collection of RecyclerViews that contain contextual "bookmarks" to different locations in the Qur'an. Tapping one of these bookmarks opens up a new activity containing a ViewPager of PNG images that happen to be the pages of the Qur'an at the location of the bookmark.
+
 ## Screenshots
+
+<img src="/firstscreen.GIF"
+     style="float: center: 15px;" />
+
+### Development Challenges:
+
+#### 
