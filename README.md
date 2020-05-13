@@ -1,9 +1,9 @@
 # Personal Mushaf
 *Screenshots of working build are available below [here](#screenshots).*
 ## Purpose
-To streamline the process of memorizing the Qur'an by:
-* providing tools that make memorizing more engaging and more sustainable to do consistently than current conventional methods
-* making self-testing a viable option
+To streamline the process of memorizing the Qur'an by providing tools that make memorizing more:
+* engaging
+* more sustainable to do consistently than current conventional methods
 
 ### How will Personal Mushaf _______?
 
@@ -15,13 +15,16 @@ To do that, this app will model the philosophy of the program Anki. Anki is wide
 
 #### make memorizing more sustainable to do consistently
 
-Consistency is arguably the most difficult aspect of Qur'an memorization. This is because the backlog of material that one needs to review to keep it memorized grows larger as they memorize a set amount every single day.
+Consistency is arguably the most difficult aspect of Qur'an memorization. This is because the backlog of material that one needs to review to keep it memorized grows larger as they memorize a set amount every single day. The main way Personal Mushaf will make memorizing more sustainable to do consistently is by making self-testing a viable option.
 
 <img src="/personalmushafreadmegraph.svg"
      style="float: center: 15px;" />
      
-Personal Mushaf will minimize this difficulty by doing the following 2 things:
-* 
+Self-testing revision material is heavily discouraged by experts, mainly due to the danger of reinforcing mistakes that are not caught. The only way around this is to record yourself for the whole duration of testing, then listening to the recording. This doubles the time needed to revise versus having a teacher of classmate test you, which is why it is such a rare practice. 
+
+Once the review backlog grows large enough, the challenge of finding a tester willing to sit for the whole duration of the test becomes arguably harder than preparing for the test itself. There are many reasons for testers not being able to dedicate so much time to one student. As mentioned before, the testers are usually teachers (who are themselves students of a more intensive program, or need to give due attention to too many students), or classmates (that are around the same level of proficiency). Most students are either studying part-time, where they have access to testers only for about an hour a day, or they are studying full-time with online schooling, so even classmates are pressed for time. 
+
+It is unfortunate that revision is the first thing that is sacrificed due to all of these time-limiting constraints. Once the strength of one's revision inevitably becomes weak enough, they fall into a vicious cycle of rememorizing revision that has been forgotten, while still not getting in enough general revision. Now if one were able to test themselves, the root cause of this issue is resolved.
 
 #### make self-testing a viable option
 
