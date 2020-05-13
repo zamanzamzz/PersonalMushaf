@@ -1,19 +1,19 @@
 # Personal Mushaf
-*Screenshots of working build are available below [here](#screenshots).*
+*Screenshots and descriptions of current working build are available below [here](#screenshots).*
 ## Purpose
-To streamline the process of memorizing the Qur'an by providing tools that make memorizing more:
+To streamline the process of memorizing the Qur'an by providing tools that make it more:
 * engaging
 * more sustainable to do consistently than current conventional methods
 
-### How will Personal Mushaf _______?
+### How will Personal Mushaf make Qur'an memorization more _______?
 
-#### make memorizing more engaging
+#### Engaging
 
 Most conventional methods currently require one to recite a short portion of a verse multiple times while looking, then to test the short term memory of that portion by reciting without looking. This process is rinsed and repeated for the whole amount that will be memorized. You guessed it, creating a method more engaging than that should be trivial. Literally any other way would be more engaging. The challenge lies in matching the effectiveness of this "brute-force" approach. 
 
 To do that, this app will model the philosophy of the program Anki. Anki is widely-used today for it's approach of giving the user daily lessons optimized for long-term memory based on self-feedback. The user can create a deck of flash-cards, then can have full confidence that they will know the cards inside-out in a couple weeks as long as they follow the daily lessons. The aim of this app is to achieve a similar workflow, except with a system that is tailored for memorizing Arabic text verbatim. 
 
-#### make memorizing more sustainable to do consistently
+#### Sustainable to do Consistently
 
 Consistency is arguably the most difficult aspect of Qur'an memorization. This is because the backlog of material that one needs to review to keep it memorized grows larger as they memorize a set amount every single day. The main way Personal Mushaf will make memorizing more sustainable to do consistently is by making self-testing a viable option.
 
@@ -28,26 +28,6 @@ It is unfortunate that revision is the first thing that is sacrificed due to all
 
 ##### Self-testing
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+Due to the fundamental nature of revision and memorization, this app will have a separate mode for each. 
 
 ## Screenshots
