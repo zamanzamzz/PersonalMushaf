@@ -56,15 +56,18 @@ Personal Mushaf is a barebones functional Qur'an reader application at the momen
  <table>
   <tr>
     <td>Main Reading Screen</td>
-     <td>Second Level of Navigation Menu</td>
   </tr>
   <tr>
     <td><img src="/pager.gif" width=320 height=693></td>
-    <td><img src="/secondscreen.gif" width=320 height=693></td>
   </tr>
  </table>
  
+ <table>
+  <tr>
+    <td>Dual Page Functionality</td>
+  </tr>
+  <tr>
+    <td><img src="/dualpage.gif" width=693 height=320></td>
+  </tr>
+ </table>
  
-### Development Challenges:
-
-#### 
