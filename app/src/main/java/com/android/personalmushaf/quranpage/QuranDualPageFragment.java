@@ -89,6 +89,7 @@ public class QuranDualPageFragment extends QuranPage {
     @SuppressLint("ClickableViewAccessibility")
     private void setHighlightSingle(final HighlightingImageView imageView, final PageData pageData, final int dualPagerPosition) {
         imageView.setAyahData(pageData.getAyahCoordinates());
+        imageView.setGlyphs(pageData.getGlyphs());
 
         final Matrix inverse = new Matrix();
 
@@ -156,6 +157,18 @@ public class QuranDualPageFragment extends QuranPage {
         return dualPagerPosition * 2 + mushafMetadata.getMinPage();
     }
 
+    @Override
+    public void highlightGlyph(int glyphIndex) {
+        if (glyphIndex < rightImage.getNumOfGlyphs())
+            rightImage.drawGlyph(glyphIndex);
+        else {
+            rightImage.drawGlyph(-1);
+            leftImage.drawGlyph(glyphIndex - rightImage.getNumOfGlyphs());
+        }
+    }
 
-
+    @Override
+    public int getNumOfGlyphs() {
+        return rightImage.getNumOfGlyphs() + leftImage.getNumOfGlyphs();
+    }
 }

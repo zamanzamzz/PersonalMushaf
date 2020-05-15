@@ -38,4 +38,8 @@ public abstract class QuranPage extends Fragment {
         return new PageData(pageNumber, mushafMetadata.getDatabasePath());
     }
 
+    public abstract void highlightGlyph(int glyphIndex);
+
+    public abstract int getNumOfGlyphs();
+
 }

@@ -78,6 +78,14 @@ public class QuranPageAdapter extends FragmentStatePagerAdapter {
             getRegisteredFragment(position + 1).unhighlightAyah(selectedSurah, selectedAyah, HighlightType.SELECTION);
     }
 
+    public void highlightGlyph(int position, int glyphIndex) {
+        getRegisteredFragment(position).highlightGlyph(glyphIndex);
+    }
+
+    public int getNumOfGlyphs(int position) {
+        return getRegisteredFragment(position).getNumOfGlyphs();
+    }
+
 
     @NonNull
     @Override

@@ -39,6 +39,9 @@ public class HighlightingImageView extends AppCompatImageView {
     // Params for drawing text
     private AyahCoordinates ayahCoordinates;
 
+    private List<AyahBounds> glyphs;
+    private int currentGlyph = -1;
+
     public HighlightingImageView(Context context) {
         this(context, null);
     }
@@ -77,6 +80,19 @@ public class HighlightingImageView extends AppCompatImageView {
         this.ayahCoordinates = ayahCoordinates;
     }
 
+    public void setGlyphs(List<AyahBounds> glyphs) {
+        this.glyphs = glyphs;
+    }
+
+    public int getNumOfGlyphs() {
+        return glyphs.size();
+    }
+
+    public void drawGlyph(int glyphIndex) {
+        currentGlyph = glyphIndex;
+        invalidate();
+    }
+
 
     public void highlightAyah(int sura, int ayah, HighlightType type) {
         Set<String> highlights = currentHighlights.get(type);
@@ -110,6 +126,10 @@ public class HighlightingImageView extends AppCompatImageView {
         if (getDrawable() == null) {
             // no image, forget it.
             return;
+        }
+
+        if (currentGlyph > -1) {
+            drawAyahBounds(glyphs.get(currentGlyph), getImageMatrix(), canvas, getPaintForHighlightType(HighlightType.SELECTION));
         }
 
         drawHighlights(canvas);

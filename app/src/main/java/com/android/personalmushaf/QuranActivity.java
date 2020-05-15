@@ -117,7 +117,7 @@ public class QuranActivity extends AppCompatActivity implements Observer {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == android.R.id.home) {
-            onBackPressed();
+            highlightGlyphs();
             return true;
         }
 
@@ -432,5 +432,24 @@ public class QuranActivity extends AppCompatActivity implements Observer {
                 }
             }
         });
+    }
+
+    private void highlightGlyphs() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                int position = pager.getCurrentItem();
+                int numOfGlyphs = pagerAdapter.getNumOfGlyphs(position);
+                for (int i = 0; i < numOfGlyphs; i++) {
+                    pagerAdapter.highlightGlyph(position, i);
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+                pagerAdapter.highlightGlyph(position, -1);
+            }
+        }).start();
     }
 }

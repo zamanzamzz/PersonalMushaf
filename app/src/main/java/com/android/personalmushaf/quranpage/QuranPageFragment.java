@@ -60,6 +60,7 @@ public class QuranPageFragment extends QuranPage {
         String path = getPagePath(pageNumber, mushafMetadata);
         pageData = getPageData(pageNumber, mushafMetadata);
         imageView.setAyahData(pageData.getAyahCoordinates());
+        imageView.setGlyphs(pageData.getGlyphs());
         ImageUtils.getInstance().loadBitmap(path, imageView);
         setHighlight(imageView, position);
 
@@ -107,5 +108,15 @@ public class QuranPageFragment extends QuranPage {
     @Override
     public void unhighlightAyah(int sura, int ayah, HighlightType highlightType) {
         imageView.unHighlight(sura, ayah, HighlightType.SELECTION);
+    }
+
+    @Override
+    public void highlightGlyph(int glyphIndex) {
+        imageView.drawGlyph(glyphIndex);
+    }
+
+    @Override
+    public int getNumOfGlyphs() {
+        return imageView.getNumOfGlyphs();
     }
 }

@@ -25,6 +25,7 @@ public class PageData {
     private static final String GLYPHS_TABLE = "glyphs";
     private Map<String, List<AyahBounds>> ayahBounds;
     private AyahCoordinates ayahCoordinates;
+    private List<AyahBounds> glyphs = new ArrayList<>();
 
     public PageData(final int pageNumber, final String databasePath) {
         new Thread(new Runnable() {
@@ -57,6 +58,9 @@ public class PageData {
                                 c.getInt(4), c.getInt(5),
                                 c.getInt(6), c.getInt(7),
                                 c.getInt(8));
+
+                        glyphs.add(bound);
+
                         if (last != null && last.getLine() == bound.getLine()) {
                             last.engulf(bound);
                         } else {
@@ -162,5 +166,9 @@ public class PageData {
 
     public AyahCoordinates getAyahCoordinates() {
         return ayahCoordinates;
+    }
+
+    public List<AyahBounds> getGlyphs() {
+        return glyphs;
     }
 }
