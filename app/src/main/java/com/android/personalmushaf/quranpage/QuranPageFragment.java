@@ -17,6 +17,10 @@ import com.android.personalmushaf.mushafmetadata.MushafMetadata;
 import com.android.personalmushaf.util.ImageUtils;
 import com.android.personalmushaf.widgets.HighlightingImageView;
 
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.schedulers.Schedulers;
+
 public class QuranPageFragment extends QuranPage {
 
     private HighlightingImageView imageView;
@@ -59,13 +63,22 @@ public class QuranPageFragment extends QuranPage {
         MushafMetadata mushafMetadata = QuranSettings.getInstance().getMushafMetadata(getContext());
         String path = getPagePath(pageNumber, mushafMetadata);
         pageData = getPageData(pageNumber, mushafMetadata);
-        imageView.setAyahData(pageData.getAyahCoordinates());
-        imageView.setGlyphs(pageData.getGlyphs());
-        ImageUtils.getInstance().loadBitmap(path, imageView);
-        setHighlight(imageView, position);
 
-        if (highlightedSurah != 0 && highlightedAyah != 0)
-            highlightAyah(highlightedSurah, highlightedAyah, HighlightType.SELECTION);
+        Observable.fromCallable(() -> {
+            pageData.populateAyahBoundsAndGlyphs();
+            return true;
+        }).subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread()).subscribe((result) -> {
+            imageView.setAyahData(pageData.getAyahCoordinates());
+            imageView.setGlyphs(pageData.getGlyphs());
+
+            setHighlight(imageView, position);
+
+            if (highlightedSurah != 0 && highlightedAyah != 0)
+                highlightAyah(highlightedSurah, highlightedAyah, HighlightType.SELECTION);
+        });
+
+        ImageUtils.getInstance().loadBitmap(path, imageView);
 
         return v;
     }

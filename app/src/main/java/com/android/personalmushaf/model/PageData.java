@@ -12,6 +12,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.schedulers.Schedulers;
+
 public class PageData {
     private static final String COL_PAGE = "page_number";
     private static final String COL_LINE = "line_number";
@@ -26,55 +30,60 @@ public class PageData {
     private Map<String, List<AyahBounds>> ayahBounds;
     private AyahCoordinates ayahCoordinates;
     private List<AyahBounds> glyphs = new ArrayList<>();
+    private int pageNumber;
+    private String databasePath;
 
     public PageData(final int pageNumber, final String databasePath) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                ayahBounds = new HashMap<>();
-                SQLiteDatabase database = SQLiteDatabase.openDatabase(databasePath, null, SQLiteDatabase.OPEN_READONLY);
-                Cursor c = database.query(GLYPHS_TABLE,
-                        new String[]{COL_PAGE, COL_LINE, COL_SURA, COL_AYAH,
-                                COL_POSITION, MIN_X, MIN_Y, MAX_X, MAX_Y},
-                        COL_PAGE + "=" + pageNumber,
-                        null, null, null,
-                        COL_SURA + "," + COL_AYAH + "," + COL_POSITION);
-                try {
-                    while (c.moveToNext()) {
-                        int sura = c.getInt(2);
-                        int ayah = c.getInt(3);
-                        String key = sura + ":" + ayah;
-                        List<AyahBounds> bounds = ayahBounds.get(key);
-                        if (bounds == null) {
-                            bounds = new ArrayList<>();
-                        }
+        this.pageNumber = pageNumber;
+        this.databasePath = databasePath;
+    }
 
-                        AyahBounds last = null;
-                        if (bounds.size() > 0) {
-                            last = bounds.get(bounds.size() - 1);
-                        }
-
-                        AyahBounds bound = new AyahBounds(c.getInt(1),
-                                c.getInt(4), c.getInt(5),
-                                c.getInt(6), c.getInt(7),
-                                c.getInt(8));
-
-                        glyphs.add(bound);
-
-                        if (last != null && last.getLine() == bound.getLine()) {
-                            last.engulf(bound);
-                        } else {
-                            bounds.add(bound);
-                        }
-                        ayahBounds.put(key, bounds);
-                    }
-                    ayahCoordinates = new AyahCoordinates(pageNumber, ayahBounds);
-                } finally {
-                    c.close();
-                    database.close();
+    public void populateAyahBoundsAndGlyphs() {
+        ayahBounds = new HashMap<>();
+        SQLiteDatabase database = SQLiteDatabase.openDatabase(databasePath, null, SQLiteDatabase.OPEN_READONLY);
+        Cursor c = database.query(GLYPHS_TABLE,
+                new String[]{COL_PAGE, COL_LINE, COL_SURA, COL_AYAH,
+                        COL_POSITION, MIN_X, MIN_Y, MAX_X, MAX_Y},
+                COL_PAGE + "=" + pageNumber,
+                null, null, null,
+                COL_SURA + "," + COL_AYAH + "," + COL_POSITION);
+        try {
+            while (c.moveToNext()) {
+                int sura = c.getInt(2);
+                int ayah = c.getInt(3);
+                String key = sura + ":" + ayah;
+                List<AyahBounds> bounds = ayahBounds.get(key);
+                if (bounds == null) {
+                    bounds = new ArrayList<>();
                 }
+
+                AyahBounds last = null;
+                if (bounds.size() > 0) {
+                    last = bounds.get(bounds.size() - 1);
+                }
+
+                AyahBounds bound = new AyahBounds(c.getInt(1),
+                        c.getInt(4), c.getInt(5),
+                        c.getInt(6), c.getInt(7),
+                        c.getInt(8));
+
+                glyphs.add(new AyahBounds(c.getInt(1),
+                        c.getInt(4), c.getInt(5),
+                        c.getInt(6), c.getInt(7),
+                        c.getInt(8)));
+
+                if (last != null && last.getLine() == bound.getLine()) {
+                    last.engulf(bound);
+                } else {
+                    bounds.add(bound);
+                }
+                ayahBounds.put(key, bounds);
             }
-        }).run();
+            ayahCoordinates = new AyahCoordinates(pageNumber, ayahBounds);
+        } finally {
+            c.close();
+            database.close();
+        }
     }
 
     public Ayah getAyahFromCoordinates(

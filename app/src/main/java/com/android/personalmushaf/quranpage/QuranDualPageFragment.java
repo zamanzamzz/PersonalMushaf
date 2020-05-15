@@ -93,28 +93,22 @@ public class QuranDualPageFragment extends QuranPage {
 
         final Matrix inverse = new Matrix();
 
-        imageView.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                imageView.getImageMatrix().invert(inverse);
-                float[] pts = {event.getX(), event.getY()};
-                inverse.mapPoints(pts);
-                x = pts[0];
-                y = pts[1];
-                return false;
-            }
+        imageView.setOnTouchListener((v, event) -> {
+            imageView.getImageMatrix().invert(inverse);
+            float[] pts = {event.getX(), event.getY()};
+            inverse.mapPoints(pts);
+            x = pts[0];
+            y = pts[1];
+            return false;
         });
 
         imageView.setLongClickable(true);
 
-        imageView.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                Ayah ayah = pageData.getAyahFromCoordinates(imageView, x, y);
+        imageView.setOnLongClickListener(v -> {
+            Ayah ayah = pageData.getAyahFromCoordinates(imageView, x, y);
 
-                updateAdapter(ayah, dualPagerPosition);
-                return true;
-            }
+            updateAdapter(ayah, dualPagerPosition);
+            return true;
         });
     }
 
