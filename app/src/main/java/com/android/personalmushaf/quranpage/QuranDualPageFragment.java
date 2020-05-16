@@ -18,12 +18,18 @@ import com.android.personalmushaf.mushafmetadata.MushafMetadata;
 import com.android.personalmushaf.util.ImageUtils;
 import com.android.personalmushaf.widgets.HighlightingImageView;
 
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.schedulers.Schedulers;
+
 public class QuranDualPageFragment extends QuranPage {
 
     private HighlightingImageView leftImage;
     private HighlightingImageView rightImage;
     private PageData leftPageData;
     private PageData rightPageData;
+    private int highlightedSurah;
+    private int highlightedAyah;
     private float x;
     private float y;
 
@@ -50,8 +56,8 @@ public class QuranDualPageFragment extends QuranPage {
 
         int dualPagerPosition = getArguments().getInt("dual_pager_position");
 
-        int highlightedSurah = getArguments().getInt("highlighted_surah", 0);
-        int highlightedAyah = getArguments().getInt("highlighted_ayah", 0);
+        highlightedSurah = getArguments().getInt("highlighted_surah", 0);
+        highlightedAyah = getArguments().getInt("highlighted_ayah", 0);
 
         MushafMetadata mushafMetadata = QuranSettings.getInstance().getMushafMetadata(getContext());
 
@@ -74,9 +80,6 @@ public class QuranDualPageFragment extends QuranPage {
             setHighlightSingle(leftImage, leftPageData, dualPagerPosition);
         }
 
-        if (highlightedSurah != 0 && highlightedAyah != 0)
-            highlightAyah(highlightedSurah, highlightedAyah, HighlightType.SELECTION);
-
         return v;
     }
 
@@ -91,24 +94,36 @@ public class QuranDualPageFragment extends QuranPage {
         imageView.setAyahData(pageData.getAyahCoordinates());
         imageView.setGlyphs(pageData.getGlyphs());
 
-        final Matrix inverse = new Matrix();
-
-        imageView.setOnTouchListener((v, event) -> {
-            imageView.getImageMatrix().invert(inverse);
-            float[] pts = {event.getX(), event.getY()};
-            inverse.mapPoints(pts);
-            x = pts[0];
-            y = pts[1];
-            return false;
-        });
-
-        imageView.setLongClickable(true);
-
-        imageView.setOnLongClickListener(v -> {
-            Ayah ayah = pageData.getAyahFromCoordinates(imageView, x, y);
-
-            updateAdapter(ayah, dualPagerPosition);
+        Observable.fromCallable(() -> {
+            pageData.populateAyahBoundsAndGlyphs();
             return true;
+        }).subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread()).subscribe((result) -> {
+            imageView.setAyahData(pageData.getAyahCoordinates());
+            imageView.setGlyphs(pageData.getGlyphs());
+
+            final Matrix inverse = new Matrix();
+
+            imageView.setOnTouchListener((v, event) -> {
+                imageView.getImageMatrix().invert(inverse);
+                float[] pts = {event.getX(), event.getY()};
+                inverse.mapPoints(pts);
+                x = pts[0];
+                y = pts[1];
+                return false;
+            });
+
+            imageView.setLongClickable(true);
+
+            imageView.setOnLongClickListener(v -> {
+                Ayah ayah = pageData.getAyahFromCoordinates(imageView, x, y);
+
+                updateAdapter(ayah, dualPagerPosition);
+                return true;
+            });
+
+            if (highlightedSurah != 0 && highlightedAyah != 0)
+                highlightAyah(highlightedSurah, highlightedAyah, HighlightType.SELECTION);
         });
     }
 

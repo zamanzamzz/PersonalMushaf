@@ -68,14 +68,14 @@ public class QuranPageFragment extends QuranPage {
             pageData.populateAyahBoundsAndGlyphs();
             return true;
         }).subscribeOn(Schedulers.newThread())
-                .observeOn(AndroidSchedulers.mainThread()).subscribe((result) -> {
-            imageView.setAyahData(pageData.getAyahCoordinates());
-            imageView.setGlyphs(pageData.getGlyphs());
+            .observeOn(AndroidSchedulers.mainThread()).subscribe((result) -> {
+                imageView.setAyahData(pageData.getAyahCoordinates());
+                imageView.setGlyphs(pageData.getGlyphs());
 
-            setHighlight(imageView, position);
+                setHighlight(imageView, position);
 
-            if (highlightedSurah != 0 && highlightedAyah != 0)
-                highlightAyah(highlightedSurah, highlightedAyah, HighlightType.SELECTION);
+                if (highlightedSurah != 0 && highlightedAyah != 0)
+                    highlightAyah(highlightedSurah, highlightedAyah, HighlightType.SELECTION);
         });
 
         ImageUtils.getInstance().loadBitmap(path, imageView);
@@ -87,28 +87,22 @@ public class QuranPageFragment extends QuranPage {
     private void setHighlight(final HighlightingImageView imageView, final int position) {
         final Matrix inverse = new Matrix();
 
-        imageView.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                imageView.getImageMatrix().invert(inverse);
-                float[] pts = {event.getX(), event.getY()};
-                inverse.mapPoints(pts);
-                x = pts[0];
-                y = pts[1];
-                return false;
-            }
+        imageView.setOnTouchListener((v, event) -> {
+            imageView.getImageMatrix().invert(inverse);
+            float[] pts = {event.getX(), event.getY()};
+            inverse.mapPoints(pts);
+            x = pts[0];
+            y = pts[1];
+            return false;
         });
 
         imageView.setLongClickable(true);
 
-        imageView.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                Ayah ayah = pageData.getAyahFromCoordinates(imageView, x, y);
+        imageView.setOnLongClickListener(v -> {
+            Ayah ayah = pageData.getAyahFromCoordinates(imageView, x, y);
 
-                updateAdapter(ayah, position);
-                return true;
-            }
+            updateAdapter(ayah, position);
+            return true;
         });
     }
 
