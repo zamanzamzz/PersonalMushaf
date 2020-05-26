@@ -55,9 +55,9 @@ public class QuranActivity extends AppCompatActivity implements Observer {
     boolean isSmoothVolumeKeyNavigation;
     boolean isForceDualPage;
     private MushafMetadata mushafMetadata;
-    private Thread highlightGlyphsThread;
-    private int currentGlyphIndex = 0;
-    private boolean isGlyphForward = true;
+
+    private GlyphsHighlighter glyphsHighlighter;
+
 
 
     @Override
@@ -83,6 +83,8 @@ public class QuranActivity extends AppCompatActivity implements Observer {
         setupInitialPager();
 
         setOnSystemUiVisibilityChangeListener();
+
+        glyphsHighlighter = new GlyphsHighlighter(pager, pagerAdapter);
 
         hideSystemUI();
     }
@@ -120,7 +122,8 @@ public class QuranActivity extends AppCompatActivity implements Observer {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.glyphplayback, menu);
+        if (QuranSettings.getInstance().getIsDebugMode(this))
+            getMenuInflater().inflate(R.menu.glyphplayback, menu);
         return true;
     }
 
@@ -129,27 +132,17 @@ public class QuranActivity extends AppCompatActivity implements Observer {
         int id = item.getItemId();
         if (id == android.R.id.home) {
             destroyPager();
-            if (highlightGlyphsThread != null && !highlightGlyphsThread.getState().equals(Thread.State.TERMINATED) && !highlightGlyphsThread.isInterrupted())
-                highlightGlyphsThread.interrupt();
+            glyphsHighlighter.stopHighlight();
             finish();
             return true;
         } else if (id == R.id.glyph_play_pause) {
-            if (highlightGlyphsThread == null || highlightGlyphsThread.isInterrupted() || highlightGlyphsThread.getState().equals(Thread.State.TERMINATED))
-                highlightGlyphs();
-            else if (highlightGlyphsThread.isAlive())
-                highlightGlyphsThread.interrupt();
+            glyphsHighlighter.pausePlayHighlight();
             return true;
         } else if (id == R.id.glyph_forward) {
-            if (highlightGlyphsThread != null && highlightGlyphsThread.isAlive() && !isGlyphForward)
-                highlightGlyphsThread.interrupt();
-            isGlyphForward = true;
-            highlightGlyphs();
+            glyphsHighlighter.forwardHighlight();
             return true;
         } else if (id == R.id.glyph_backward) {
-            if (highlightGlyphsThread != null && highlightGlyphsThread.isAlive() && isGlyphForward)
-                highlightGlyphsThread.interrupt();
-            isGlyphForward = false;
-            highlightGlyphs();
+            glyphsHighlighter.reverseHighlight();
             return true;
         }
 
@@ -159,7 +152,7 @@ public class QuranActivity extends AppCompatActivity implements Observer {
     @Override
     public void onBackPressed() {
         destroyPager();
-        highlightGlyphsThread.interrupt();
+        glyphsHighlighter.stopHighlight();
         finish();
     }
 
@@ -457,29 +450,5 @@ public class QuranActivity extends AppCompatActivity implements Observer {
                 toolbar.setTitle(highlightedSurah + ":" + highlightedAyah);
             }
         });
-    }
-
-    private void highlightGlyphs() {
-        highlightGlyphsThread = new Thread(() -> {
-            try {
-                int position = pager.getCurrentItem();
-                int numOfGlyphs = pagerAdapter.getNumOfGlyphs(position);
-                if (isGlyphForward)
-                    for (; currentGlyphIndex < numOfGlyphs; currentGlyphIndex++) {
-                        pagerAdapter.highlightGlyph(position, currentGlyphIndex);
-                        Thread.sleep(100);
-                    }
-                else
-                    for (; currentGlyphIndex >= 0; currentGlyphIndex--) {
-                        pagerAdapter.highlightGlyph(position, currentGlyphIndex);
-                        Thread.sleep(100);
-                    }
-                pagerAdapter.highlightGlyph(position, -1);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        });
-
-        highlightGlyphsThread.start();
     }
 }

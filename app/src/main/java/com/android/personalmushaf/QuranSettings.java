@@ -28,6 +28,8 @@ public class QuranSettings {
 
     private Boolean isSmoothKeyNavigation;
 
+    private Boolean isDebugMode;
+
     public static QuranSettings getInstance() {
         if (quranSettings == null)
             quranSettings = new QuranSettings();
@@ -142,5 +144,18 @@ public class QuranSettings {
 
     public void setSmoothKeyNavigation(Boolean smoothKeyNavigation) {
         isSmoothKeyNavigation = smoothKeyNavigation;
+    }
+
+    public void setDebugMode(Boolean isDebugMode) {
+        this.isDebugMode = isDebugMode;
+    }
+
+    public Boolean getIsDebugMode(Context context) {
+        if (isDebugMode == null) {
+            setPreference(context);
+            isDebugMode = preferences.getBoolean("debugmodeswitch", false);
+        }
+
+        return isDebugMode;
     }
 }

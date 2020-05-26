@@ -41,5 +41,9 @@
         app:key="smoothpageturn"
         app:title="Smooth Volume Key Navigation" />
 
+    <SwitchPreferenceCompat
+        app:key="debugmodeswitch"
+        app:title="Set Debug Mode" />
+
 
 </androidx.preference.PreferenceScreen>

@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".QuranActivity">
     <item
-        android:id="@+id/glyph_backward"
+        android:id="@+id/glyph_forward"
         android:orderInCategory="100"
         android:title="Glyph Backward"
         android:icon="@drawable/ic_fast_rewind_black_24dp"
@@ -17,7 +17,7 @@
         android:icon="@drawable/ic_play_arrow_black_24dp"
         app:showAsAction="ifRoom"/>
     <item
-        android:id="@+id/glyph_forward"
+        android:id="@+id/glyph_backward"
         android:orderInCategory="300"
         android:title="Glyph Forward"
         android:icon="@drawable/ic_fast_forward_black_24dp"

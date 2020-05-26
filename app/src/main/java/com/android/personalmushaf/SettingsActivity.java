@@ -98,6 +98,7 @@ public class SettingsActivity extends AppCompatActivity implements
             ListPreference landmarkSystem = findPreference("landmark");
             SwitchPreferenceCompat isForceDualPages = findPreference("force_dual_page");
             SwitchPreferenceCompat isSmoothKeyNavigation = findPreference("smoothpageturn");
+            SwitchPreferenceCompat isDebugMode = findPreference("debugmodeswitch");
 
 
             mushafVersion.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
@@ -131,6 +132,14 @@ public class SettingsActivity extends AppCompatActivity implements
                 @Override
                 public boolean onPreferenceChange(Preference preference, Object newValue) {
                     QuranSettings.getInstance().setSmoothKeyNavigation((Boolean) newValue);
+                    return true;
+                }
+            });
+
+            isDebugMode.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+                @Override
+                public boolean onPreferenceChange(Preference preference, Object newValue) {
+                    QuranSettings.getInstance().setDebugMode((Boolean) newValue);
                     return true;
                 }
             });
