@@ -18,6 +18,14 @@ public class GlyphsHighlighter {
         isGlyphForward = true;
     }
 
+    public void setPagerAdapter(QuranPageAdapter pagerAdapter) {
+        this.pagerAdapter = pagerAdapter;
+    }
+
+    public void setPager(ViewPager pager) {
+        this.pager = pager;
+    }
+
     public void startHighlight() {
         highlightGlyphsThread = new Thread(() -> {
             try {

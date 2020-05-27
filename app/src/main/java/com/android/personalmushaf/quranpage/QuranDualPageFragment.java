@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.graphics.Matrix;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -24,8 +23,8 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class QuranDualPageFragment extends QuranPage {
 
-    private HighlightingImageView leftImage;
     private HighlightingImageView rightImage;
+    private HighlightingImageView leftImage;
     private PageData leftPageData;
     private PageData rightPageData;
     private int highlightedSurah;
@@ -61,23 +60,23 @@ public class QuranDualPageFragment extends QuranPage {
 
         MushafMetadata mushafMetadata = QuranSettings.getInstance().getMushafMetadata(getContext());
 
-        leftImage = v.findViewById(R.id.page1);
+        rightImage = v.findViewById(R.id.page1);
         final String leftPagePath = getLeftPagePath(dualPagerPosition, mushafMetadata);
         leftPageData = getLeftPageData(dualPagerPosition, mushafMetadata);
 
-        rightImage = v.findViewById(R.id.page2);
+        leftImage = v.findViewById(R.id.page2);
         final String rightPagePath = getRightPagePath(dualPagerPosition, mushafMetadata);
         rightPageData = getRightPageData(dualPagerPosition, mushafMetadata);
 
 
         if (!isDanglingPage(dualPagerPosition, mushafMetadata)) {
-            loadImages(leftImage, rightImage, leftPagePath, rightPagePath);
-            setHighlightSingle(leftImage, leftPageData, dualPagerPosition);
-            setHighlightSingle(rightImage, rightPageData, dualPagerPosition);
+            loadImages(rightImage, leftImage, leftPagePath, rightPagePath);
+            setHighlightSingle(rightImage, leftPageData, dualPagerPosition);
+            setHighlightSingle(leftImage, rightPageData, dualPagerPosition);
         } else {
-            rightImage.setVisibility(View.GONE);
-            ImageUtils.getInstance().loadBitmap(leftPagePath, leftImage);
-            setHighlightSingle(leftImage, leftPageData, dualPagerPosition);
+            leftImage.setVisibility(View.GONE);
+            ImageUtils.getInstance().loadBitmap(leftPagePath, rightImage);
+            setHighlightSingle(rightImage, leftPageData, dualPagerPosition);
         }
 
         return v;
@@ -128,15 +127,15 @@ public class QuranDualPageFragment extends QuranPage {
     }
 
     public void highlightAyah(int sura, int ayah, HighlightType highlightType) {
-        rightImage.highlightAyah(sura, ayah, HighlightType.SELECTION);
         leftImage.highlightAyah(sura, ayah, HighlightType.SELECTION);
-        rightImage.invalidate();
+        rightImage.highlightAyah(sura, ayah, HighlightType.SELECTION);
         leftImage.invalidate();
+        rightImage.invalidate();
     }
 
     public void unhighlightAyah(int sura, int ayah, HighlightType highlightType) {
-        rightImage.unHighlight(sura, ayah, HighlightType.SELECTION);
         leftImage.unHighlight(sura, ayah, HighlightType.SELECTION);
+        rightImage.unHighlight(sura, ayah, HighlightType.SELECTION);
     }
 
     private String getLeftPagePath(int dualPagerPosition, MushafMetadata mushafMetadata) {
@@ -168,7 +167,13 @@ public class QuranDualPageFragment extends QuranPage {
 
     @Override
     public void highlightGlyph(int glyphIndex) {
-        if (glyphIndex < rightImage.getNumOfGlyphs())
+        if (glyphIndex < 0) {
+            rightImage.drawGlyph(-1);
+            leftImage.drawGlyph(-1);
+            return;
+        }
+
+        if (glyphIndex < leftImage.getNumOfGlyphs())
             rightImage.drawGlyph(glyphIndex);
         else {
             rightImage.drawGlyph(-1);
@@ -178,6 +183,6 @@ public class QuranDualPageFragment extends QuranPage {
 
     @Override
     public int getNumOfGlyphs() {
-        return rightImage.getNumOfGlyphs() + leftImage.getNumOfGlyphs();
+        return leftImage.getNumOfGlyphs() + rightImage.getNumOfGlyphs();
     }
 }

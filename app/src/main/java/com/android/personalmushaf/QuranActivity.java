@@ -84,8 +84,6 @@ public class QuranActivity extends AppCompatActivity implements Observer {
 
         setOnSystemUiVisibilityChangeListener();
 
-        glyphsHighlighter = new GlyphsHighlighter(pager, pagerAdapter);
-
         hideSystemUI();
     }
 
@@ -106,16 +104,22 @@ public class QuranActivity extends AppCompatActivity implements Observer {
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
 
+        glyphsHighlighter.stopHighlight();
+
         super.onConfigurationChanged(newConfig);
         if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
             destroyPager();
             currentOrientation = getScreenRotation();
             setupSinglePager();
+            glyphsHighlighter.setPager(pager);
+            glyphsHighlighter.setPagerAdapter(pagerAdapter);
 
         } else if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
             destroyPager();
             currentOrientation = getScreenRotation();
             setupDualPager();
+            glyphsHighlighter.setPager(pager);
+            glyphsHighlighter.setPagerAdapter(pagerAdapter);
         }
     }
 
@@ -270,6 +274,8 @@ public class QuranActivity extends AppCompatActivity implements Observer {
         } else {
             setupDualPager();
         }
+
+        glyphsHighlighter = new GlyphsHighlighter(pager, pagerAdapter);
 
         highlightAyahFromNavigation();
     }
