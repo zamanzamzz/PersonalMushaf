@@ -128,7 +128,7 @@ public class HighlightingImageView extends AppCompatImageView {
             return;
         }
 
-        if (currentGlyph > -1) {
+        if (currentGlyph > -1 && currentGlyph < getNumOfGlyphs()) {
             drawAyahBounds(glyphs.get(currentGlyph), getImageMatrix(), canvas, getPaintForHighlightType(HighlightType.SELECTION));
         }
 

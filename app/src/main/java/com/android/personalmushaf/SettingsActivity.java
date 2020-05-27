@@ -100,13 +100,10 @@ public class SettingsActivity extends AppCompatActivity implements
             mushaf.setSummary(QuranSettings.getInstance().getMushafMetadata(getContext()).getName());
 
 
-            landmarkSystem.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-                @Override
-                public boolean onPreferenceChange(Preference preference, Object newValue) {
-                    int landmarkSystem = Integer.parseInt((String) newValue);
-                    QuranSettings.getInstance().setLandmarkSystem(landmarkSystem);
-                    return true;
-                }
+            landmarkSystem.setOnPreferenceChangeListener((preference, newValue) -> {
+                int landmarkSystem1 = Integer.parseInt((String) newValue);
+                QuranSettings.getInstance().setLandmarkSystem(landmarkSystem1);
+                return true;
             });
 
             isForceDualPages.setOnPreferenceChangeListener((preference, newValue) -> {
