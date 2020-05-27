@@ -63,26 +63,20 @@ public class JuzAdapter extends RecyclerView.Adapter<JuzAdapter.JuzViewHolder> {
 
         alternateBackgroundColor(layout, position);
 
-        holder.rippleView.setOnClickListener(new RippleView.OnClickListener() {
-            @Override
-            public void onClick(final View view) {
-                RippleView rippleView = (RippleView) view;
-                rippleView.setRippleDuration(75);
-                rippleView.setFrameRate(10);
-                juzToJuzContentProcedure(rippleView, position + 1);
+        holder.rippleView.setOnClickListener(view -> {
+            RippleView rippleView = (RippleView) view;
+            rippleView.setRippleDuration(75);
+            rippleView.setFrameRate(10);
+            juzToJuzContentProcedure(rippleView, position + 1);
 
-            }
         });
 
-        holder.rippleView.setOnLongClickListener(new RippleView.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(final View view) {
-                RippleView rippleView = (RippleView) view;
-                rippleView.setRippleDuration(75);
-                rippleView.setFrameRate(10);
+        holder.rippleView.setOnLongClickListener(view -> {
+            RippleView rippleView = (RippleView) view;
+            rippleView.setRippleDuration(75);
+            rippleView.setFrameRate(10);
 
-                return juzToPage(rippleView, position);
-            }
+            return juzToPage(rippleView, position);
         });
 
     }
@@ -105,12 +99,7 @@ public class JuzAdapter extends RecyclerView.Adapter<JuzAdapter.JuzViewHolder> {
 
         goToJuzContent.putExtra("juz number", juzNumber);
 
-        rippleView.setOnRippleCompleteListener(new RippleView.OnRippleCompleteListener() {
-            @Override
-            public void onComplete(RippleView rippleView) {
-                rippleView.getContext().startActivity(goToJuzContent);
-            }
-        });
+        rippleView.setOnRippleCompleteListener(rippleView1 -> rippleView1.getContext().startActivity(goToJuzContent));
     }
 
 
@@ -120,12 +109,7 @@ public class JuzAdapter extends RecyclerView.Adapter<JuzAdapter.JuzViewHolder> {
 
         goToJuz.putExtra("new page number", Integer.valueOf(juzPageNumbers[juzNumber]));
 
-        rippleView.setOnRippleCompleteListener(new RippleView.OnRippleCompleteListener() {
-            @Override
-            public void onComplete(RippleView rippleView) {
-                rippleView.getContext().startActivity(goToJuz);
-            }
-        });
+        rippleView.setOnRippleCompleteListener(rippleView1 -> rippleView1.getContext().startActivity(goToJuz));
         return true;
     }
 

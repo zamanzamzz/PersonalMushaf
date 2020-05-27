@@ -2,6 +2,7 @@ package com.android.personalmushaf.startup;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,6 +25,7 @@ import com.android.personalmushaf.navigation.NavigationActivity;
 import com.android.personalmushaf.util.FileUtils;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
@@ -56,18 +58,22 @@ public class StartupFragment extends Fragment {
 
         final ProgressBar progressBar = v.findViewById(R.id.progress_horizontal);
         final Window window = getActivity().getWindow();
-        v.findViewById(R.id.fab).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (QuranSettings.getInstance().isMushafAvailable(mushafIndex)) {
-                    updateQuranSettings(mushafIndex);
-                    startActivity(new Intent(getContext(), NavigationActivity.class));
-                    getActivity().finishAffinity();
-                } else {
-                    downloadAndUnpackZip(mushafMetadata.getDirectoryName(), mushafIndex, window, progressBar);
-                }
-            }
-        });
+        FloatingActionButton fab = v.findViewById(R.id.fab);
+
+        if (QuranSettings.getInstance().isMushafAvailable(mushafIndex)) {
+            fab.setImageResource(R.drawable.ic_play_arrow_black_24dp);
+            fab.setOnClickListener(v1 -> {
+                updateQuranSettings(mushafIndex);
+                startActivity(new Intent(getContext(), NavigationActivity.class));
+                getActivity().finishAffinity();
+            });
+        } else {
+            fab.setImageResource(R.drawable.ic_file_download_black_24dp);
+            fab.setOnClickListener(v1 -> {
+                downloadAndUnpackZip(mushafMetadata.getDirectoryName(), mushafIndex, window, progressBar);
+            });
+        }
+
         return v;
     }
 
@@ -79,26 +85,18 @@ public class StartupFragment extends Fragment {
         final File zipFile = new File(FileUtils.ASSETSDIRECTORY + "/" + mushafDirectory + ".zip");
         FileDownloadTask task = pathReference.getFile(zipFile);
         progressBar.setMax((int) task.getSnapshot().getTotalByteCount());
-        task.addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                try {
-                    FileUtils.unzip(zipFile, targetDir, progressBar);
-                } catch (IOException e) {
-                } finally {
-                    resetUI(window, progressBar);
-                    updateQuranSettings(mushafIndex);
-                    zipFile.delete();
-                    startActivity(new Intent(getContext(), NavigationActivity.class));
-                    getActivity().finishAffinity();
-                }
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
+        task.addOnSuccessListener(taskSnapshot -> {
+            try {
+                FileUtils.unzip(zipFile, targetDir, progressBar);
+            } catch (IOException e) {
+            } finally {
                 resetUI(window, progressBar);
+                updateQuranSettings(mushafIndex);
+                zipFile.delete();
+                startActivity(new Intent(getContext(), NavigationActivity.class));
+                getActivity().finishAffinity();
             }
-        }).addOnProgressListener(new OnProgressListener<FileDownloadTask.TaskSnapshot>() {
+        }).addOnFailureListener(e -> resetUI(window, progressBar)).addOnProgressListener(new OnProgressListener<FileDownloadTask.TaskSnapshot>() {
             @Override
             public void onProgress(@NonNull FileDownloadTask.TaskSnapshot taskSnapshot) {
                 progressBar.setProgress((int) taskSnapshot.getBytesTransferred());
@@ -126,5 +124,7 @@ public class StartupFragment extends Fragment {
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getContext());
         pref.edit().putBoolean("firststart", false).apply();
         pref.edit().putString("mushaf", Integer.toString(mushafIndex)).apply();
+        QuranSettings.getInstance().setMushafVersion(mushafIndex);
+        QuranSettings.getInstance().setMushafMetadata(mushafIndex);
     }
 }

@@ -33,12 +33,9 @@ public class SettingsActivity extends AppCompatActivity implements
             setTitle(savedInstanceState.getCharSequence(TITLE_TAG));
         }
         getSupportFragmentManager().addOnBackStackChangedListener(
-                new FragmentManager.OnBackStackChangedListener() {
-                    @Override
-                    public void onBackStackChanged() {
-                        if (getSupportFragmentManager().getBackStackEntryCount() == 0) {
-                            setTitle(R.string.title_activity_settings);
-                        }
+                () -> {
+                    if (getSupportFragmentManager().getBackStackEntryCount() == 0) {
+                        setTitle(R.string.title_activity_settings);
                     }
                 });
         ActionBar actionBar = getSupportActionBar();
@@ -94,22 +91,14 @@ public class SettingsActivity extends AppCompatActivity implements
         @Override
         public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
             setPreferencesFromResource(R.xml.header_preferences, rootKey);
-            ListPreference mushafVersion = findPreference("mushaf");
+            Preference mushaf = findPreference("mushaf");
             ListPreference landmarkSystem = findPreference("landmark");
             SwitchPreferenceCompat isForceDualPages = findPreference("force_dual_page");
             SwitchPreferenceCompat isSmoothKeyNavigation = findPreference("smoothpageturn");
             SwitchPreferenceCompat isDebugMode = findPreference("debugmodeswitch");
 
+            mushaf.setSummary(QuranSettings.getInstance().getMushafMetadata(getContext()).getName());
 
-            mushafVersion.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-                @Override
-                public boolean onPreferenceChange(Preference preference, Object newValue) {
-                    int mushaf = Integer.parseInt((String) newValue);
-                    QuranSettings.getInstance().setMushafVersion(mushaf);
-                    QuranSettings.getInstance().setMushafMetadata(mushaf);
-                    return true;
-                }
-            });
 
             landmarkSystem.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
                 @Override
@@ -120,28 +109,19 @@ public class SettingsActivity extends AppCompatActivity implements
                 }
             });
 
-            isForceDualPages.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-                @Override
-                public boolean onPreferenceChange(Preference preference, Object newValue) {
-                    QuranSettings.getInstance().setForceDualPage((Boolean) newValue);
-                    return true;
-                }
+            isForceDualPages.setOnPreferenceChangeListener((preference, newValue) -> {
+                QuranSettings.getInstance().setForceDualPage((Boolean) newValue);
+                return true;
             });
 
-            isSmoothKeyNavigation.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-                @Override
-                public boolean onPreferenceChange(Preference preference, Object newValue) {
-                    QuranSettings.getInstance().setSmoothKeyNavigation((Boolean) newValue);
-                    return true;
-                }
+            isSmoothKeyNavigation.setOnPreferenceChangeListener((preference, newValue) -> {
+                QuranSettings.getInstance().setSmoothKeyNavigation((Boolean) newValue);
+                return true;
             });
 
-            isDebugMode.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-                @Override
-                public boolean onPreferenceChange(Preference preference, Object newValue) {
-                    QuranSettings.getInstance().setDebugMode((Boolean) newValue);
-                    return true;
-                }
+            isDebugMode.setOnPreferenceChangeListener((preference, newValue) -> {
+                QuranSettings.getInstance().setDebugMode((Boolean) newValue);
+                return true;
             });
         }
     }

@@ -14,16 +14,22 @@
   ~ limitations under the License.
   -->
 
-<androidx.preference.PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+<androidx.preference.PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <ListPreference
-        app:defaultValue="0"
-        app:entries="@array/mushaf_entries"
-        app:entryValues="@array/mushaf_values"
-        app:icon="@drawable/ic_book_white_24dp"
+    <Preference
         app:key="mushaf"
         app:title="@string/mushaf_title"
-        app:useSimpleSummaryProvider="true" />
+        app:summary="summary here"
+        app:icon="@drawable/ic_book_white_24dp" >
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetPackage="com.android.personalmushaf"
+            android:targetClass="com.android.personalmushaf.startup.StartupMushafTypeActivity"
+            >
+            <extra android:name="from_settings" android:value="true" />
+        </intent>
+    </Preference>
 
     <ListPreference
         app:defaultValue="0"

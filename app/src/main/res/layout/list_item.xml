@@ -12,11 +12,9 @@
     android:paddingLeft="@dimen/list_item_left_margin"
     android:textSize="18sp"
     android:gravity="center_vertical|start"
-    tools:text="Juz "
     android:textColor="#FFF"
     android:background="@color/colorPrimary"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" />
+    xmlns:android="http://schemas.android.com/apk/res/android" />
 </com.andexert.library.RippleView>
 
 

@@ -7,6 +7,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.view.Window;
+import android.view.WindowManager;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
@@ -14,22 +16,24 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.preference.PreferenceManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.personalmushaf.QuranSettings;
 import com.android.personalmushaf.R;
 import com.android.personalmushaf.navigation.NavigationActivity;
+import com.android.personalmushaf.navigation.tabs.juztab.JuzAdapter;
 
 import org.jetbrains.annotations.NotNull;
 
 
 public class StartupMushafTypeActivity extends AppCompatActivity {
-    private AlertDialog mushafTypeDialog;
     private static final int  REQUEST_PERMISSION_CODE = 1111;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_startup);
+        setContentView(R.layout.activity_mushaftype);
 
         if (checkPermission())
             setMushafType();
@@ -38,31 +42,21 @@ public class StartupMushafTypeActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if (mushafTypeDialog != null)
-            mushafTypeDialog.show();
     }
 
     private void setMushafType() {
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
 
-        if(!isAnyMushafAvailable() || pref.getBoolean("firststart", true)){
+        if(getIntent().getBooleanExtra("from_settings", false) || !isAnyMushafAvailable() || pref.getBoolean("firststart", true)){
 
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setCancelable(false);
-            builder.setTitle("Choose mushaf type");
+            RecyclerView recyclerView = findViewById(R.id.mushaf_type_recyclerview);
 
-            String[] mushafTypes = {"13 Lines", "15 Lines"};
-            builder.setItems(mushafTypes, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    Intent chooseMushafStyle = new Intent(getApplicationContext(), StartupMushafStyleActivity.class);
-                    chooseMushafStyle.putExtra("mushaf_type", which);
-                    startActivity(chooseMushafStyle);
-                }
-            });
+            recyclerView.setHasFixedSize(true);
+            LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+            MushafTypeAdapter adapter = new MushafTypeAdapter();
 
-            mushafTypeDialog = builder.create();
-            mushafTypeDialog.show();
+            recyclerView.setAdapter(adapter);
+            recyclerView.setLayoutManager(layoutManager);
         } else {
             startActivity(new Intent(this, NavigationActivity.class));
             finish();

@@ -7,6 +7,6 @@
     <androidx.viewpager.widget.ViewPager
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/startup_viewpager">
+        android:id="@+id/mushafstyle_viewpager">
     </androidx.viewpager.widget.ViewPager>
 </LinearLayout>
