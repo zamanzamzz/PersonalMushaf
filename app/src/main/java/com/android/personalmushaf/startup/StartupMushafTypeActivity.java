@@ -47,13 +47,15 @@ public class StartupMushafTypeActivity extends AppCompatActivity {
     private void setMushafType() {
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
 
-        if(getIntent().getBooleanExtra("from_settings", false) || !isAnyMushafAvailable() || pref.getBoolean("firststart", true)){
+        boolean fromSettings = getIntent().getBooleanExtra("from_settings", false);
+
+        if(fromSettings || !isAnyMushafAvailable() || pref.getBoolean("firststart", true)){
 
             RecyclerView recyclerView = findViewById(R.id.mushaf_type_recyclerview);
 
             recyclerView.setHasFixedSize(true);
             LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-            MushafTypeAdapter adapter = new MushafTypeAdapter();
+            MushafTypeAdapter adapter = new MushafTypeAdapter(fromSettings);
 
             recyclerView.setAdapter(adapter);
             recyclerView.setLayoutManager(layoutManager);
@@ -90,20 +92,15 @@ public class StartupMushafTypeActivity extends AppCompatActivity {
                 builder.setMessage("Internet, Read and Write External" +
                         " Storage permissions are required.");
                 builder.setTitle("Please grant those permissions");
-                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        ActivityCompat.requestPermissions(
-                                that,
-                                new String[]{
-                                        Manifest.permission.INTERNET,
-                                        Manifest.permission.READ_EXTERNAL_STORAGE,
-                                        Manifest.permission.WRITE_EXTERNAL_STORAGE
-                                },
-                                REQUEST_PERMISSION_CODE
-                        );
-                    }
-                });
+                builder.setPositiveButton("OK", (dialogInterface, i) -> ActivityCompat.requestPermissions(
+                        that,
+                        new String[]{
+                                Manifest.permission.INTERNET,
+                                Manifest.permission.READ_EXTERNAL_STORAGE,
+                                Manifest.permission.WRITE_EXTERNAL_STORAGE
+                        },
+                        REQUEST_PERMISSION_CODE
+                ));
                 builder.setNeutralButton("Cancel",null);
                 AlertDialog dialog = builder.create();
                 dialog.show();

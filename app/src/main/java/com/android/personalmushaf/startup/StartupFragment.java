@@ -35,6 +35,7 @@ import java.io.File;
 import java.io.IOException;
 
 public class StartupFragment extends Fragment {
+    private boolean fromSettings;
     public StartupFragment() {
     }
 
@@ -44,6 +45,8 @@ public class StartupFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_startup, container, false);
 
         final int mushafIndex = getArguments().getInt("mushaf", QuranSettings.CLASSIC_MADANI_15_LINE);
+
+        fromSettings = getArguments().getBoolean("from_settings", false);
 
         final MushafMetadata mushafMetadata = MushafMetadataFactory.getMushafMetadata(mushafIndex);
 
@@ -64,7 +67,8 @@ public class StartupFragment extends Fragment {
             fab.setImageResource(R.drawable.ic_play_arrow_black_24dp);
             fab.setOnClickListener(v1 -> {
                 updateQuranSettings(mushafIndex);
-                startActivity(new Intent(getContext(), NavigationActivity.class));
+                if (!fromSettings)
+                    startActivity(new Intent(getContext(), NavigationActivity.class));
                 getActivity().finishAffinity();
             });
         } else {
@@ -93,7 +97,8 @@ public class StartupFragment extends Fragment {
                 resetUI(window, progressBar);
                 updateQuranSettings(mushafIndex);
                 zipFile.delete();
-                startActivity(new Intent(getContext(), NavigationActivity.class));
+                if (!fromSettings)
+                    startActivity(new Intent(getContext(), NavigationActivity.class));
                 getActivity().finishAffinity();
             }
         }).addOnFailureListener(e -> resetUI(window, progressBar)).addOnProgressListener(new OnProgressListener<FileDownloadTask.TaskSnapshot>() {

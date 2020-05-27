@@ -13,6 +13,7 @@ import com.android.personalmushaf.mushafmetadata.MushafMetadataFactory;
 import com.android.personalmushaf.navigation.ViewPagerAdapter;
 
 public class StartupMushafStyleActivity extends AppCompatActivity {
+    private boolean fromSettings;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -22,7 +23,15 @@ public class StartupMushafStyleActivity extends AppCompatActivity {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         int mushafType = getIntent().getIntExtra("mushaf_type", QuranSettings.CLASSIC_MADANI_15_LINE);
 
+        fromSettings = getIntent().getBooleanExtra("from_settings", false);
+
         populateViewPager(adapter, mushafType);
+
+        viewPager.setClipToPadding(false);
+
+        viewPager.setPadding(200,100,200,200);
+
+        viewPager.setPageMargin(100);
 
         viewPager.setAdapter(adapter);
     }
@@ -33,6 +42,7 @@ public class StartupMushafStyleActivity extends AppCompatActivity {
         for (int i = 0; i < MushafMetadataFactory.mushafStructure[mushafType].length; i++) {
             arguments = new Bundle();
             arguments.putInt("mushaf", MushafMetadataFactory.mushafStructure[mushafType][i]);
+            arguments.putBoolean("from_settings", fromSettings);
             fragment = new StartupFragment();
             fragment.setArguments(arguments);
             adapter.addFragment(fragment, "");

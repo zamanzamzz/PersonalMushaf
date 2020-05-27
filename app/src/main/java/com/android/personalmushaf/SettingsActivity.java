@@ -87,11 +87,12 @@ public class SettingsActivity extends AppCompatActivity implements
     }
 
     public static class HeaderFragment extends PreferenceFragmentCompat {
+        private Preference mushaf;
 
         @Override
         public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
             setPreferencesFromResource(R.xml.header_preferences, rootKey);
-            Preference mushaf = findPreference("mushaf");
+            mushaf = findPreference("mushaf");
             ListPreference landmarkSystem = findPreference("landmark");
             SwitchPreferenceCompat isForceDualPages = findPreference("force_dual_page");
             SwitchPreferenceCompat isSmoothKeyNavigation = findPreference("smoothpageturn");
@@ -120,6 +121,12 @@ public class SettingsActivity extends AppCompatActivity implements
                 QuranSettings.getInstance().setDebugMode((Boolean) newValue);
                 return true;
             });
+        }
+
+        @Override
+        public void onResume() {
+            super.onResume();
+            mushaf.setSummary(QuranSettings.getInstance().getMushafMetadata(getContext()).getName());
         }
     }
 }

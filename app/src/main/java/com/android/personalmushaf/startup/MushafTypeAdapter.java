@@ -12,6 +12,7 @@ import com.android.personalmushaf.R;
 
 public class MushafTypeAdapter extends RecyclerView.Adapter<MushafTypeAdapter.MushafViewHolder> {
     private String[] mushafTypes = {"13 Lines", "15 Lines"};
+    private boolean fromSettings;
 
     public static class MushafViewHolder extends RecyclerView.ViewHolder {
         public RippleView rippleView;
@@ -21,8 +22,8 @@ public class MushafTypeAdapter extends RecyclerView.Adapter<MushafTypeAdapter.Mu
         }
     }
 
-    public MushafTypeAdapter() {
-
+    public MushafTypeAdapter(boolean fromSettings) {
+        this.fromSettings = fromSettings;
     }
 
     @Override
@@ -52,6 +53,7 @@ public class MushafTypeAdapter extends RecyclerView.Adapter<MushafTypeAdapter.Mu
             ((RippleView) v).setOnRippleCompleteListener((r -> {
                 Intent chooseMushafStyle = new Intent(r.getContext(), StartupMushafStyleActivity.class);
                 chooseMushafStyle.putExtra("mushaf_type", position);
+                chooseMushafStyle.putExtra("from_settings", fromSettings);
                 r.getContext().startActivity(chooseMushafStyle);
             }));
         });
