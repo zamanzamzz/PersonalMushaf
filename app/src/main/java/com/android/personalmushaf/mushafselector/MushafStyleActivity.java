@@ -29,9 +29,9 @@ public class MushafStyleActivity extends AppCompatActivity {
 
         viewPager.setClipToPadding(false);
 
-        viewPager.setPadding(120,0,120,0);
+        viewPager.setPadding(70,0,70,0);
 
-        viewPager.setPageMargin(100);
+        viewPager.setPageMargin(50);
 
         viewPager.setAdapter(adapter);
     }
