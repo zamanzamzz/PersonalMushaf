@@ -14,6 +14,7 @@ public abstract class MushafMetadata {
     protected boolean doesAyahSpanPages;
     protected int minPage;
     protected int maxPage;
+    protected double downloadSize;
 
     public String getDirectoryName() {
         return directoryName;
@@ -45,6 +46,10 @@ public abstract class MushafMetadata {
 
     public int getDanglingDualPage() {
         return danglingDualPage;
+    }
+
+    public double getDownloadSize() {
+        return downloadSize;
     }
 
     public boolean doesAyahSpanPages() {

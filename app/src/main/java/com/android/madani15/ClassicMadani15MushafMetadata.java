@@ -21,6 +21,7 @@ public class ClassicMadani15MushafMetadata extends MushafMetadata {
         maxPage = 604;
         danglingDualPage = -1;
         doesAyahSpanPages = false;
+        downloadSize = 93.2;
     }
 
     public NavigationData getNavigationData() {

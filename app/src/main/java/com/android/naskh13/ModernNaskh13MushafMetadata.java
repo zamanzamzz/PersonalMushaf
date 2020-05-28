@@ -21,6 +21,7 @@ public class ModernNaskh13MushafMetadata extends MushafMetadata {
         maxPage = 848;
         danglingDualPage = 423;
         doesAyahSpanPages = true;
+        downloadSize = 128.43;
     }
 
 

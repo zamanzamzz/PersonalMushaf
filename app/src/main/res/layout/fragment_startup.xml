@@ -15,9 +15,13 @@
 
     <ProgressBar
         android:layout_width="match_parent"
+        style="?android:attr/progressBarStyleHorizontal"
         android:layout_height="100dp"
+        android:minHeight="50dp"
         android:indeterminate="false"
         android:id="@+id/progress_horizontal"
+        android:progress="0"
+        android:max="100"
         android:layout_above="@id/fab"
         android:visibility="gone"
         />
@@ -26,12 +30,25 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/transparentDark"
-        android:layout_above="@id/mushafStyleDescription"
+        android:layout_above="@id/mushafDownloadSize"
         android:gravity="top|start"
         android:paddingTop="15dp"
         android:paddingStart="6dp"
         android:id="@+id/mushafStyleTitle"
         android:textSize="22sp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/transparentDark"
+        android:layout_above="@id/mushafStyleDescription"
+        android:gravity="top|start"
+        android:paddingTop="5dp"
+        android:paddingStart="8dp"
+        android:textStyle="italic"
+        android:id="@+id/mushafDownloadSize"
+        android:textSize="10sp"/>
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="70dp"
@@ -39,7 +56,7 @@
         android:background="@color/transparentDark"
         android:gravity="top|start"
         android:layout_alignBottom="@+id/page1"
-        android:paddingTop="8dp"
+        android:paddingTop="3dp"
         android:paddingBottom="15dp"
         android:paddingStart="6dp"
         android:id="@+id/mushafStyleDescription"
