@@ -1,4 +1,4 @@
-package com.android.personalmushaf.startup;
+package com.android.personalmushaf.mushafselector;
 
 import android.os.Bundle;
 
@@ -12,7 +12,7 @@ import com.android.personalmushaf.R;
 import com.android.personalmushaf.mushafmetadata.MushafMetadataFactory;
 import com.android.personalmushaf.navigation.ViewPagerAdapter;
 
-public class StartupMushafStyleActivity extends AppCompatActivity {
+public class MushafStyleActivity extends AppCompatActivity {
     private boolean fromSettings;
 
     @Override
@@ -29,7 +29,7 @@ public class StartupMushafStyleActivity extends AppCompatActivity {
 
         viewPager.setClipToPadding(false);
 
-        viewPager.setPadding(200,100,200,200);
+        viewPager.setPadding(120,0,120,0);
 
         viewPager.setPageMargin(100);
 
@@ -43,7 +43,7 @@ public class StartupMushafStyleActivity extends AppCompatActivity {
             arguments = new Bundle();
             arguments.putInt("mushaf", MushafMetadataFactory.mushafStructure[mushafType][i]);
             arguments.putBoolean("from_settings", fromSettings);
-            fragment = new StartupFragment();
+            fragment = new MushafStyleFragment();
             fragment.setArguments(arguments);
             adapter.addFragment(fragment, "");
         }

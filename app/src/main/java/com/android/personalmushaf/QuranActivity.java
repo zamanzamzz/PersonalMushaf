@@ -24,6 +24,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.android.personalmushaf.mushafmetadata.MushafMetadata;
 import com.android.personalmushaf.quranpage.QuranPageAdapter;
+import com.android.personalmushaf.util.GlyphsHighlighter;
 import com.duolingo.open.rtlviewpager.RtlViewPager;
 
 import java.util.Observable;

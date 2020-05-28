@@ -3,13 +3,13 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center"
-    tools:context=".startup.StartupMushafTypeActivity"
+    tools:context=".mushafselector.MushafTypeActivity"
     android:orientation="vertical">
 
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:scaleType="centerCrop"
         android:id="@+id/page1"
         />
 
@@ -38,7 +38,7 @@
         android:textColor="@android:color/darker_gray"
         android:background="@color/transparentDark"
         android:gravity="top|start"
-        android:layout_alignParentBottom="true"
+        android:layout_alignBottom="@+id/page1"
         android:paddingTop="8dp"
         android:paddingBottom="15dp"
         android:paddingStart="6dp"

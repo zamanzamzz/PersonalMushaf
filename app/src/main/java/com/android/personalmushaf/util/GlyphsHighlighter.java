@@ -1,4 +1,4 @@
-package com.android.personalmushaf;
+package com.android.personalmushaf.util;
 
 import androidx.viewpager.widget.ViewPager;
 

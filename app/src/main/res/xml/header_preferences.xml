@@ -17,39 +17,55 @@
 <androidx.preference.PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <Preference
-        app:key="mushaf"
-        app:title="@string/mushaf_title"
-        app:summary="summary here"
-        app:icon="@drawable/ic_book_white_24dp" >
-        <intent
-            android:action="android.intent.action.VIEW"
-            android:targetPackage="com.android.personalmushaf"
-            android:targetClass="com.android.personalmushaf.startup.StartupMushafTypeActivity"
-            >
-            <extra android:name="from_settings" android:value="true" />
-        </intent>
-    </Preference>
+    <PreferenceCategory
+        android:key="general_category"
+        android:title="General"
+        android:layout="@layout/preferences_category">
+        <Preference
+            app:key="mushaf"
+            app:title="@string/mushaf_title"
+            app:summary="summary here"
+            app:icon="@drawable/ic_book_white_24dp" >
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:targetPackage="com.android.personalmushaf"
+                android:targetClass="com.android.personalmushaf.mushafselector.MushafTypeActivity"
+                >
+                <extra android:name="from_settings" android:value="true" />
+            </intent>
+        </Preference>
+    </PreferenceCategory>
 
-    <ListPreference
-        app:defaultValue="0"
-        app:entries="@array/landmark_system_entries"
-        app:entryValues="@array/landmark_system_values"
-        app:key="landmark"
-        app:title="Landmark System"
-        app:useSimpleSummaryProvider="true" />
+    <PreferenceCategory
+        android:key="navigation_category"
+        android:title="Navigation"
+        android:layout="@layout/preferences_category">
 
-    <SwitchPreferenceCompat
-        app:key="force_dual_page"
-        app:title="Force Dual Page Mode" />
+        <ListPreference
+            app:defaultValue="0"
+            app:entries="@array/landmark_system_entries"
+            app:entryValues="@array/landmark_system_values"
+            app:key="landmark"
+            app:title="Landmark System"
+            app:useSimpleSummaryProvider="true" />
 
-    <SwitchPreferenceCompat
-        app:key="smoothpageturn"
-        app:title="Smooth Volume Key Navigation" />
+        <SwitchPreferenceCompat
+            app:key="force_dual_page"
+            app:title="Force Dual Page Mode" />
 
-    <SwitchPreferenceCompat
-        app:key="debugmodeswitch"
-        app:title="Set Debug Mode" />
+        <SwitchPreferenceCompat
+            app:key="smoothpageturn"
+            app:title="Smooth Volume Key Navigation" />
 
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:key="advanced_category"
+        android:title="Advanced"
+        android:layout="@layout/preferences_category">
+        <SwitchPreferenceCompat
+            app:key="debugmodeswitch"
+            app:title="Set Debug Mode" />
+    </PreferenceCategory>
 
 </androidx.preference.PreferenceScreen>

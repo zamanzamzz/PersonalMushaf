@@ -31,17 +31,23 @@
             android:taskAffinity=".navigation">
         </activity>
         <activity
-            android:name="com.android.personalmushaf.startup.StartupMushafTypeActivity"
-            android:taskAffinity=".startup">
+            android:name="com.android.personalmushaf.StartupActivity"
+            android:taskAffinity=".startup"
+            android:theme="@style/AppTheme.Launcher">
             <intent-filter>
                 <category android:name="android.intent.category.LAUNCHER" />
                 <action android:name="android.intent.action.MAIN" />
             </intent-filter>
         </activity>
         <activity
-            android:name="com.android.personalmushaf.startup.StartupMushafStyleActivity"
+            android:name="com.android.personalmushaf.mushafselector.MushafTypeActivity"
             android:taskAffinity=".startup"
-            android:theme="@style/AppTheme.NoActionBar.FullScreen">
+            android:theme="@style/AppTheme.MushafType">
+        </activity>
+        <activity
+            android:name="com.android.personalmushaf.mushafselector.MushafStyleActivity"
+            android:taskAffinity=".startup"
+            android:theme="@style/AppTheme.MushafType">
         </activity>
     </application>
 

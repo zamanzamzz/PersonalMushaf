@@ -1,8 +1,7 @@
-package com.android.personalmushaf.startup;
+package com.android.personalmushaf.mushafselector;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,8 +22,6 @@ import com.android.personalmushaf.mushafmetadata.MushafMetadata;
 import com.android.personalmushaf.mushafmetadata.MushafMetadataFactory;
 import com.android.personalmushaf.navigation.NavigationActivity;
 import com.android.personalmushaf.util.FileUtils;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
@@ -34,9 +31,9 @@ import com.google.firebase.storage.StorageReference;
 import java.io.File;
 import java.io.IOException;
 
-public class StartupFragment extends Fragment {
+public class MushafStyleFragment extends Fragment {
     private boolean fromSettings;
-    public StartupFragment() {
+    public MushafStyleFragment() {
     }
 
     @Override

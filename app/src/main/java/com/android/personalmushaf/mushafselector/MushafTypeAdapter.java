@@ -1,4 +1,4 @@
-package com.android.personalmushaf.startup;
+package com.android.personalmushaf.mushafselector;
 
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -51,7 +51,7 @@ public class MushafTypeAdapter extends RecyclerView.Adapter<MushafTypeAdapter.Mu
             rippleView.setRippleDuration(75);
             rippleView.setFrameRate(10);
             ((RippleView) v).setOnRippleCompleteListener((r -> {
-                Intent chooseMushafStyle = new Intent(r.getContext(), StartupMushafStyleActivity.class);
+                Intent chooseMushafStyle = new Intent(r.getContext(), MushafStyleActivity.class);
                 chooseMushafStyle.putExtra("mushaf_type", position);
                 chooseMushafStyle.putExtra("from_settings", fromSettings);
                 r.getContext().startActivity(chooseMushafStyle);

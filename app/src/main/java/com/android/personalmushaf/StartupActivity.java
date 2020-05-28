@@ -1,14 +1,11 @@
-package com.android.personalmushaf.startup;
+package com.android.personalmushaf;
 
 import android.Manifest;
 import android.app.Activity;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.view.Window;
-import android.view.WindowManager;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
@@ -16,18 +13,16 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.preference.PreferenceManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.personalmushaf.QuranSettings;
 import com.android.personalmushaf.R;
+import com.android.personalmushaf.mushafselector.MushafTypeActivity;
 import com.android.personalmushaf.navigation.NavigationActivity;
-import com.android.personalmushaf.navigation.tabs.juztab.JuzAdapter;
 
 import org.jetbrains.annotations.NotNull;
 
 
-public class StartupMushafTypeActivity extends AppCompatActivity {
+public class StartupActivity extends AppCompatActivity {
     private static final int  REQUEST_PERMISSION_CODE = 1111;
 
     @Override
@@ -36,7 +31,7 @@ public class StartupMushafTypeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_mushaftype);
 
         if (checkPermission())
-            setMushafType();
+            checkDataFiles();
     }
 
     @Override
@@ -44,21 +39,12 @@ public class StartupMushafTypeActivity extends AppCompatActivity {
         super.onResume();
     }
 
-    private void setMushafType() {
+    private void checkDataFiles() {
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
 
-        boolean fromSettings = getIntent().getBooleanExtra("from_settings", false);
-
-        if(fromSettings || !isAnyMushafAvailable() || pref.getBoolean("firststart", true)){
-
-            RecyclerView recyclerView = findViewById(R.id.mushaf_type_recyclerview);
-
-            recyclerView.setHasFixedSize(true);
-            LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-            MushafTypeAdapter adapter = new MushafTypeAdapter(fromSettings);
-
-            recyclerView.setAdapter(adapter);
-            recyclerView.setLayoutManager(layoutManager);
+        if(!isAnyMushafAvailable() || pref.getBoolean("firststart", true)){
+            startActivity(new Intent(this, MushafTypeActivity.class));
+            finish();
         } else {
             startActivity(new Intent(this, NavigationActivity.class));
             finish();
@@ -135,7 +121,7 @@ public class StartupMushafTypeActivity extends AppCompatActivity {
                                         == PackageManager.PERMISSION_GRANTED
                                 )
                 ){
-                    setMushafType();
+                    checkDataFiles();
                 } else {
                     checkPermission();
                 }
