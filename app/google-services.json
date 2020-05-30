@@ -1,34 +1,34 @@
 {
   "project_info": {
-    "project_number": "265877864272",
-    "firebase_url": "https://personal-mushaf.firebaseio.com",
-    "project_id": "personal-mushaf",
-    "storage_bucket": "personal-mushaf.appspot.com"
+    "project_number": "799568141807",
+    "firebase_url": "https://personal-mushaf-4321d.firebaseio.com",
+    "project_id": "personal-mushaf-4321d",
+    "storage_bucket": "personal-mushaf-4321d.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:265877864272:android:4a4b35884d7e96a9313655",
+        "mobilesdk_app_id": "1:799568141807:android:f1a041ed1570d98261ea1a",
         "android_client_info": {
-          "package_name": "com.android.personalmushaf"
+          "package_name": "com.ammanz.personalmushaf"
         }
       },
       "oauth_client": [
         {
-          "client_id": "265877864272-g280lp2ljqfcu6hge852obq3njucupjb.apps.googleusercontent.com",
+          "client_id": "799568141807-3p552u4hmin98s6it3derkjuuk7scra7.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBJusOpT1nmnzcOlgQTXWO7m5TqcJx-QZE"
+          "current_key": "AIzaSyDcnmM1Vmbv3eAuh0WkRykDapvqq6XORWM"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "265877864272-g280lp2ljqfcu6hge852obq3njucupjb.apps.googleusercontent.com",
+              "client_id": "799568141807-3p552u4hmin98s6it3derkjuuk7scra7.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

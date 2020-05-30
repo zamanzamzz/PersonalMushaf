@@ -10,7 +10,7 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".QuranActivity"
+        tools:context="com.android.personalmushaf.com.ammanz.personalmushaf.QuranActivity"
         android:orientation="vertical">
 
         <com.duolingo.open.rtlviewpager.RtlViewPager

@@ -5,7 +5,7 @@ apply plugin: 'kotlin-android-extensions'
 android {
     compileSdkVersion 29
     defaultConfig {
-        applicationId "com.android.personalmushaf"
+        applicationId 'com.ammanz.personalmushaf'
         minSdkVersion 24
         targetSdkVersion 29
         versionCode 1
@@ -27,7 +27,7 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'com.google.android.material:material:1.2.0-alpha06'
+    implementation 'com.google.android.material:material:1.2.0-beta01'
     implementation 'com.google.android.play:core:1.7.3'
     implementation 'com.google.firebase:firebase-analytics:17.4.2'
     implementation 'com.google.firebase:firebase-storage:19.1.1'
@@ -36,8 +36,8 @@ dependencies {
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.preference:preference:1.1.1'
     testImplementation 'junit:junit:4.13'
-    androidTestImplementation 'androidx.test:runner:1.3.0-beta02'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0-beta02'
+    androidTestImplementation 'androidx.test:runner:1.3.0-rc01'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0-rc01'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'io.reactivex.rxjava3:rxandroid:3.0.0'
     implementation 'io.reactivex.rxjava3:rxjava:3.0.4'

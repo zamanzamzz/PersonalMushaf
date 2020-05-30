@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:dist="http://schemas.android.com/apk/distribution"
-    package="com.android.personalmushaf">
+    package="com.ammanz.personalmushaf">
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
@@ -18,20 +18,20 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme.Launcher">
         <activity
-            android:name="com.android.personalmushaf.SettingsActivity"
+            android:name="com.ammanz.personalmushaf.SettingsActivity"
             android:label="@string/title_activity_settings">
         </activity>
         <activity
-            android:name="com.android.personalmushaf.QuranActivity"
+            android:name="com.ammanz.personalmushaf.QuranActivity"
             android:taskAffinity=".main"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:theme="@style/AppTheme.NoActionBar.FullScreen"/>
         <activity
-            android:name="com.android.personalmushaf.navigation.NavigationActivity"
+            android:name="com.ammanz.personalmushaf.navigation.NavigationActivity"
             android:taskAffinity=".navigation">
         </activity>
         <activity
-            android:name="com.android.personalmushaf.StartupActivity"
+            android:name="com.ammanz.personalmushaf.StartupActivity"
             android:taskAffinity=".startup"
             android:theme="@style/AppTheme.Launcher">
             <intent-filter>
@@ -40,12 +40,12 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.android.personalmushaf.mushafselector.MushafTypeActivity"
+            android:name="com.ammanz.personalmushaf.mushafselector.MushafTypeActivity"
             android:taskAffinity=".startup"
             android:theme="@style/AppTheme.MushafType">
         </activity>
         <activity
-            android:name="com.android.personalmushaf.mushafselector.MushafStyleActivity"
+            android:name="com.ammanz.personalmushaf.mushafselector.MushafStyleActivity"
             android:taskAffinity=".startup"
             android:theme="@style/AppTheme.MushafType">
         </activity>
