@@ -1,1 +1,4 @@
 include ':app'
+include ':classicmadani15assets'
+include ':classicnaskh15assets'
+include ':modernnaskh13assets'

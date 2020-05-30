@@ -77,15 +77,6 @@ public class SettingsActivity extends AppCompatActivity implements
         return true;
     }
 
-    @Override
-    public void onBackPressed() {
-        Intent goToNavigation = new Intent(this, NavigationActivity.class);
-
-        startActivity(goToNavigation);
-
-        finish();
-    }
-
     public static class HeaderFragment extends PreferenceFragmentCompat {
         private Preference mushaf;
 

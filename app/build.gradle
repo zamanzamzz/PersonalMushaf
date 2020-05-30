@@ -1,13 +1,13 @@
 apply plugin: 'com.android.application'
-apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
 
 android {
     compileSdkVersion 29
     defaultConfig {
         applicationId "com.android.personalmushaf"
         minSdkVersion 24
-        targetSdkVersion 27
+        targetSdkVersion 29
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -18,6 +18,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+    assetPacks = [":classicmadani15assets", ":classicnaskh15assets", ":modernnaskh13assets"]
     compileOptions {
         sourceCompatibility = 1.8
         targetCompatibility = 1.8
@@ -27,9 +28,9 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'com.google.android.material:material:1.2.0-alpha06'
+    implementation 'com.google.android.play:core:1.7.3'
     implementation 'com.google.firebase:firebase-analytics:17.4.2'
     implementation 'com.google.firebase:firebase-storage:19.1.1'
-    implementation "androidx.viewpager2:viewpager2:1.0.0"
     implementation 'com.duolingo.open:rtl-viewpager:2.0.0'
     implementation 'com.patrickpissurno:ripple-effect:1.3.1'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
