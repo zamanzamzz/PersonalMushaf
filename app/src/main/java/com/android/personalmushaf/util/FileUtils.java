@@ -1,7 +1,11 @@
 package com.android.personalmushaf.util;
 
+import android.app.ProgressDialog;
 import android.os.Environment;
 import android.widget.ProgressBar;
+
+import com.android.personalmushaf.QuranSettings;
+import com.android.personalmushaf.mushafmetadata.MushafMetadata;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -21,35 +25,33 @@ public class FileUtils {
         return dataDirectory.exists() && dataDirectory.isDirectory();
     }
 
-    public static void unzip(File zipFile, File targetDirectory, ProgressBar progressBar) throws IOException {
-        progressBar.setMax(new ZipFile(zipFile).size());
-        ZipInputStream zis = new ZipInputStream(
+    public static void unzip(File zipFile, File targetDirectory) throws IOException {
+        ZipInputStream zipInputStream = new ZipInputStream(
                 new BufferedInputStream(new FileInputStream(zipFile)));
 
         try {
-            ZipEntry ze;
+            ZipEntry zipEntry;
             int count;
             byte[] buffer = new byte[8192];
-            while ((ze = zis.getNextEntry()) != null) {
-                File file = new File(targetDirectory, ze.getName());
-                File dir = ze.isDirectory() ? file : file.getParentFile();
+            while ((zipEntry = zipInputStream.getNextEntry()) != null) {
+                File file = new File(targetDirectory, zipEntry.getName());
+                File dir = zipEntry.isDirectory() ? file : file.getParentFile();
                 if (!dir.isDirectory() && !dir.mkdirs())
                     throw new FileNotFoundException("Failed to ensure directory: " +
                             dir.getAbsolutePath());
-                if (ze.isDirectory())
+                if (zipEntry.isDirectory())
                     continue;
-                FileOutputStream fout = new FileOutputStream(file);
+                FileOutputStream fileOutputStream = new FileOutputStream(file);
                 try {
-                    while ((count = zis.read(buffer)) != -1) {
-                        progressBar.incrementProgressBy(count);
-                        fout.write(buffer, 0, count);
+                    while ((count = zipInputStream.read(buffer)) != -1) {
+                        fileOutputStream.write(buffer, 0, count);
                     }
                 } finally {
-                    fout.close();
+                    fileOutputStream.close();
                 }
             }
         } finally {
-            zis.close();
+            zipInputStream.close();
         }
     }
 

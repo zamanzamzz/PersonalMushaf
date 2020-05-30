@@ -80,6 +80,10 @@ public class QuranSettings {
         mushafMetadata = MushafMetadataFactory.getMushafMetadata(mushaf);
     }
 
+    public void setMushafMetadata(MushafMetadata mushafMetadata) {
+        this.mushafMetadata = mushafMetadata;
+    }
+
 
 
     public Boolean getIsForceDualPage(Context context) {

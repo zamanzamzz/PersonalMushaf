@@ -8,10 +8,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
@@ -41,26 +38,17 @@ public class MushafStyleFragment extends Fragment {
     private AlertDialog downloadConfirmationDialog;
     private AlertDialog.Builder builder;
     private MushafMetadata mushafMetadata;
+    private int mushafIndex;
 
-    private ProgressDialog progressDialog;
+    private ProgressDialog downloadProgressDialog;
+    private ProgressDialog unzippingProgressDialog;
 
     private DialogInterface.OnClickListener dialogClickListener = (dialog, which) -> {
         switch (which){
             case DialogInterface.BUTTON_POSITIVE:
                 downloadConfirmationDialog.hide();
-                setupProgressDialog();
-                Observable.fromCallable(() -> {
-                    int max = (int) mushafMetadata.getDownloadSize();
-                    int currentProgress = 0;
-                    while (currentProgress < max) {
-                        currentProgress += 1;
-                        progressDialog.incrementProgressBy(1);
-                        Thread.sleep(200);
-                    }
-                    return true;
-                }).subscribeOn(Schedulers.newThread()).observeOn(AndroidSchedulers.mainThread()).subscribe((result) -> {
-                    // progressDialog.hide();
-                });
+                downloadProgressDialog.show();
+                downloadAndUnpackZip();
                 break;
 
             case DialogInterface.BUTTON_NEGATIVE:
@@ -77,11 +65,15 @@ public class MushafStyleFragment extends Fragment {
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_startup, container, false);
 
-        final int mushafIndex = getArguments().getInt("mushaf", QuranSettings.CLASSIC_MADANI_15_LINE);
+        mushafIndex = getArguments().getInt("mushaf", QuranSettings.CLASSIC_MADANI_15_LINE);
 
         fromSettings = getArguments().getBoolean("from_settings", false);
 
         mushafMetadata = MushafMetadataFactory.getMushafMetadata(mushafIndex);
+
+        setupProgressDialogForDownload();
+
+        setupProgressDialogForUnzipping();
 
         ImageView imageView = v.findViewById(R.id.page1);
         TextView title = v.findViewById(R.id.mushafStyleTitle);
@@ -99,7 +91,7 @@ public class MushafStyleFragment extends Fragment {
         if (QuranSettings.getInstance().isMushafAvailable(mushafIndex)) {
             fab.setImageResource(R.drawable.ic_check_black_24dp);
             fab.setOnClickListener(v1 -> {
-                updateQuranSettings(mushafIndex);
+                updateQuranSettings();
                 if (!fromSettings)
                     startActivity(new Intent(getContext(), NavigationActivity.class));
                 getActivity().finishAffinity();
@@ -127,46 +119,66 @@ public class MushafStyleFragment extends Fragment {
         downloadConfirmationDialog.show();
     }
 
-    private void setupProgressDialog() {
-        progressDialog = new ProgressDialog(getContext(), android.app.AlertDialog.THEME_DEVICE_DEFAULT_DARK);
-        progressDialog.setCancelable(false);
-        progressDialog.setMessage("Downloading " + mushafMetadata.getName());
-        progressDialog.setMax(100);
-        progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-        progressDialog.setIndeterminate(false);
-        progressDialog.show();
+    private void setupProgressDialogForDownload() {
+        downloadProgressDialog = new ProgressDialog(getContext(), android.app.AlertDialog.THEME_DEVICE_DEFAULT_DARK);
+        downloadProgressDialog.setCancelable(false);
+        downloadProgressDialog.setMessage("Downloading " + mushafMetadata.getName());
+        downloadProgressDialog.setMax(100);
+        downloadProgressDialog.setProgress(0);
+        downloadProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+        downloadProgressDialog.setIndeterminate(false);
     }
 
-    private void downloadAndUnpackZip(String mushafDirectory, final int mushafIndex, final ProgressBar progressBar) {
-        StorageReference pathReference = getZipStorageReference(mushafDirectory);
+    private void setupProgressDialogForUnzipping() {
+        unzippingProgressDialog = new ProgressDialog(getContext(), android.app.AlertDialog.THEME_DEVICE_DEFAULT_DARK);
+        unzippingProgressDialog.setCancelable(false);
+        unzippingProgressDialog.setMessage("Processing files");
+        unzippingProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+        unzippingProgressDialog.setIndeterminate(true);
+    }
+
+    private void downloadAndUnpackZip() {
+        StorageReference pathReference = getZipStorageReference();
         final File targetDir = new File(FileUtils.ASSETSDIRECTORY);
         FileUtils.validateDirectory(targetDir);
-        final File zipFile = new File(FileUtils.ASSETSDIRECTORY + "/" + mushafDirectory + ".zip");
+        final File zipFile = new File(FileUtils.ASSETSDIRECTORY + "/" + mushafMetadata.getDirectoryName() + ".zip");
         FileDownloadTask task = pathReference.getFile(zipFile);
         task.addOnProgressListener(
-                taskSnapshot -> progressBar.setProgress((int) taskSnapshot.getBytesTransferred()));
+                taskSnapshot -> {
+                        int prevProgress = downloadProgressDialog.getProgress();
+                        int currentProgress = (int) ((taskSnapshot.getBytesTransferred() / (mushafMetadata.getDownloadSize() * Math.pow(10.0, 6.0))) * 100.0);
+                        downloadProgressDialog.incrementProgressBy(currentProgress - prevProgress);
+                });
         task.addOnSuccessListener(taskSnapshot -> {
-            try {
-                FileUtils.unzip(zipFile, targetDir, progressBar);
-            } catch (IOException e) {
-            } finally {
-                updateQuranSettings(mushafIndex);
-                zipFile.delete();
-                if (!fromSettings)
-                    startActivity(new Intent(getContext(), NavigationActivity.class));
-                getActivity().finishAffinity();
-            }
-        });
-        task.addOnFailureListener(e -> {});
+                downloadProgressDialog.hide();
+                unzippingProgressDialog.show();
+                Observable.fromCallable(() -> {
+                    try {
+                        FileUtils.unzip(zipFile, targetDir);
+                        zipFile.delete();
+                    } catch (IOException e) {
+                        return false;
+                    }
+                    return true;
+                }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe((result) -> {
+                    if (result) {
+                        updateQuranSettings();
+                        unzippingProgressDialog.hide();
+                        if (!fromSettings)
+                            startActivity(new Intent(getContext(), NavigationActivity.class));
+                        getActivity().finishAffinity();
+                    }
+                });
+            });
     }
 
-    private StorageReference getZipStorageReference(String mushafDirectory) {
+    private StorageReference getZipStorageReference() {
         return FirebaseStorage.getInstance().getReference()
-                .child(mushafDirectory + ".zip");
+                .child(mushafMetadata.getDirectoryName() + ".zip");
     }
 
 
-    private void updateQuranSettings(int mushafIndex) {
+    private void updateQuranSettings() {
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getContext());
         pref.edit().putBoolean("firststart", false).apply();
         pref.edit().putString("mushaf", Integer.toString(mushafIndex)).apply();
