@@ -10,9 +10,9 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.ammanz.personalmushaf.mushafmetadata.MushafMetadata;
 import com.ammanz.personalmushaf.QuranSettings;
 import com.ammanz.personalmushaf.R;
+import com.ammanz.personalmushaf.mushafmetadata.MushafMetadata;
 
 
 /**

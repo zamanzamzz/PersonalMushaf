@@ -10,9 +10,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.andexert.library.RippleView;
 import com.ammanz.personalmushaf.QuranActivity;
 import com.ammanz.personalmushaf.R;
+import com.andexert.library.RippleView;
 
 public class SurahAdapter extends RecyclerView.Adapter<SurahAdapter.SurahViewHolder> {
     private int[][] surahInfo;

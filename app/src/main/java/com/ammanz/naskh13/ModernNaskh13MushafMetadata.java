@@ -4,13 +4,14 @@ import com.ammanz.personalmushaf.QuranSettings;
 import com.ammanz.personalmushaf.R;
 import com.ammanz.personalmushaf.mushafmetadata.MushafMetadata;
 import com.ammanz.personalmushaf.navigation.NavigationData;
-import com.ammanz.personalmushaf.util.FileUtils;
 
 public class ModernNaskh13MushafMetadata extends MushafMetadata {
 
     public ModernNaskh13MushafMetadata() {
-        directoryName = "modern_naskh_13_line";
-        databasePath = FileUtils.ASSETSDIRECTORY + "/" + directoryName + "/databases/ayahinfo_modernnaskh13line.db";
+        assetName = "modernnaskh13assets";
+        assetPath = QuranSettings.getInstance().getMushafLocation(QuranSettings.MODERN_NASKH_13_LINE);
+        id = "modernnaskh13";
+        databasePath = assetPath + "/databases/ayahinfo_modernnaskh13line.db";
         name = "Modern 13 Line Naskh Mushaf";
         description = "Popular with huffadh in the Indian Subcontinent and South Africa.";
         previewDrawableIDs = new int[2];

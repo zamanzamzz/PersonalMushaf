@@ -5,8 +5,8 @@ import com.ammanz.personalmushaf.util.FileUtils;
 public class ClassicNaskh13MushafMetadata extends ModernNaskh13MushafMetadata {
 
     public ClassicNaskh13MushafMetadata() {
-        directoryName = "classic_naskh_13_line";
-        databasePath = FileUtils.ASSETSDIRECTORY + "/" + directoryName + "/databases/ayahinfo_classicnaskh13line.db";
+        assetName = "classic_naskh_13_line";
+        databasePath = FileUtils.ASSETSDIRECTORY + "/" + assetName + "/databases/ayahinfo_classicnaskh13line.db";
         name = "Classic 13 Line Naskh Mushaf";
         description = "Popular with huffadh in the Indian Subcontinent and South Africa.";
         previewDrawableIDs = new int[2];

@@ -8,17 +8,11 @@ import androidx.preference.PreferenceManager;
 import com.ammanz.personalmushaf.mushafmetadata.MushafMetadata;
 import com.ammanz.personalmushaf.mushafmetadata.MushafMetadataFactory;
 import com.ammanz.personalmushaf.util.FileUtils;
+import com.google.android.play.core.assetpacks.AssetPackLocation;
 import com.google.android.play.core.assetpacks.AssetPackManager;
 import com.google.android.play.core.assetpacks.AssetPackManagerFactory;
-import com.google.android.play.core.assetpacks.AssetPackState;
-import com.google.android.play.core.assetpacks.AssetPackStates;
-import com.google.android.play.core.assetpacks.model.AssetPackStatus;
-import com.google.android.play.core.tasks.Task;
 
 import java.io.File;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
 
 public class QuranSettings {
     public static final int MODERN_NASKH_13_LINE = 0;
@@ -28,6 +22,7 @@ public class QuranSettings {
     public static final int RUKU = 1;
     public static final int HIZB = 2;
     private static boolean[] availableMushafs = {false, false, false};
+    private String[] packNamesArray = {"modernnaskh13assets", "classicnaskh15assets", "classicmadani15assets"};
     private AssetPackManager assetPackManager;
     private static QuranSettings quranSettings;
     private MushafMetadata mushafMetadata;
@@ -62,6 +57,11 @@ public class QuranSettings {
 
     public void setMushafVersion(Integer mushafVersion) {
         this.mushafVersion = mushafVersion;
+    }
+
+    public String getMushafLocation(int mushafVersion) {
+        AssetPackLocation location = assetPackManager.getPackLocation(packNamesArray[mushafVersion]);
+        return location == null ? null : location.assetsPath();
     }
 
     public int getLandMarkSystem(Context context) {
@@ -103,13 +103,14 @@ public class QuranSettings {
         return isForceDualPage;
     }
 
-    private void initialAvailableMushafs(Context context) {
+    public void initializeAvailableMushafs(Context context) {
         assetPackManager = AssetPackManagerFactory.getInstance(context);
         for (int i = 0; i < availableMushafs.length; i++) {
             availableMushafs[i] = false;
         }
     }
-    private void setAvailableMushaf(int mushaf, boolean status) {
+
+    public void setAvailableMushaf(int mushaf, boolean status) {
         availableMushafs[mushaf] = status;
     }
 
@@ -118,19 +119,11 @@ public class QuranSettings {
     }
 
     public void updateAvailableMushafs(Context context) {
-        getInstance().initialAvailableMushafs(context);
-        String[] packNamesArray = {"modernnaskh13line", "classicnaskh15line", "classicmadani15line"};
-        List<String> packNames = Arrays.asList(packNamesArray);
-        Task<AssetPackStates> assetPackStatesTask = assetPackManager.getPackStates(packNames);
-        assetPackStatesTask.addOnSuccessListener(result -> {
-            Map<String, AssetPackState> states = result.packStates();
-            for (int i = MODERN_NASKH_13_LINE; i <= CLASSIC_MADANI_15_LINE; i++) {
-                if (states.get(packNamesArray[i]).status() == AssetPackStatus.COMPLETED)
-                    availableMushafs[i] = true;
-            }
-        }).addOnFailureListener(result -> {
-
-        });
+        initializeAvailableMushafs(context);
+        for (int i = MODERN_NASKH_13_LINE; i <= CLASSIC_MADANI_15_LINE; i++) {
+            if (assetPackManager.getPackLocation(packNamesArray[i]) != null)
+                setAvailableMushaf(i, true);
+        }
     }
 
     public boolean isAnyMushafAvailable() {
@@ -148,7 +141,7 @@ public class QuranSettings {
         File currentMushafDirectory;
         File currentImagesDirectory;
 
-        getInstance().initialAvailableMushafs(context);
+        initializeAvailableMushafs(context);
 
         boolean rv = false;
         for (int i = MODERN_NASKH_13_LINE; i <= CLASSIC_NASKH_15_LINE + 1; i++) {

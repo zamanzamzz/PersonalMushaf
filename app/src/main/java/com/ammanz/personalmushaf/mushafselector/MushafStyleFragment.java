@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,23 +16,25 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.preference.PreferenceManager;
 
+import com.ammanz.personalmushaf.QuranSettings;
+import com.ammanz.personalmushaf.R;
 import com.ammanz.personalmushaf.mushafmetadata.MushafMetadata;
 import com.ammanz.personalmushaf.mushafmetadata.MushafMetadataFactory;
 import com.ammanz.personalmushaf.navigation.NavigationActivity;
-import com.ammanz.personalmushaf.QuranSettings;
-import com.ammanz.personalmushaf.R;
-import com.ammanz.personalmushaf.util.FileUtils;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.firebase.storage.FileDownloadTask;
+import com.google.android.play.core.assetpacks.AssetPackManager;
+import com.google.android.play.core.assetpacks.AssetPackManagerFactory;
+import com.google.android.play.core.assetpacks.AssetPackStateUpdateListener;
+import com.google.android.play.core.assetpacks.AssetPackStates;
+import com.google.android.play.core.assetpacks.model.AssetPackStatus;
+import com.google.android.play.core.tasks.Task;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
-import java.io.File;
-import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-import io.reactivex.rxjava3.core.Observable;
-import io.reactivex.rxjava3.schedulers.Schedulers;
+import static android.content.ContentValues.TAG;
 
 public class MushafStyleFragment extends Fragment {
     private boolean fromSettings;
@@ -42,6 +45,9 @@ public class MushafStyleFragment extends Fragment {
 
     private ProgressDialog downloadProgressDialog;
     private ProgressDialog unzippingProgressDialog;
+
+    private AssetPackStateUpdateListener assetPackStateUpdateListener;
+    private AssetPackManager assetPackManager;
 
     private DialogInterface.OnClickListener dialogClickListener = (dialog, which) -> {
         switch (which){
@@ -138,43 +144,18 @@ public class MushafStyleFragment extends Fragment {
     }
 
     private void downloadAndUnpackZip() {
-        StorageReference pathReference = getZipStorageReference();
-        final File targetDir = new File(FileUtils.ASSETSDIRECTORY);
-        FileUtils.validateDirectory(targetDir);
-        final File zipFile = new File(FileUtils.ASSETSDIRECTORY + "/" + mushafMetadata.getDirectoryName() + ".zip");
-        FileDownloadTask task = pathReference.getFile(zipFile);
-        task.addOnProgressListener(
-                taskSnapshot -> {
-                        int prevProgress = downloadProgressDialog.getProgress();
-                        int currentProgress = (int) ((taskSnapshot.getBytesTransferred() / (mushafMetadata.getDownloadSize() * Math.pow(10.0, 6.0))) * 100.0);
-                        downloadProgressDialog.incrementProgressBy(currentProgress - prevProgress);
-                });
-        task.addOnSuccessListener(taskSnapshot -> {
-                downloadProgressDialog.hide();
-                unzippingProgressDialog.show();
-                Observable.fromCallable(() -> {
-                    try {
-                        FileUtils.unzip(zipFile, targetDir);
-                        zipFile.delete();
-                    } catch (IOException e) {
-                        return false;
-                    }
-                    return true;
-                }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe((result) -> {
-                    if (result) {
-                        updateQuranSettings();
-                        unzippingProgressDialog.hide();
-                        if (!fromSettings)
-                            startActivity(new Intent(getContext(), NavigationActivity.class));
-                        getActivity().finishAffinity();
-                    }
-                });
-            });
+        setupAssetPackStateUpdateListener();
+        List<String> assetPackName = new ArrayList<>();
+        assetPackName.add(mushafMetadata.getAssetName());
+        Task<AssetPackStates> task = assetPackManager.fetch(assetPackName);
+        task.addOnFailureListener(e -> {
+            System.out.println(e.getMessage());
+        });
     }
 
     private StorageReference getZipStorageReference() {
         return FirebaseStorage.getInstance().getReference()
-                .child(mushafMetadata.getDirectoryName() + ".zip");
+                .child(mushafMetadata.getAssetName() + ".zip");
     }
 
 
@@ -182,7 +163,62 @@ public class MushafStyleFragment extends Fragment {
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getContext());
         pref.edit().putBoolean("firststart", false).apply();
         pref.edit().putString("mushaf", Integer.toString(mushafIndex)).apply();
+        QuranSettings.getInstance().updateAvailableMushafs(getContext());
         QuranSettings.getInstance().setMushafVersion(mushafIndex);
         QuranSettings.getInstance().setMushafMetadata(mushafIndex);
+    }
+
+    private void setupAssetPackStateUpdateListener() {
+        assetPackManager = AssetPackManagerFactory.getInstance(getContext());
+        assetPackStateUpdateListener = assetPackState -> {
+            switch (assetPackState.status()) {
+                case AssetPackStatus.PENDING:
+                    Log.i(TAG, "Pending");
+                    break;
+
+                case AssetPackStatus.DOWNLOADING:
+                    int prevProgress = downloadProgressDialog.getProgress();
+                    long downloaded = assetPackState.bytesDownloaded();
+                    long totalSize = assetPackState.totalBytesToDownload();
+                    double percent = 100.0 * downloaded / totalSize;
+
+                    Log.i(TAG, "PercentDone=" + String.format("%.2f", percent));
+                    downloadProgressDialog.incrementProgressBy((int) (percent - prevProgress));
+                    break;
+
+                case AssetPackStatus.TRANSFERRING:
+                    // 100% downloaded and assets are being transferred.
+                    // Notify user to wait until transfer is complete.
+                    downloadProgressDialog.hide();
+                    unzippingProgressDialog.show();
+                    break;
+
+                case AssetPackStatus.COMPLETED:
+                    updateQuranSettings();
+                    unzippingProgressDialog.hide();
+                    assetPackManager.unregisterListener(assetPackStateUpdateListener);
+                    if (!fromSettings)
+                        startActivity(new Intent(getContext(), NavigationActivity.class));
+                    getActivity().finishAffinity();
+                    break;
+
+                case AssetPackStatus.FAILED:
+                    // Request failed. Notify user.
+                    Log.e(TAG, String.valueOf(assetPackState.errorCode()));
+                    break;
+
+                case AssetPackStatus.CANCELED:
+                    // Request canceled. Notify user.
+                    break;
+
+                case AssetPackStatus.WAITING_FOR_WIFI:
+                    break;
+
+                case AssetPackStatus.NOT_INSTALLED:
+                    // Asset pack is not downloaded yet.
+                    break;
+            }
+        };
+        assetPackManager.registerListener(assetPackStateUpdateListener);
     }
 }

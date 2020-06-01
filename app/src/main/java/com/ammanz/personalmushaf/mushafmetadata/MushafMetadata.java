@@ -3,7 +3,9 @@ package com.ammanz.personalmushaf.mushafmetadata;
 import com.ammanz.personalmushaf.navigation.NavigationData;
 
 public abstract class MushafMetadata {
-    protected String directoryName;
+    protected String assetName;
+    protected String assetPath;
+    protected String id;
     protected String databasePath;
     protected String name;
     protected String description;
@@ -16,8 +18,15 @@ public abstract class MushafMetadata {
     protected int maxPage;
     protected double downloadSize;
 
-    public String getDirectoryName() {
-        return directoryName;
+    public String getId() {
+        return id;
+    }
+    public String getAssetName() {
+        return assetName;
+    }
+
+    public String getAssetPath() {
+        return assetPath;
     }
 
     public String getDatabasePath() {

@@ -14,7 +14,6 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.preference.PreferenceManager;
 
-import com.ammanz.personalmushaf.R;
 import com.ammanz.personalmushaf.mushafselector.MushafTypeActivity;
 import com.ammanz.personalmushaf.navigation.NavigationActivity;
 
@@ -28,7 +27,7 @@ public class StartupActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mushaftype);
-
+        QuranSettings.getInstance().initializeAvailableMushafs(getApplicationContext());
         if (checkPermission())
             checkDataFiles();
     }

@@ -28,8 +28,8 @@
             app:icon="@drawable/ic_book_white_24dp" >
             <intent
                 android:action="android.intent.action.VIEW"
-                android:targetPackage="com.android.personalmushaf"
-                android:targetClass="com.android.personalmushaf.mushafselector.MushafTypeActivity"
+                android:targetPackage="com.ammanz.personalmushaf"
+                android:targetClass="com.ammanz.personalmushaf.mushafselector.MushafTypeActivity"
                 >
                 <extra android:name="from_settings" android:value="true" />
             </intent>

@@ -7,8 +7,8 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.andexert.library.RippleView;
 import com.ammanz.personalmushaf.R;
+import com.andexert.library.RippleView;
 
 public class MushafTypeAdapter extends RecyclerView.Adapter<MushafTypeAdapter.MushafViewHolder> {
     private String[] mushafTypes = {"13 Lines", "15 Lines"};

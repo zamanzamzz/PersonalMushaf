@@ -8,10 +8,10 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.andexert.library.RippleView;
 import com.ammanz.personalmushaf.QuranActivity;
 import com.ammanz.personalmushaf.R;
 import com.ammanz.personalmushaf.navigation.NavigationActivity;
+import com.andexert.library.RippleView;
 
 public class JuzAdapter extends RecyclerView.Adapter<JuzAdapter.JuzViewHolder> {
     private int[] juzPageNumbers;

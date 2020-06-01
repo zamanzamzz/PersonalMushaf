@@ -4,11 +4,12 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
-import com.ammanz.personalmushaf.mushafmetadata.MushafMetadata;
 import com.ammanz.personalmushaf.QuranActivity;
+import com.ammanz.personalmushaf.QuranSettings;
 import com.ammanz.personalmushaf.model.Ayah;
 import com.ammanz.personalmushaf.model.HighlightType;
 import com.ammanz.personalmushaf.model.PageData;
+import com.ammanz.personalmushaf.mushafmetadata.MushafMetadata;
 import com.ammanz.personalmushaf.util.FileUtils;
 
 public abstract class QuranPage extends Fragment {
@@ -31,7 +32,7 @@ public abstract class QuranPage extends Fragment {
     public abstract void unhighlightAyah(int sura, int ayah, HighlightType highlightType);
 
     protected String getPagePath(int pageNumber, MushafMetadata mushafMetadata) {
-        return FileUtils.ASSETSDIRECTORY + "/" + mushafMetadata.getDirectoryName() + "/images/pg_" + pageNumber + ".png";
+        return mushafMetadata.getAssetPath() + "/images/" + mushafMetadata.getId() + "_pg_" + pageNumber + ".png";
     }
 
     protected PageData getPageData(int pageNumber, MushafMetadata mushafMetadata) {

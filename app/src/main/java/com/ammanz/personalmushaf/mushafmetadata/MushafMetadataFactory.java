@@ -1,8 +1,8 @@
 package com.ammanz.personalmushaf.mushafmetadata;
 
+import com.ammanz.madani15.ClassicMadani15MushafMetadata;
 import com.ammanz.naskh13.ModernNaskh13MushafMetadata;
 import com.ammanz.naskh15.ClassicNaskh15MushafMetadata;
-import com.ammanz.madani15.ClassicMadani15MushafMetadata;
 import com.ammanz.personalmushaf.QuranSettings;
 
 public class MushafMetadataFactory {

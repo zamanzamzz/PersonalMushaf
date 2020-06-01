@@ -12,14 +12,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.viewpager.widget.ViewPager;
 
+import com.ammanz.personalmushaf.QuranSettings;
+import com.ammanz.personalmushaf.R;
+import com.ammanz.personalmushaf.SettingsActivity;
 import com.ammanz.personalmushaf.mushafmetadata.MushafMetadata;
 import com.ammanz.personalmushaf.navigation.tabs.juzquartertab.JuzQuarterFragment;
 import com.ammanz.personalmushaf.navigation.tabs.juztab.JuzFragment;
 import com.ammanz.personalmushaf.navigation.tabs.rukucontenttab.RukuContentFragment;
 import com.ammanz.personalmushaf.navigation.tabs.surahtab.SurahFragment;
-import com.ammanz.personalmushaf.QuranSettings;
-import com.ammanz.personalmushaf.R;
-import com.ammanz.personalmushaf.SettingsActivity;
 import com.google.android.material.tabs.TabLayout;
 
 public class NavigationActivity extends AppCompatActivity {

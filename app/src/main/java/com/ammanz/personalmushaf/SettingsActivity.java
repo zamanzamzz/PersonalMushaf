@@ -1,5 +1,6 @@
 package com.ammanz.personalmushaf;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.appcompat.app.ActionBar;
@@ -10,7 +11,7 @@ import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.SwitchPreferenceCompat;
 
-import com.ammanz.personalmushaf.R;
+import com.ammanz.personalmushaf.navigation.NavigationActivity;
 
 public class SettingsActivity extends AppCompatActivity implements
         PreferenceFragmentCompat.OnPreferenceStartFragmentCallback {
@@ -55,6 +56,15 @@ public class SettingsActivity extends AppCompatActivity implements
             return true;
         }
         return super.onSupportNavigateUp();
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent goToNavigation = new Intent(getApplicationContext(), NavigationActivity.class);
+
+        startActivity(goToNavigation);
+
+        finish();
     }
 
     @Override

@@ -8,12 +8,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.ammanz.personalmushaf.mushafmetadata.MushafMetadata;
 import com.ammanz.personalmushaf.QuranSettings;
 import com.ammanz.personalmushaf.R;
 import com.ammanz.personalmushaf.model.Ayah;
 import com.ammanz.personalmushaf.model.HighlightType;
 import com.ammanz.personalmushaf.model.PageData;
+import com.ammanz.personalmushaf.mushafmetadata.MushafMetadata;
 import com.ammanz.personalmushaf.util.ImageUtils;
 import com.ammanz.personalmushaf.widgets.HighlightingImageView;
 

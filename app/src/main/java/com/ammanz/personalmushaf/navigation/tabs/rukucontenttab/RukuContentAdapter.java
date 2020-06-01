@@ -9,9 +9,9 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.andexert.library.RippleView;
 import com.ammanz.personalmushaf.QuranActivity;
 import com.ammanz.personalmushaf.R;
+import com.andexert.library.RippleView;
 
 public class RukuContentAdapter extends RecyclerView.Adapter<RukuContentAdapter.JuzViewHolder> {
     private int[][] rukuInfo;

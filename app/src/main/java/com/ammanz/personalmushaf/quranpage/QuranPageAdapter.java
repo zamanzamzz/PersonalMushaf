@@ -8,10 +8,10 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 
-import com.ammanz.personalmushaf.mushafmetadata.MushafMetadata;
 import com.ammanz.personalmushaf.QuranActivity;
 import com.ammanz.personalmushaf.QuranSettings;
 import com.ammanz.personalmushaf.model.HighlightType;
+import com.ammanz.personalmushaf.mushafmetadata.MushafMetadata;
 
 public class QuranPageAdapter extends FragmentStatePagerAdapter {
 

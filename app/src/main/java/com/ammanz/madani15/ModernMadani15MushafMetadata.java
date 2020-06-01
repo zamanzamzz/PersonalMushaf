@@ -5,8 +5,8 @@ import com.ammanz.personalmushaf.util.FileUtils;
 public class ModernMadani15MushafMetadata extends ClassicMadani15MushafMetadata {
 
     public ModernMadani15MushafMetadata() {
-        directoryName = "modern_madani_15_line";
-        databasePath = FileUtils.ASSETSDIRECTORY + "/" + directoryName + "/databases/ayahinfo_modernmadani15line.db";
+        assetName = "modern_madani_15_line";
+        databasePath = FileUtils.ASSETSDIRECTORY + "/" + assetName + "/databases/ayahinfo_modernmadani15line.db";
         name = "Modern 15 Line Madani Mushaf";
         description = "The modern standard mushaf from Saudi Arabia.";
         previewDrawableIDs = new int[2];
