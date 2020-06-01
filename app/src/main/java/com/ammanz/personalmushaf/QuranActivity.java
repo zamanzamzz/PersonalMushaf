@@ -270,6 +270,7 @@ public class QuranActivity extends AppCompatActivity implements Observer {
             }
         };
 
+        highlightAyahFromNavigation();
         if (!isLandscape(currentOrientation) && !isForceDualPage) {
             setupSinglePager();
         } else {
@@ -277,8 +278,6 @@ public class QuranActivity extends AppCompatActivity implements Observer {
         }
 
         glyphsHighlighter = new GlyphsHighlighter(pager, pagerAdapter);
-
-        highlightAyahFromNavigation();
     }
 
     private void setupSinglePager() {
@@ -445,17 +444,12 @@ public class QuranActivity extends AppCompatActivity implements Observer {
     }
 
     private void highlightAyahFromNavigation() {
-        final int surahFromNavigation = getIntent().getIntExtra("surah", 0);
-        final int ayahFromNavigation = getIntent().getIntExtra("ayah", 0);
+        highlightedSurah = getIntent().getIntExtra("surah", 0);
+        highlightedAyah = getIntent().getIntExtra("ayah", 0);
 
-        pager.post(() -> {
-            if (surahFromNavigation != 0) {
-                highlightedSurah = surahFromNavigation;
-                highlightedAyah = ayahFromNavigation;
-                isHighlighted = true;
-                pagerAdapter.highlightVisiblePages(pager.getCurrentItem(), highlightedSurah, highlightedAyah);
-                toolbar.setTitle(highlightedSurah + ":" + highlightedAyah);
-            }
-        });
+        if (highlightedSurah != 0) {
+            isHighlighted = true;
+            toolbar.setTitle(highlightedSurah + ":" + highlightedAyah);
+        }
     }
 }
