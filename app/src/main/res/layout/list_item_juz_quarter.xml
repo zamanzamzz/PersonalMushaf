@@ -1,70 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.andexert.library.RippleView
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_height="@dimen/list_item_height"
+<LinearLayout android:layout_height="@dimen/list_item_height"
     android:layout_width="match_parent"
-    android:id="@+id/list_item_ripple"
-    rv_centered="true"
-    >
-    <LinearLayout
-        android:layout_width="match_parent"
+    android:orientation="horizontal"
+    android:foreground="?android:attr/selectableItemBackground"
+    android:clickable="true"
+    android:focusable="true"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <ImageView xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/quarter_image"
+        android:layout_width="55dp"
         android:layout_height="match_parent"
-        android:orientation="horizontal">
+        android:gravity="center_vertical|start"
+        android:paddingLeft="10dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp" />
 
-        <ImageView android:id="@+id/quarter_image"
-            android:layout_width="55dp"
-            android:layout_height="match_parent"
-            android:paddingLeft="10dp"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp"
-            android:gravity="center_vertical|start"
-            xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:tools="http://schemas.android.com/tools" />
+    <LinearLayout
+        android:layout_height="match_parent"
+        android:layout_width="wrap_content"
+        android:orientation="vertical">
 
-        <LinearLayout
+        <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:id="@+id/quarter_length"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-
-            <TextView android:id="@+id/quarter_length"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingLeft="10dp"
-                android:paddingTop="6dp"
-                android:textSize="14sp"
-                android:gravity="top|start"
-                android:textColor="#FFF"
-                android:textDirection="ltr"
-                xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:tools="http://schemas.android.com/tools" />
-
-            <TextView android:id="@+id/quarter_page_number"
-                android:layout_width="wrap_content"
-                android:layout_height="fill_parent"
-                android:paddingLeft="10dp"
-                android:paddingBottom="8dp"
-                android:textSize="12sp"
-                android:gravity="bottom|start"
-                tools:text="Juz "
-                android:textColor="#FFF"
-                android:textDirection="ltr"
-                xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:tools="http://schemas.android.com/tools" />
-
-        </LinearLayout>
-
-        <TextView android:id="@+id/quarter_type"
-            android:layout_width="fill_parent"
-            android:layout_height="match_parent"
-            android:paddingLeft="@dimen/list_item_left_margin"
-            android:paddingRight="@dimen/list_item_left_margin"
-            android:textSize="18sp"
-            android:gravity="center_vertical|start"
-            tools:text="Juz "
+            android:layout_height="wrap_content"
+            android:gravity="top|start"
+            android:paddingLeft="10dp"
+            android:paddingTop="6dp"
             android:textColor="#FFF"
-            android:textDirection="rtl"
-            xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:tools="http://schemas.android.com/tools" />
+            android:textDirection="ltr"
+            android:textSize="14sp" />
+
+        <TextView xmlns:tools="http://schemas.android.com/tools"
+            android:id="@+id/quarter_page_number"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:gravity="bottom|start"
+            android:paddingLeft="10dp"
+            android:paddingBottom="8dp"
+            android:textColor="#FFF"
+            android:textDirection="ltr"
+            android:textSize="12sp"
+            tools:text="Juz " />
 
     </LinearLayout>
-</com.andexert.library.RippleView>
+
+    <TextView xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/quarter_type"
+        android:layout_width="fill_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical|start"
+        android:paddingLeft="@dimen/list_item_left_margin"
+        android:paddingRight="@dimen/list_item_left_margin"
+        android:textColor="#FFF"
+        android:textDirection="rtl"
+        android:textSize="18sp"
+        tools:text="Juz " />
+
+</LinearLayout>

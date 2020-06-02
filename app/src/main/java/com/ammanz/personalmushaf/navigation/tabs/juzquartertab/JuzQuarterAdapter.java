@@ -12,7 +12,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.ammanz.personalmushaf.QuranActivity;
 import com.ammanz.personalmushaf.R;
-import com.andexert.library.RippleView;
 
 public class JuzQuarterAdapter extends RecyclerView.Adapter<JuzQuarterAdapter.JuzViewHolder> {
     private int[][] quarterInfo;
@@ -21,10 +20,10 @@ public class JuzQuarterAdapter extends RecyclerView.Adapter<JuzQuarterAdapter.Ju
     private String[] prefixes;
 
     public static class JuzViewHolder extends RecyclerView.ViewHolder {
-        public RippleView rippleView;
-        public JuzViewHolder(RippleView v) {
+        public LinearLayout linearLayout;
+        public JuzViewHolder(LinearLayout v) {
             super(v);
-            rippleView = v;
+            linearLayout = v;
         }
     }
 
@@ -39,7 +38,7 @@ public class JuzQuarterAdapter extends RecyclerView.Adapter<JuzQuarterAdapter.Ju
     public JuzViewHolder onCreateViewHolder(ViewGroup parent,
                                             int viewType) {
         // create a new view
-        RippleView v = (RippleView) LayoutInflater.from(parent.getContext())
+        LinearLayout v = (LinearLayout) LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.list_item_juz_quarter, parent, false);
 
         JuzViewHolder vh = new JuzViewHolder(v);
@@ -50,7 +49,7 @@ public class JuzQuarterAdapter extends RecyclerView.Adapter<JuzQuarterAdapter.Ju
     public void onBindViewHolder(final JuzViewHolder holder, final int position) {
         int id;
 
-        LinearLayout layout = (LinearLayout) holder.rippleView.getChildAt(0);
+        LinearLayout layout = holder.linearLayout;
 
         ImageView quarterImage = (ImageView) layout.getChildAt(0);
 
@@ -80,15 +79,9 @@ public class JuzQuarterAdapter extends RecyclerView.Adapter<JuzQuarterAdapter.Ju
 
         alternateBackgroundColor(layout, position);
 
-        holder.rippleView.setOnClickListener(new RippleView.OnClickListener() {
-            @Override
-            public void onClick(final View view) {
-                RippleView rippleView = (RippleView) view;
-                rippleView.setRippleDuration(75);
-                rippleView.setFrameRate(10);
-                juzContentProcedure(rippleView, position);
-
-            }
+        holder.linearLayout.setOnClickListener(view -> {
+            LinearLayout linearLayout = (LinearLayout) view;
+            juzContentProcedure(linearLayout, position);
         });
     }
 
@@ -106,19 +99,14 @@ public class JuzQuarterAdapter extends RecyclerView.Adapter<JuzQuarterAdapter.Ju
     }
 
 
-    private void juzContentProcedure(RippleView rippleView, int position) {
-        final Intent goToJuz = new Intent(rippleView.getContext(), QuranActivity.class);
+    private void juzContentProcedure(LinearLayout linearLayout, int position) {
+        final Intent goToJuz = new Intent(linearLayout.getContext(), QuranActivity.class);
 
         goToJuz.putExtra("surah", quarterInfo[position][1]);
         goToJuz.putExtra("ayah", quarterInfo[position][2]);
         goToJuz.putExtra("new page number", quarterPageNumbers[position]);
 
-        rippleView.setOnRippleCompleteListener(new RippleView.OnRippleCompleteListener() {
-            @Override
-            public void onComplete(RippleView rippleView) {
-                rippleView.getContext().startActivity(goToJuz);
-            }
-        });
+        linearLayout.getContext().startActivity(goToJuz);
     }
 
 }

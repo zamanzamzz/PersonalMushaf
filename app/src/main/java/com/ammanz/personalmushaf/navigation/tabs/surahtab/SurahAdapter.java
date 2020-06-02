@@ -12,7 +12,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.ammanz.personalmushaf.QuranActivity;
 import com.ammanz.personalmushaf.R;
-import com.andexert.library.RippleView;
 
 public class SurahAdapter extends RecyclerView.Adapter<SurahAdapter.SurahViewHolder> {
     private int[][] surahInfo;
@@ -21,10 +20,10 @@ public class SurahAdapter extends RecyclerView.Adapter<SurahAdapter.SurahViewHol
     private double[] surahLengthsInJuz;
 
     public static class SurahViewHolder extends RecyclerView.ViewHolder {
-        public RippleView rippleView;
-        public SurahViewHolder(RippleView v) {
+        public LinearLayout linearLayout;
+        public SurahViewHolder(LinearLayout v) {
             super(v);
-            rippleView = v;
+            linearLayout = v;
         }
     }
 
@@ -39,7 +38,7 @@ public class SurahAdapter extends RecyclerView.Adapter<SurahAdapter.SurahViewHol
     public SurahViewHolder onCreateViewHolder(ViewGroup parent,
                                               int viewType) {
         // create a new view
-        RippleView v = (RippleView) LayoutInflater.from(parent.getContext())
+        LinearLayout v = (LinearLayout) LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.list_item_surah, parent, false);
 
         SurahViewHolder vh = new SurahViewHolder(v);
@@ -48,7 +47,7 @@ public class SurahAdapter extends RecyclerView.Adapter<SurahAdapter.SurahViewHol
 
     @Override
     public void onBindViewHolder(final @NonNull SurahViewHolder holder, final int position) {
-        LinearLayout layout = (LinearLayout) holder.rippleView.getChildAt(0);
+        LinearLayout layout = holder.linearLayout;
 
         TextView surahNumber = (TextView) layout.getChildAt(0);
         TextView surahLength = (TextView) ((LinearLayout) layout.getChildAt(1)).getChildAt(0);
@@ -69,27 +68,16 @@ public class SurahAdapter extends RecyclerView.Adapter<SurahAdapter.SurahViewHol
 
         alternateBackgroundColor(layout, position);
 
-        holder.rippleView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                RippleView rippleView = (RippleView) v;
-                rippleView.setRippleDuration(75);
-                rippleView.setFrameRate(10);
+        holder.linearLayout.setOnClickListener(v -> {
+            LinearLayout linearLayout = (LinearLayout) v;
 
+            final Intent goToSurah = new Intent(linearLayout.getContext(), QuranActivity.class);
 
-                final Intent goToSurah = new Intent(rippleView.getContext(), QuranActivity.class);
+            goToSurah.putExtra("new page number", pageNumber);
 
-                goToSurah.putExtra("new page number", pageNumber);
+            goToSurah.putExtra("from", "NavigationActivity");
 
-                goToSurah.putExtra("from", "NavigationActivity");
-
-                rippleView.setOnRippleCompleteListener(new RippleView.OnRippleCompleteListener() {
-                    @Override
-                    public void onComplete(RippleView rippleView) {
-                        rippleView.getContext().startActivity(goToSurah);
-                    }
-                });
-            }
+            linearLayout.getContext().startActivity(goToSurah);
         });
     }
 

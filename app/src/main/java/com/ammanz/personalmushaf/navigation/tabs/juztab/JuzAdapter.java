@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.ammanz.personalmushaf.QuranActivity;
 import com.ammanz.personalmushaf.R;
 import com.ammanz.personalmushaf.navigation.NavigationActivity;
-import com.andexert.library.RippleView;
 
 public class JuzAdapter extends RecyclerView.Adapter<JuzAdapter.JuzViewHolder> {
     private int[] juzPageNumbers;
@@ -19,10 +18,10 @@ public class JuzAdapter extends RecyclerView.Adapter<JuzAdapter.JuzViewHolder> {
     private String[] juzNames;
 
     public static class JuzViewHolder extends RecyclerView.ViewHolder {
-        public RippleView rippleView;
-        public JuzViewHolder(RippleView v) {
+        public LinearLayout linearLayout;
+        public JuzViewHolder(LinearLayout v) {
             super(v);
-            rippleView = v;
+            linearLayout = v;
         }
     }
 
@@ -35,7 +34,7 @@ public class JuzAdapter extends RecyclerView.Adapter<JuzAdapter.JuzViewHolder> {
     @Override
     public JuzViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         // create a new view
-        RippleView v = (RippleView) LayoutInflater.from(parent.getContext())
+        LinearLayout v = (LinearLayout) LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.list_item_juz, parent, false);
 
 
@@ -46,7 +45,7 @@ public class JuzAdapter extends RecyclerView.Adapter<JuzAdapter.JuzViewHolder> {
     @Override
     public void onBindViewHolder(final JuzViewHolder holder, final int position) {
 
-        LinearLayout layout = (LinearLayout) holder.rippleView.getChildAt(0);
+        LinearLayout layout = holder.linearLayout;
 
         TextView juz =  (TextView) layout.getChildAt(0);
         TextView juzPageNumber = (TextView) ((LinearLayout) layout.getChildAt(1)).getChildAt(1);
@@ -62,20 +61,16 @@ public class JuzAdapter extends RecyclerView.Adapter<JuzAdapter.JuzViewHolder> {
 
         alternateBackgroundColor(layout, position);
 
-        holder.rippleView.setOnClickListener(view -> {
-            RippleView rippleView = (RippleView) view;
-            rippleView.setRippleDuration(75);
-            rippleView.setFrameRate(10);
-            juzToJuzContentProcedure(rippleView, position + 1);
+        holder.linearLayout.setOnClickListener(view -> {
+            LinearLayout linearLayout = (LinearLayout) view;
+            juzToJuzContentProcedure(linearLayout, position + 1);
 
         });
 
-        holder.rippleView.setOnLongClickListener(view -> {
-            RippleView rippleView = (RippleView) view;
-            rippleView.setRippleDuration(75);
-            rippleView.setFrameRate(10);
+        holder.linearLayout.setOnLongClickListener(view -> {
+            LinearLayout linearLayout = (LinearLayout) view;
 
-            return juzToPage(rippleView, position);
+            return juzToPage(linearLayout, position);
         });
 
     }
@@ -93,22 +88,23 @@ public class JuzAdapter extends RecyclerView.Adapter<JuzAdapter.JuzViewHolder> {
             textView.setBackgroundColor(textView.getResources().getColor(R.color.colorAccent, textView.getContext().getTheme()));
     }
 
-    private void juzToJuzContentProcedure(RippleView rippleView, int juzNumber) {
-        final Intent goToJuzContent = new Intent(rippleView.getContext(), NavigationActivity.class);
+    private void juzToJuzContentProcedure(LinearLayout linearLayout, int juzNumber) {
+        final Intent goToJuzContent = new Intent(linearLayout.getContext(), NavigationActivity.class);
 
         goToJuzContent.putExtra("juz number", juzNumber);
 
-        rippleView.setOnRippleCompleteListener(rippleView1 -> rippleView1.getContext().startActivity(goToJuzContent));
+        linearLayout.getContext().startActivity(goToJuzContent);
     }
 
 
 
-    private boolean juzToPage(RippleView rippleView, int juzNumber) {
-        final Intent goToJuz = new Intent(rippleView.getContext(), QuranActivity.class);
+    private boolean juzToPage(LinearLayout linearLayout, int juzNumber) {
+        final Intent goToJuz = new Intent(linearLayout.getContext(), QuranActivity.class);
 
         goToJuz.putExtra("new page number", Integer.valueOf(juzPageNumbers[juzNumber]));
 
-        rippleView.setOnRippleCompleteListener(rippleView1 -> rippleView1.getContext().startActivity(goToJuz));
+        linearLayout.getContext().startActivity(goToJuz);
+
         return true;
     }
 
