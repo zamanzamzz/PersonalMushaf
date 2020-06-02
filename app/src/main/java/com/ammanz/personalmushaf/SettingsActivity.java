@@ -2,9 +2,12 @@ package com.ammanz.personalmushaf;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
+import android.widget.TextView;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.preference.ListPreference;
 import androidx.preference.Preference;
@@ -37,10 +40,29 @@ public class SettingsActivity extends AppCompatActivity implements
                         setTitle(R.string.title_activity_settings);
                     }
                 });
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setDisplayHomeAsUpEnabled(true);
+        Toolbar navigationToolbar = findViewById(R.id.settings_toolbar);
+        setSupportActionBar(navigationToolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_keyboard_backspace_black_24dp);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        getSupportActionBar().setHomeButtonEnabled(true);
+        TextView toolbarTitle = findViewById(R.id.settings_title_toolbar);
+        toolbarTitle.setText("Settings");
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == android.R.id.home) {
+
+            finish();
+
+            return true;
         }
+
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
