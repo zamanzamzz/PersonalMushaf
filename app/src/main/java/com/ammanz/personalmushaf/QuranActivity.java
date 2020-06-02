@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
+import android.graphics.Color;
+import android.graphics.ColorMatrixColorFilter;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.VibrationEffect;
@@ -284,6 +286,8 @@ public class QuranActivity extends AppCompatActivity implements Observer {
         pager = findViewById(R.id.pager);
 
         pagerAdapter = new QuranPageAdapter(getSupportFragmentManager(),this, currentOrientation);
+        if (QuranSettings.getInstance().getNightMode(this))
+            pager.setBackgroundColor(Color.BLACK);
         pager.setAdapter(pagerAdapter);
         pager.setOffscreenPageLimit(1);
         pager.setCurrentItem(pageNumberToSinglePagerPosition(pageNumber), false);
@@ -294,6 +298,8 @@ public class QuranActivity extends AppCompatActivity implements Observer {
     private void setupDualPager() {
         pager = findViewById(R.id.pager);
         pagerAdapter = new QuranPageAdapter(getSupportFragmentManager(),this, currentOrientation);
+        if (QuranSettings.getInstance().getNightMode(this))
+            pager.setBackgroundColor(Color.BLACK);
         pager.setAdapter(pagerAdapter);
         pager.setOffscreenPageLimit(1);
         pager.setCurrentItem(pageNumberToDualPagerPosition(pageNumber), false);

@@ -34,6 +34,9 @@
                 <extra android:name="from_settings" android:value="true" />
             </intent>
         </Preference>
+        <SwitchPreferenceCompat
+            app:key="night_mode"
+            app:title="Night Mode" />
     </PreferenceCategory>
 
     <PreferenceCategory

@@ -2,6 +2,7 @@ package com.ammanz.personalmushaf.widgets;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.ColorMatrixColorFilter;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.RectF;
@@ -11,6 +12,7 @@ import android.util.SparseArray;
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatImageView;
 
+import com.ammanz.personalmushaf.QuranSettings;
 import com.ammanz.personalmushaf.model.AyahBounds;
 import com.ammanz.personalmushaf.model.AyahCoordinates;
 import com.ammanz.personalmushaf.model.HighlightType;
@@ -29,6 +31,13 @@ public class HighlightingImageView extends AppCompatImageView {
 
     // Sorted map so we use highest priority highlighting when iterating
     private SortedMap<HighlightType, Set<String>> currentHighlights = new TreeMap<>();
+    private static final int nightModeTextBrightness = 255;
+    private float[] nightModeMatrix = {
+            -1, 0, 0, 0, nightModeTextBrightness,
+            0, -1, 0, 0, nightModeTextBrightness,
+            0, 0, -1, 0, nightModeTextBrightness,
+            0, 0, 0, 1, 0
+    };
 
 
 
@@ -44,10 +53,14 @@ public class HighlightingImageView extends AppCompatImageView {
 
     public HighlightingImageView(Context context) {
         this(context, null);
+        if (QuranSettings.getInstance().getNightMode(getContext()))
+            setColorFilter(new ColorMatrixColorFilter(nightModeMatrix));
     }
 
     public HighlightingImageView(Context context, AttributeSet attrs) {
         super(context, attrs);
+        if (QuranSettings.getInstance().getNightMode(getContext()))
+            setColorFilter(new ColorMatrixColorFilter(nightModeMatrix));
     }
 
 

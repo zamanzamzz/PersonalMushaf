@@ -92,6 +92,7 @@ public class SettingsActivity extends AppCompatActivity implements
         public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
             setPreferencesFromResource(R.xml.header_preferences, rootKey);
             mushaf = findPreference("mushaf");
+            SwitchPreferenceCompat isNightMode = findPreference("night_mode");
             ListPreference landmarkSystem = findPreference("landmark");
             SwitchPreferenceCompat isForceDualPages = findPreference("force_dual_page");
             SwitchPreferenceCompat isSmoothKeyNavigation = findPreference("smoothpageturn");
@@ -99,6 +100,10 @@ public class SettingsActivity extends AppCompatActivity implements
 
             mushaf.setSummary(QuranSettings.getInstance().getMushafMetadata(getContext()).getName());
 
+            isNightMode.setOnPreferenceChangeListener((preference, newValue) -> {
+                QuranSettings.getInstance().setNightMode((Boolean) newValue);
+                return true;
+            });
 
             landmarkSystem.setOnPreferenceChangeListener((preference, newValue) -> {
                 int landmarkSystem1 = Integer.parseInt((String) newValue);

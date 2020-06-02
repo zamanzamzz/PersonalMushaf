@@ -49,6 +49,7 @@ public class ImageUtils {
                 final BitmapWorkerTask bitmapWorkerTask =
                         getBitmapWorkerTask(imageView);
                 if (this == bitmapWorkerTask && imageView != null) {
+
                     imageView.setImageBitmap(bitmap);
                 }
             }

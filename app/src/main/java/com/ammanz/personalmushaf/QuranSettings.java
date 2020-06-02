@@ -32,6 +32,7 @@ public class QuranSettings {
     private Boolean isForceDualPage;
     private Boolean isSmoothKeyNavigation;
     private Boolean isDebugMode;
+    private Boolean nightMode;
 
     public static QuranSettings getInstance() {
         if (quranSettings == null)
@@ -62,6 +63,19 @@ public class QuranSettings {
     public String getMushafLocation(int mushafVersion) {
         AssetPackLocation location = assetPackManager.getPackLocation(packNamesArray[mushafVersion]);
         return location == null ? null : location.assetsPath();
+    }
+
+    public void setNightMode(Boolean nightMode) {
+        this.nightMode = nightMode;
+    }
+
+    public Boolean getNightMode(Context context) {
+        if (nightMode == null) {
+            setPreference(context);
+            nightMode = preferences.getBoolean("night_mode", false);
+        }
+
+        return nightMode;
     }
 
     public int getLandMarkSystem(Context context) {
