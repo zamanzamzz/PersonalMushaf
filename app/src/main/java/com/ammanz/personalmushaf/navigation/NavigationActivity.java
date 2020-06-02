@@ -34,6 +34,10 @@ public class NavigationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_navigation);
 
+        loadActivity();
+    }
+
+    private void loadActivity() {
         Toolbar navigationToolbar = findViewById(R.id.navigation_toolbar);
         setSupportActionBar(navigationToolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
@@ -47,7 +51,6 @@ public class NavigationActivity extends AppCompatActivity {
 
         TabLayout tabLayout = findViewById(R.id.tab_layout);
         ViewPager viewPager = findViewById(R.id.viewpager);
-        // viewPager.setSwipeEnabled(false);
         viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
 
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -119,6 +122,15 @@ public class NavigationActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onRestart() {
+        super.onRestart();
+        if (QuranSettings.getInstance().getShouldRestartNavigationActivity()) {
+            QuranSettings.getInstance().setShouldRestartNavigationActivity(false);
+            loadActivity();
+        }
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         if (juzNumber < 0) {
             MenuInflater inflater = getMenuInflater();
@@ -141,8 +153,6 @@ public class NavigationActivity extends AppCompatActivity {
             Intent goToSettings = new Intent(this, SettingsActivity.class);
 
             this.startActivity(goToSettings);
-
-            finish();
 
             return true;
         }

@@ -33,6 +33,7 @@ public class QuranSettings {
     private Boolean isSmoothKeyNavigation;
     private Boolean isDebugMode;
     private Boolean nightMode;
+    private Boolean shouldRestartNavigationActivity = false;
 
     public static QuranSettings getInstance() {
         if (quranSettings == null)
@@ -200,5 +201,13 @@ public class QuranSettings {
         }
 
         return isDebugMode;
+    }
+
+    public Boolean getShouldRestartNavigationActivity() {
+        return shouldRestartNavigationActivity;
+    }
+
+    public void setShouldRestartNavigationActivity(Boolean shouldRestartNavigationActivity) {
+        this.shouldRestartNavigationActivity = shouldRestartNavigationActivity;
     }
 }

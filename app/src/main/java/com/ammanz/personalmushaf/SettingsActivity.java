@@ -59,15 +59,6 @@ public class SettingsActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void onBackPressed() {
-        Intent goToNavigation = new Intent(getApplicationContext(), NavigationActivity.class);
-
-        startActivity(goToNavigation);
-
-        finish();
-    }
-
-    @Override
     public boolean onPreferenceStartFragment(PreferenceFragmentCompat caller, Preference pref) {
         // Instantiate the new Fragment
         final Bundle args = pref.getExtras();
@@ -87,11 +78,15 @@ public class SettingsActivity extends AppCompatActivity implements
 
     public static class HeaderFragment extends PreferenceFragmentCompat {
         private Preference mushaf;
+        private Integer currentLandMarkSystem;
+        private String currentMushaf;
 
         @Override
         public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
             setPreferencesFromResource(R.xml.header_preferences, rootKey);
             mushaf = findPreference("mushaf");
+            currentLandMarkSystem = QuranSettings.getInstance().getLandMarkSystem(getContext());
+            currentMushaf = QuranSettings.getInstance().getMushafMetadata(getContext()).getId();
             SwitchPreferenceCompat isNightMode = findPreference("night_mode");
             ListPreference landmarkSystem = findPreference("landmark");
             SwitchPreferenceCompat isForceDualPages = findPreference("force_dual_page");
@@ -108,6 +103,10 @@ public class SettingsActivity extends AppCompatActivity implements
             landmarkSystem.setOnPreferenceChangeListener((preference, newValue) -> {
                 int landmarkSystem1 = Integer.parseInt((String) newValue);
                 QuranSettings.getInstance().setLandmarkSystem(landmarkSystem1);
+                if (landmarkSystem1 != currentLandMarkSystem) {
+                    QuranSettings.getInstance().setShouldRestartNavigationActivity(true);
+                } else
+                    QuranSettings.getInstance().setShouldRestartNavigationActivity(false);
                 return true;
             });
 
@@ -130,7 +129,13 @@ public class SettingsActivity extends AppCompatActivity implements
         @Override
         public void onResume() {
             super.onResume();
-            mushaf.setSummary(QuranSettings.getInstance().getMushafMetadata(getContext()).getName());
+            if (!QuranSettings.getInstance().getMushafMetadata(getContext()).getId().equals(currentMushaf)) {
+                mushaf.setSummary(QuranSettings.getInstance().getMushafMetadata(getContext()).getName());
+                QuranSettings.getInstance().setShouldRestartNavigationActivity(true);
+            } else {
+                QuranSettings.getInstance().setShouldRestartNavigationActivity(false);
+            }
+
         }
     }
 }
