@@ -19,7 +19,7 @@ public abstract class QuranPage extends Fragment {
         mObservers.addObserver(quranActivity);
     }
 
-    protected void updateAdapter(Ayah ayah, int position) {
+    protected void updateQuranActivity(Ayah ayah, int position) {
         Bundle bundle = new Bundle();
         bundle.putString("ayah_key", ayah.getKey());
         bundle.putInt("position", position);

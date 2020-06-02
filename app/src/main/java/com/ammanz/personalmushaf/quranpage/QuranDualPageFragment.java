@@ -117,7 +117,7 @@ public class QuranDualPageFragment extends QuranPage {
             imageView.setOnLongClickListener(v -> {
                 Ayah ayah = pageData.getAyahFromCoordinates(imageView, x, y);
 
-                updateAdapter(ayah, dualPagerPosition);
+                updateQuranActivity(ayah, dualPagerPosition);
                 return true;
             });
 

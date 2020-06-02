@@ -100,7 +100,7 @@ public class QuranPageFragment extends QuranPage {
         imageView.setOnLongClickListener(v -> {
             Ayah ayah = pageData.getAyahFromCoordinates(imageView, x, y);
 
-            updateAdapter(ayah, position);
+            updateQuranActivity(ayah, position);
             return true;
         });
     }
