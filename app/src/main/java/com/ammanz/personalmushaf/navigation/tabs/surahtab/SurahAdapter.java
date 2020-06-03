@@ -63,7 +63,7 @@ public class SurahAdapter extends RecyclerView.Adapter<SurahAdapter.SurahViewHol
         surahStart.setText(prefixes[position]);
         surahLength.setText(String.format("%.2f", surahLengthsInJuz[position]) + " pages");
         surahPageNumber.setText(Integer.toString(pageNumber));
-        surahNumber.setText(layout.getResources().getStringArray(R.array.three_digit_arabic_numerals)[surahInfo[position][0] - 1]);
+        surahNumber.setText(layout.getResources().getStringArray(R.array.arabic_numerals)[surahInfo[position][0] - 1]);
         surahOrigin.setText(origin);
 
         alternateBackgroundColor(layout, position);

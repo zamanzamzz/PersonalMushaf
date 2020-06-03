@@ -6,7 +6,6 @@
     android:layout_height="45dp"
     android:paddingStart="72dp"
     android:gravity="center_vertical"
-    android:textSize="19sp"
-    android:textStyle="bold"
+    android:textSize="20sp"
     android:background="@color/colorAccent"
     />

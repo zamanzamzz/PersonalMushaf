@@ -75,7 +75,7 @@ public class QuranDualPageFragment extends QuranPage {
             setHighlightSingle(leftImage, rightPageData, dualPagerPosition);
         } else {
             leftImage.setVisibility(View.GONE);
-            ImageUtils.getInstance().loadBitmap(leftPagePath, rightImage);
+            ImageUtils.loadBitmap(leftPagePath, rightImage);
             setHighlightSingle(rightImage, leftPageData, dualPagerPosition);
         }
 
@@ -83,8 +83,8 @@ public class QuranDualPageFragment extends QuranPage {
     }
 
     private void loadImages(ImageView leftImage, ImageView rightImage, String leftPagePath, String rightPagePath) {
-        ImageUtils.getInstance().loadBitmap(rightPagePath, rightImage);
-        ImageUtils.getInstance().loadBitmap(leftPagePath, leftImage);
+        ImageUtils.loadBitmap(rightPagePath, rightImage);
+        ImageUtils.loadBitmap(leftPagePath, leftImage);
     }
 
 

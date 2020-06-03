@@ -77,7 +77,7 @@ public class QuranPageFragment extends QuranPage {
                     highlightAyah(highlightedSurah, highlightedAyah, HighlightType.SELECTION);
         });
 
-        ImageUtils.getInstance().loadBitmap(path, imageView);
+        ImageUtils.loadBitmap(path, imageView);
 
         return v;
     }

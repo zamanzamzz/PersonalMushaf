@@ -11,24 +11,14 @@ import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class ImageUtils {
-
-    private static ImageUtils imageUtils;
-
-    public static ImageUtils getInstance() {
-        if (imageUtils == null) {
-            imageUtils = new ImageUtils();
-        }
-            return imageUtils;
-    }
-
-    public void loadBitmap(String path, ImageView imageView) {
+    public static void loadBitmap(String path, ImageView imageView) {
         AtomicReference<Bitmap> bitmap = new AtomicReference<>();
         Observable.fromCallable(() -> {
             bitmap.set(BitmapFactory.decodeFile(path));
             return true;
         }).subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe((result) -> {
+        .observeOn(AndroidSchedulers.mainThread())
+        .subscribe((result) -> {
                 imageView.setImageBitmap(bitmap.get());
         });
     }
