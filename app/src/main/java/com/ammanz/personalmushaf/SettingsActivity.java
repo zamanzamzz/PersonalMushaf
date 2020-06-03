@@ -102,6 +102,7 @@ public class SettingsActivity extends AppCompatActivity implements
         private Preference mushaf;
         private Integer currentLandMarkSystem;
         private String currentMushaf;
+        private Boolean isInterfaceSimplified;
 
         @Override
         public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
@@ -109,7 +110,9 @@ public class SettingsActivity extends AppCompatActivity implements
             mushaf = findPreference("mushaf");
             currentLandMarkSystem = QuranSettings.getInstance().getLandMarkSystem(getContext());
             currentMushaf = QuranSettings.getInstance().getMushafMetadata(getContext()).getId();
+            isInterfaceSimplified = QuranSettings.getInstance().getSimplifyInterface(getContext());
             SwitchPreferenceCompat isNightMode = findPreference("night_mode");
+            SwitchPreferenceCompat simplifyInterface = findPreference("simplify_interface");
             ListPreference landmarkSystem = findPreference("landmark");
             SwitchPreferenceCompat isForceDualPages = findPreference("force_dual_page");
             SwitchPreferenceCompat isSmoothKeyNavigation = findPreference("smoothpageturn");
@@ -119,6 +122,13 @@ public class SettingsActivity extends AppCompatActivity implements
 
             isNightMode.setOnPreferenceChangeListener((preference, newValue) -> {
                 QuranSettings.getInstance().setNightMode((Boolean) newValue);
+                return true;
+            });
+
+            simplifyInterface.setOnPreferenceChangeListener((preference, newValue) -> {
+                QuranSettings.getInstance().setSimplifyInterface((Boolean) newValue);
+                if (isInterfaceSimplified != (Boolean) newValue)
+                    QuranSettings.getInstance().setShouldRestartNavigationActivity(true);
                 return true;
             });
 

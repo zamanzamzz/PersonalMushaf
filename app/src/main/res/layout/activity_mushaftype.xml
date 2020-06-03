@@ -7,6 +7,7 @@
     android:background="#141618">
 
     <TextView
+        android:id="@+id/dialog_textview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="30dp"
@@ -17,9 +18,11 @@
         android:gravity="center_vertical|start"
         android:background="@color/colorPrimary"
         android:text="Choose mushaf type"
+        android:visibility="invisible"
         android:paddingTop="20dp"/>
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
+        android:visibility="invisible"
         android:layout_marginLeft="30dp"
         android:layout_marginRight="30dp"
         android:layout_height="wrap_content"

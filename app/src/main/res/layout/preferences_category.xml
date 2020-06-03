@@ -4,8 +4,8 @@
     android:textColor="#FFF"
     android:layout_width="match_parent"
     android:layout_height="45dp"
-    android:paddingStart="72dp"
+    android:paddingStart="71dp"
     android:gravity="center_vertical"
-    android:textSize="20sp"
+    android:textSize="18sp"
     android:background="@color/colorAccent"
     />

@@ -44,6 +44,10 @@
         android:title="Navigation"
         android:layout="@layout/preferences_category">
 
+        <SwitchPreferenceCompat
+            app:key="simplify_interface"
+            app:title="Simplify Interface" />
+
         <ListPreference
             app:defaultValue="0"
             app:entries="@array/landmark_system_entries"

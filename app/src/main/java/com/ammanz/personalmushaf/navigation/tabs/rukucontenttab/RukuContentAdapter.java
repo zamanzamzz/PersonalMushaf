@@ -9,6 +9,7 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ammanz.personalmushaf.QuranActivity;
+import com.ammanz.personalmushaf.QuranSettings;
 import com.ammanz.personalmushaf.R;
 
 public class RukuContentAdapter extends RecyclerView.Adapter<RukuContentAdapter.JuzViewHolder> {
@@ -53,8 +54,12 @@ public class RukuContentAdapter extends RecyclerView.Adapter<RukuContentAdapter.
         TextView rukuLength = (TextView) ((LinearLayout) layout.getChildAt(1)).getChildAt(0);
         TextView rukuPrefix = (TextView) layout.getChildAt(2);
 
+        if (QuranSettings.getInstance().getSimplifyInterface(rukuNumber.getContext())) {
+            rukuNumber.setText(Integer.toString(position + 1));
+            rukuNumber.setTextSize(20);
+        } else
+            rukuNumber.setText(layout.getResources().getStringArray(R.array.arabic_numerals)[position]);
 
-        rukuNumber.setText(layout.getResources().getStringArray(R.array.arabic_numerals)[position]);
         rukuLength.setText(String.format("%.2f", rukuLengths[position]) + " pages");
         rukuPageNumber.setText(rukuPageNumbers[position] + "\t\t\t\t" + rukuInfo[position][0] + ":" + rukuInfo[position][1]);
         rukuPrefix.setText(prefixes[position]);

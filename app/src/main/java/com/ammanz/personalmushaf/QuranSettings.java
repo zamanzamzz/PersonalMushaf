@@ -33,6 +33,7 @@ public class QuranSettings {
     private Boolean isSmoothKeyNavigation;
     private Boolean isDebugMode;
     private Boolean nightMode;
+    private Boolean simplifyInterface;
     private Boolean shouldRestartNavigationActivity = false;
 
     public static QuranSettings getInstance() {
@@ -77,6 +78,19 @@ public class QuranSettings {
         }
 
         return nightMode;
+    }
+
+    public void setSimplifyInterface(Boolean simplifyInterface) {
+        this.simplifyInterface = simplifyInterface;
+    }
+
+    public Boolean getSimplifyInterface(Context context) {
+        if (simplifyInterface == null) {
+            setPreference(context);
+            simplifyInterface = preferences.getBoolean("simplify_interface", false);
+        }
+
+        return simplifyInterface;
     }
 
     public int getLandMarkSystem(Context context) {

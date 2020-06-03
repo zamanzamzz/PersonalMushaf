@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ammanz.personalmushaf.QuranActivity;
+import com.ammanz.personalmushaf.QuranSettings;
 import com.ammanz.personalmushaf.R;
 
 public class SurahAdapter extends RecyclerView.Adapter<SurahAdapter.SurahViewHolder> {
@@ -60,10 +61,21 @@ public class SurahAdapter extends RecyclerView.Adapter<SurahAdapter.SurahViewHol
 
         final int pageNumber = surahPageNumbers[position];
 
-        surahStart.setText(prefixes[position]);
+        if (QuranSettings.getInstance().getSimplifyInterface(surahNumber.getContext())) {
+            surahNumber.setText(Integer.toString(surahInfo[position][0]));
+            surahNumber.setTextSize(20);
+            surahStart.setText("Surah " + prefixes[position]);
+            surahStart.setTextSize(18);
+        } else {
+            surahNumber.setText(layout.getResources().getStringArray(R.array.arabic_numerals)[surahInfo[position][0] - 1]);
+            surahStart.setText("سورة " + prefixes[position]);
+        }
+
         surahLength.setText(String.format("%.2f", surahLengthsInJuz[position]) + " pages");
         surahPageNumber.setText(Integer.toString(pageNumber));
-        surahNumber.setText(layout.getResources().getStringArray(R.array.arabic_numerals)[surahInfo[position][0] - 1]);
+
+
+
         surahOrigin.setText(origin);
 
         alternateBackgroundColor(layout, position);

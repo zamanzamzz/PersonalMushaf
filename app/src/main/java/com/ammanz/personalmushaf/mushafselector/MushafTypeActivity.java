@@ -1,6 +1,8 @@
 package com.ammanz.personalmushaf.mushafselector;
 
 import android.os.Bundle;
+import android.view.View;
+import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -28,6 +30,9 @@ public class MushafTypeActivity extends AppCompatActivity {
 
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(layoutManager);
+
+        ((TextView) findViewById(R.id.dialog_textview)).setVisibility(View.VISIBLE);
+        recyclerView.setVisibility(View.VISIBLE);
     }
 }
 

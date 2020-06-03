@@ -9,6 +9,7 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ammanz.personalmushaf.QuranActivity;
+import com.ammanz.personalmushaf.QuranSettings;
 import com.ammanz.personalmushaf.R;
 import com.ammanz.personalmushaf.navigation.NavigationActivity;
 
@@ -54,7 +55,11 @@ public class JuzAdapter extends RecyclerView.Adapter<JuzAdapter.JuzViewHolder> {
 
         String length = String.format("%.2f", juzLengths[position]) + " pages";
 
-        juz.setText(layout.getResources().getStringArray(R.array.arabic_numerals)[position]);
+        if (QuranSettings.getInstance().getSimplifyInterface(juz.getContext())) {
+            juz.setText(Integer.toString(position + 1));
+            juz.setTextSize(20);
+        } else
+            juz.setText(layout.getResources().getStringArray(R.array.arabic_numerals)[position]);
         juzLength.setText(length);
         juzStart.setText(juzNames[position]);
         juzPageNumber.setText(Integer.toString(juzPageNumbers[position]));

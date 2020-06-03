@@ -50,7 +50,10 @@ public class SurahFragment extends Fragment {
     private SurahAdapter getSurahAdapter(int juzNumber, MushafMetadata mushafMetadata) {
         int[][] surahInfo = getSurahInfoInJuz(juzNumber);
         int[] surahPageNumbersInJuz = getSurahPageNumbersinJuz(mushafMetadata.getNavigationData().getSurahPageNumbers(), juzNumber);
-        String[] surahNamesInJuz = getSurahNamesInJuz(juzNumber, surahInfo.length, getResources().getStringArray(R.array.surah_names));
+        String[] surahNamesInJuz = QuranSettings.getInstance().getSimplifyInterface(getContext()) ?
+                getSurahNamesInJuz(juzNumber, surahInfo.length, getResources().getStringArray(R.array.surah_names_english)) :
+                getSurahNamesInJuz(juzNumber, surahInfo.length, getResources().getStringArray(R.array.surah_names_arabic));
+
         double[] surahLengthsInJuz = getSurahLengthsInJuz(mushafMetadata.getNavigationData().getSurahLengths(), juzNumber);
 
         return new SurahAdapter(surahInfo, surahPageNumbersInJuz, surahNamesInJuz, surahLengthsInJuz);
