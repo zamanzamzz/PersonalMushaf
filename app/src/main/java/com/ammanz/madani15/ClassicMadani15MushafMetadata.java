@@ -17,7 +17,6 @@ public class ClassicMadani15MushafMetadata extends MushafMetadata {
         previewDrawableIDs = new int[2];
         previewDrawableIDs[0] = R.drawable.classic_madani_15_line_preview1;
         previewDrawableIDs[1] = R.drawable.classic_madani_15_line_preview2;
-
         minPage = 1;
         maxPage = 604;
         danglingDualPage = -1;

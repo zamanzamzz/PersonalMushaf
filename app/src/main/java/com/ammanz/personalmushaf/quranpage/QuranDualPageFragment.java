@@ -96,8 +96,8 @@ public class QuranDualPageFragment extends QuranPage {
         Observable.fromCallable(() -> {
             pageData.populateAyahBoundsAndGlyphs();
             return true;
-        }).subscribeOn(Schedulers.newThread())
-                .observeOn(AndroidSchedulers.mainThread()).subscribe((result) -> {
+        }).subscribeOn(Schedulers.io())
+        .observeOn(AndroidSchedulers.mainThread()).subscribe((result) -> {
             imageView.setAyahData(pageData.getAyahCoordinates());
             imageView.setGlyphs(pageData.getGlyphs());
 
