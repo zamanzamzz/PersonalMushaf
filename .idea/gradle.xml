@@ -14,7 +14,8 @@
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/classicmadani15assets" />
             <option value="$PROJECT_DIR$/classicnaskh15assets" />
-            <option value="$PROJECT_DIR$/modernnaskh13assets" />
+            <option value="$PROJECT_DIR$/modernnaskh13croppedassets" />
+            <option value="$PROJECT_DIR$/modernnaskh13uncroppedassets" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

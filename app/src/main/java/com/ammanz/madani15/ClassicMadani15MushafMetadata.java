@@ -9,7 +9,7 @@ public class ClassicMadani15MushafMetadata extends MushafMetadata {
 
     public ClassicMadani15MushafMetadata() {
         assetName = "classicmadani15assets";
-        assetPath = QuranSettings.getInstance().getMushafLocation(QuranSettings.CLASSIC_MADANI_15_LINE);
+        assetPath = QuranSettings.getInstance().getMushafLocation(QuranSettings.CLASSICMADANI15);
         id = "classicmadani15";
         databasePath = assetPath + "/databases/ayahinfo_classicmadani15line.db";
         name = "Classic 15 Line Madani Mushaf";

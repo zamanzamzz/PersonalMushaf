@@ -71,7 +71,7 @@ public class MushafStyleFragment extends Fragment {
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_startup, container, false);
 
-        mushafIndex = getArguments().getInt("mushaf", QuranSettings.CLASSIC_MADANI_15_LINE);
+        mushafIndex = getArguments().getInt("mushaf", QuranSettings.CLASSICMADANI15);
 
         fromSettings = getArguments().getBoolean("from_settings", false);
 

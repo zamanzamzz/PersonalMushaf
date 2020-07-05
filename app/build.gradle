@@ -8,8 +8,8 @@ android {
         applicationId 'com.ammanz.personalmushaf'
         minSdkVersion 24
         targetSdkVersion 29
-        versionCode 311
-        versionName "0.311"
+        versionCode 315
+        versionName "0.315"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -18,7 +18,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
-    assetPacks = [":classicmadani15assets", ":classicnaskh15assets", ":modernnaskh13assets"]
+    assetPacks = [":classicmadani15assets", ":classicnaskh15assets", ":modernnaskh13croppedassets", ":modernnaskh13uncroppedassets"]
     compileOptions {
         sourceCompatibility = 1.8
         targetCompatibility = 1.8

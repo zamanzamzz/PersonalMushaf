@@ -2,7 +2,7 @@ package com.ammanz.naskh13;
 
 import com.ammanz.personalmushaf.util.FileUtils;
 
-public class ClassicNaskh13MushafMetadata extends ModernNaskh13MushafMetadata {
+public class ClassicNaskh13MushafMetadata extends ModernNaskh13CroppedMushafMetadata {
 
     public ClassicNaskh13MushafMetadata() {
         assetName = "classic_naskh_13_line";

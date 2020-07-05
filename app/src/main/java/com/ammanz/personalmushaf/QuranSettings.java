@@ -15,14 +15,15 @@ import com.google.android.play.core.assetpacks.AssetPackManagerFactory;
 import java.io.File;
 
 public class QuranSettings {
-    public static final int MODERN_NASKH_13_LINE = 0;
-    public static final int CLASSIC_NASKH_15_LINE = 1;
-    public static final int CLASSIC_MADANI_15_LINE = 2;
-    public static final int DEFAULT_LANDMARK_SYSTEM = 0;
+    public static final int MODERNNASKH13CROPPED = 0;
+    public static final int MODERNNASKH13UNCROPPED = 1;
+    public static final int CLASSICNASKH15 = 2;
+    public static final int CLASSICMADANI15 = 3;
+    public static final int DEFAULTLANDMARKSYSTEM = 0;
     public static final int RUKU = 1;
     public static final int HIZB = 2;
-    private static boolean[] availableMushafs = {false, false, false};
-    private String[] packNamesArray = {"modernnaskh13assets", "classicnaskh15assets", "classicmadani15assets"};
+    private static boolean[] availableMushafs = {false, false, false, false};
+    private String[] packNamesArray = {"modernnaskh13croppedassets", "modernnaskh13uncroppedassets", "classicnaskh15assets", "classicmadani15assets"};
     private AssetPackManager assetPackManager;
     private static QuranSettings quranSettings;
     private MushafMetadata mushafMetadata;
@@ -52,7 +53,7 @@ public class QuranSettings {
     public int getMushafVersion(Context context) {
         if (mushafVersion == null) {
             setPreference(context);
-            mushafVersion = Integer.parseInt(preferences.getString("mushaf", Integer.toString(CLASSIC_MADANI_15_LINE)));
+            mushafVersion = Integer.parseInt(preferences.getString("mushaf", Integer.toString(CLASSICMADANI15)));
         }
 
         return mushafVersion;
@@ -96,7 +97,7 @@ public class QuranSettings {
     public int getLandMarkSystem(Context context) {
         if (landmarkSystem == null) {
             setPreference(context);
-            landmarkSystem = Integer.parseInt(preferences.getString("landmark", Integer.toString(DEFAULT_LANDMARK_SYSTEM)));
+            landmarkSystem = Integer.parseInt(preferences.getString("landmark", Integer.toString(DEFAULTLANDMARKSYSTEM)));
         }
 
         return landmarkSystem;
@@ -149,7 +150,7 @@ public class QuranSettings {
 
     public void updateAvailableMushafs(Context context) {
         initializeAvailableMushafs(context);
-        for (int i = MODERN_NASKH_13_LINE; i <= CLASSIC_MADANI_15_LINE; i++) {
+        for (int i = MODERNNASKH13CROPPED; i <= CLASSICMADANI15; i++) {
             if (assetPackManager.getPackLocation(packNamesArray[i]) != null)
                 setAvailableMushaf(i, true);
         }
@@ -173,7 +174,7 @@ public class QuranSettings {
         initializeAvailableMushafs(context);
 
         boolean rv = false;
-        for (int i = MODERN_NASKH_13_LINE; i <= CLASSIC_NASKH_15_LINE + 1; i++) {
+        for (int i = MODERNNASKH13CROPPED; i <= CLASSICNASKH15 + 1; i++) {
             currentMushafDirectory = new File(FileUtils.ASSETSDIRECTORY + "/" + expectedMushafDirectories[i]);
             if (currentMushafDirectory.exists() && currentMushafDirectory.isDirectory()) {
                 currentImagesDirectory = new File(FileUtils.ASSETSDIRECTORY + "/" + expectedMushafDirectories[i] + "/images");

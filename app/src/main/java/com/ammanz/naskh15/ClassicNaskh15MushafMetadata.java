@@ -9,7 +9,7 @@ public class ClassicNaskh15MushafMetadata extends MushafMetadata {
 
     public ClassicNaskh15MushafMetadata() {
         assetName = "classicnaskh15assets";
-        assetPath = QuranSettings.getInstance().getMushafLocation(QuranSettings.CLASSIC_NASKH_15_LINE);
+        assetPath = QuranSettings.getInstance().getMushafLocation(QuranSettings.CLASSICNASKH15);
         id = "classicnaskh15";
         databasePath = assetPath + "/databases/ayahinfo_classicnaskh15line.db";
         name = "Classic 15 Line Naskh Mushaf";
@@ -34,6 +34,6 @@ public class ClassicNaskh15MushafMetadata extends MushafMetadata {
     }
 
     public boolean getShouldDoRuku(int landmarkSystem) {
-        return landmarkSystem == QuranSettings.DEFAULT_LANDMARK_SYSTEM || landmarkSystem == QuranSettings.RUKU;
+        return landmarkSystem == QuranSettings.DEFAULTLANDMARKSYSTEM || landmarkSystem == QuranSettings.RUKU;
     }
 }

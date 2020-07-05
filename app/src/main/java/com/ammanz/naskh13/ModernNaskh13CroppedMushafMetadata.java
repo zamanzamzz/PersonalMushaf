@@ -5,18 +5,18 @@ import com.ammanz.personalmushaf.R;
 import com.ammanz.personalmushaf.mushafmetadata.MushafMetadata;
 import com.ammanz.personalmushaf.navigation.NavigationData;
 
-public class ModernNaskh13MushafMetadata extends MushafMetadata {
+public class ModernNaskh13CroppedMushafMetadata extends MushafMetadata {
 
-    public ModernNaskh13MushafMetadata() {
-        assetName = "modernnaskh13assets";
-        assetPath = QuranSettings.getInstance().getMushafLocation(QuranSettings.MODERN_NASKH_13_LINE);
-        id = "modernnaskh13";
-        databasePath = assetPath + "/databases/ayahinfo_modernnaskh13line.db";
-        name = "Modern 13 Line Naskh Mushaf";
+    public ModernNaskh13CroppedMushafMetadata() {
+        assetName = "modernnaskh13croppedassets";
+        assetPath = QuranSettings.getInstance().getMushafLocation(QuranSettings.MODERNNASKH13CROPPED);
+        id = "modernnaskh13cropped";
+        databasePath = assetPath + "/databases/ayahinfo_modernnaskh13cropped.db";
+        name = "Modern 13 Line Naskh Mushaf (Cropped)";
         description = "Popular with huffadh in the Indian Subcontinent and South Africa.";
         previewDrawableIDs = new int[2];
-        previewDrawableIDs[0] = R.drawable.modern_naskh_13_line_preview1;
-        previewDrawableIDs[1] = R.drawable.modern_naskh_13_line_preview2;
+        previewDrawableIDs[0] = R.drawable.modernnaskh13cropped_preview1;
+        previewDrawableIDs[1] = R.drawable.modernnaskh13cropped_preview2;
 
         minPage = 2;
         maxPage = 848;
@@ -35,6 +35,6 @@ public class ModernNaskh13MushafMetadata extends MushafMetadata {
     }
 
     public boolean getShouldDoRuku(int landmarkSystem) {
-        return landmarkSystem == QuranSettings.DEFAULT_LANDMARK_SYSTEM || landmarkSystem == QuranSettings.RUKU;
+        return landmarkSystem == QuranSettings.DEFAULTLANDMARKSYSTEM || landmarkSystem == QuranSettings.RUKU;
     }
 }
