@@ -1,4 +1,4 @@
-package com.ammanz.naskh15;
+package com.ammanz.personalmushaf.mushafmetadata.naskh15;
 
 import com.ammanz.personalmushaf.QuranSettings;
 import com.ammanz.personalmushaf.R;
@@ -8,10 +8,9 @@ import com.ammanz.personalmushaf.navigation.NavigationData;
 public class ClassicNaskh15MushafMetadata extends MushafMetadata {
 
     public ClassicNaskh15MushafMetadata() {
-        assetName = "classicnaskh15assets";
         assetPath = quranSettings.getMushafLocation(QuranSettings.CLASSICNASKH15);
         id = "classicnaskh15";
-        databasePath = assetPath + "/databases/ayahinfo_classicnaskh15line.db";
+        databasePath = assetPath + "/databases/ayahinfo_classicnaskh15.db";
         name = "Classic 15 Line Naskh Mushaf";
         description = "Popular with huffadh in the Indian Subcontinent and South Africa.";
         previewDrawableIDs = new int[2];

@@ -23,7 +23,7 @@ public class QuranSettings {
     public static final int RUKU = 1;
     public static final int HIZB = 2;
     private static boolean[] availableMushafs = {false, false, false, false};
-    private String[] packNamesArray = {"modernnaskh13croppedassets", "modernnaskh13uncroppedassets", "classicnaskh15assets", "classicmadani15assets"};
+    private String[] packNamesArray = {"modernnaskh13cropped", "modernnaskh13uncropped", "classicnaskh15", "classicmadani15"};
     private AssetPackManager assetPackManager;
     private static QuranSettings quranSettings;
     private MushafMetadata mushafMetadata;
@@ -163,11 +163,11 @@ public class QuranSettings {
         return false;
     }
 
-    public boolean updateAvailableMushafsFirebase(Context context) {
+    public boolean updateAvailableMushafsDebug(Context context) {
         if (!FileUtils.checkRootDataDirectory())
             return false;
 
-        String[] expectedMushafDirectories = {"modern_naskh_13_line", "classic_naskh_15_line", "classic_madani_15_line"};
+        String[] expectedMushafDirectories = {"modernnaskh13cropped", "modernnaskh13uncropped", "classicnaskh15", "classicmadani15"};
         File currentMushafDirectory;
         File currentImagesDirectory;
 

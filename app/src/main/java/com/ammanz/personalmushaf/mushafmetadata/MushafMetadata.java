@@ -5,7 +5,6 @@ import com.ammanz.personalmushaf.navigation.NavigationData;
 
 public abstract class MushafMetadata {
     protected QuranSettings quranSettings = QuranSettings.getInstance();
-    protected String assetName;
     protected String assetPath;
     protected String id;
     protected String databasePath;
@@ -22,9 +21,6 @@ public abstract class MushafMetadata {
 
     public String getId() {
         return id;
-    }
-    public String getAssetName() {
-        return assetName;
     }
 
     public String getAssetPath() {

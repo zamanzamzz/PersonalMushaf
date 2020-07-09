@@ -149,7 +149,7 @@ public class MushafStyleFragment extends Fragment {
     private void downloadAndUnpackZip() {
         setupAssetPackStateUpdateListener();
         List<String> assetPackName = new ArrayList<>();
-        assetPackName.add(mushafMetadata.getAssetName());
+        assetPackName.add(mushafMetadata.getId());
         Task<AssetPackStates> task = assetPackManager.fetch(assetPackName);
         task.addOnFailureListener(e -> {
             System.out.println(e.getMessage());
@@ -157,8 +157,9 @@ public class MushafStyleFragment extends Fragment {
     }
 
     private StorageReference getZipStorageReference() {
-        return FirebaseStorage.getInstance().getReference()
-                .child(mushafMetadata.getAssetName() + ".zip");
+        return null;
+        /*return FirebaseStorage.getInstance().getReference()
+                .child(mushafMetadata.getAssetName() + ".zip");*/
     }
 
 

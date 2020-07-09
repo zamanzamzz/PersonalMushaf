@@ -18,7 +18,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
-    assetPacks = [":classicmadani15assets", ":classicnaskh15assets", ":modernnaskh13croppedassets", ":modernnaskh13uncroppedassets"]
+    assetPacks = [":classicmadani15", ":classicnaskh15", ":modernnaskh13cropped", ":modernnaskh13uncropped"]
     compileOptions {
         sourceCompatibility = 1.8
         targetCompatibility = 1.8

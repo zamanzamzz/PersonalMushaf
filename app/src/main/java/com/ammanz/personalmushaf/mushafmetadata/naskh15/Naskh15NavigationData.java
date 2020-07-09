@@ -1,4 +1,4 @@
-package com.ammanz.naskh15;
+package com.ammanz.personalmushaf.mushafmetadata.naskh15;
 
 
 import com.ammanz.personalmushaf.navigation.NavigationData;

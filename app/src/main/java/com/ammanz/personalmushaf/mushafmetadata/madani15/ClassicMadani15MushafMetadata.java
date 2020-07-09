@@ -1,4 +1,4 @@
-package com.ammanz.madani15;
+package com.ammanz.personalmushaf.mushafmetadata.madani15;
 
 import com.ammanz.personalmushaf.QuranSettings;
 import com.ammanz.personalmushaf.R;
@@ -8,10 +8,9 @@ import com.ammanz.personalmushaf.navigation.NavigationData;
 public class ClassicMadani15MushafMetadata extends MushafMetadata {
 
     public ClassicMadani15MushafMetadata() {
-        assetName = "classicmadani15assets";
         assetPath = quranSettings.getMushafLocation(QuranSettings.CLASSICMADANI15);
         id = "classicmadani15";
-        databasePath = assetPath + "/databases/ayahinfo_classicmadani15line.db";
+        databasePath = assetPath + "/databases/ayahinfo_classicmadani15.db";
         name = "Classic 15 Line Madani Mushaf";
         description = "The classic standard mushaf from Saudi Arabia.";
         previewDrawableIDs = new int[2];
