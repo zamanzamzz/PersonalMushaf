@@ -17,6 +17,7 @@ public class JuzAdapter extends RecyclerView.Adapter<JuzAdapter.JuzViewHolder> {
     private int[] juzPageNumbers;
     private double[] juzLengths;
     private String[] juzNames;
+    private QuranSettings quranSettings;
 
     public static class JuzViewHolder extends RecyclerView.ViewHolder {
         public LinearLayout linearLayout;
@@ -30,6 +31,7 @@ public class JuzAdapter extends RecyclerView.Adapter<JuzAdapter.JuzViewHolder> {
         this.juzNames = juzNames;
         this.juzPageNumbers = juzPageNumbers;
         this.juzLengths = juzLengths;
+        quranSettings = QuranSettings.getInstance();
     }
 
     @Override
@@ -55,7 +57,7 @@ public class JuzAdapter extends RecyclerView.Adapter<JuzAdapter.JuzViewHolder> {
 
         String length = String.format("%.2f", juzLengths[position]) + " pages";
 
-        if (QuranSettings.getInstance().getSimplifyInterface(juz.getContext())) {
+        if (quranSettings.getSimplifyInterface(juz.getContext())) {
             juz.setText(Integer.toString(position + 1));
             juz.setTextSize(20);
         } else

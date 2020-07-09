@@ -23,11 +23,13 @@ public class QuranPageAdapter extends FragmentStatePagerAdapter {
     private int orientation;
     private boolean isForceDualPage;
     private QuranActivity quranActivity;
+    private QuranSettings quranSettings;
 
     public QuranPageAdapter(FragmentManager fm, QuranActivity context, int orientation) {
         super(fm, FragmentStatePagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
-        this.mushafMetadata = QuranSettings.getInstance().getMushafMetadata(context);
-        isForceDualPage = QuranSettings.getInstance().getIsForceDualPage(context);
+        this.quranSettings = QuranSettings.getInstance();
+        this.mushafMetadata = quranSettings.getMushafMetadata(context);
+        isForceDualPage = quranSettings.getIsForceDualPage(context);
         this.orientation = orientation;
         this.quranActivity = context;
 

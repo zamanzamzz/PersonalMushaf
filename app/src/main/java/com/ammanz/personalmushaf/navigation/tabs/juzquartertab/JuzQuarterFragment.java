@@ -20,6 +20,7 @@ import com.ammanz.personalmushaf.navigation.QuranConstants;
  * A simple {@link Fragment} subclass.
  */
 public class JuzQuarterFragment extends Fragment {
+    private QuranSettings quranSettings;
 
     public JuzQuarterFragment() {
         // Required empty public constructor
@@ -32,7 +33,9 @@ public class JuzQuarterFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_tab, container, false);
 
         int juzNumber = getArguments().getInt("juz number");
-        MushafMetadata mushafMetadata = QuranSettings.getInstance().getMushafMetadata(getContext());
+        quranSettings = QuranSettings.getInstance();
+
+        MushafMetadata mushafMetadata = quranSettings.getMushafMetadata(getContext());
 
 
         RecyclerView juzQuarterRecyclerView = v.findViewById(R.id.tab_recycler_view);
@@ -48,7 +51,7 @@ public class JuzQuarterFragment extends Fragment {
         int MADANINUMOFQUARTERS = 8;
         int RUKUNUMOFQUARTERS = 4;
 
-        int landmarkSystem = QuranSettings.getInstance().getLandMarkSystem(getContext());
+        int landmarkSystem = quranSettings.getLandMarkSystem(getContext());
         int[][] info;
         int[] pageNumbers;
         String[] prefixes;

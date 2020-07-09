@@ -31,6 +31,7 @@ public class QuranDualPageFragment extends QuranPage {
     private int highlightedAyah;
     private float x;
     private float y;
+    private QuranSettings quranSettings;
 
     public static QuranDualPageFragment newInstance(int position, Integer highlightedSurah, Integer highlightedAyah) {
         QuranDualPageFragment fragment = new QuranDualPageFragment();
@@ -55,10 +56,12 @@ public class QuranDualPageFragment extends QuranPage {
 
         int dualPagerPosition = getArguments().getInt("dual_pager_position");
 
+        quranSettings = QuranSettings.getInstance();
+
         highlightedSurah = getArguments().getInt("highlighted_surah", 0);
         highlightedAyah = getArguments().getInt("highlighted_ayah", 0);
 
-        MushafMetadata mushafMetadata = QuranSettings.getInstance().getMushafMetadata(getContext());
+        MushafMetadata mushafMetadata = quranSettings.getMushafMetadata(getContext());
 
         rightImage = v.findViewById(R.id.page1);
         final String leftPagePath = getLeftPagePath(dualPagerPosition, mushafMetadata);

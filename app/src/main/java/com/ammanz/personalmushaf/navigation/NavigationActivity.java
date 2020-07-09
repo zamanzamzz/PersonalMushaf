@@ -29,6 +29,7 @@ public class NavigationActivity extends AppCompatActivity {
     int juzNumber;
     int currentPagerPosition;
     ViewPagerAdapter viewPagerAdapter;
+    QuranSettings quranSettings;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -40,6 +41,7 @@ public class NavigationActivity extends AppCompatActivity {
         else
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED);
 
+        quranSettings = QuranSettings.getInstance();
         loadActivity();
     }
 
@@ -48,7 +50,7 @@ public class NavigationActivity extends AppCompatActivity {
         setSupportActionBar(navigationToolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
-        mushafMetadata = QuranSettings.getInstance().getMushafMetadata(this);
+        mushafMetadata = quranSettings.getMushafMetadata(this);
 
         Intent intent = getIntent();
 
@@ -130,8 +132,8 @@ public class NavigationActivity extends AppCompatActivity {
     @Override
     protected void onRestart() {
         super.onRestart();
-        if (QuranSettings.getInstance().getShouldRestartNavigationActivity()) {
-            QuranSettings.getInstance().setShouldRestartNavigationActivity(false);
+        if (quranSettings.getShouldRestartNavigationActivity()) {
+            quranSettings.setShouldRestartNavigationActivity(false);
             loadActivity();
         }
     }
@@ -178,7 +180,7 @@ public class NavigationActivity extends AppCompatActivity {
     }
 
     private void setViewPagerTabs(ViewPagerAdapter viewPagerAdapter, RukuContentFragment rukuContentFragment) {
-        int landmarkSystem = QuranSettings.getInstance().getLandMarkSystem(this);
+        int landmarkSystem = quranSettings.getLandMarkSystem(this);
         if (mushafMetadata.getShouldDoRuku(landmarkSystem))
             viewPagerAdapter.addFragment(rukuContentFragment, "Ruku");
     }

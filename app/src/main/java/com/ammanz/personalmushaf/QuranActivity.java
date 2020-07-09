@@ -59,7 +59,7 @@ public class QuranActivity extends AppCompatActivity implements Observer {
     private MushafMetadata mushafMetadata;
 
     private GlyphsHighlighter glyphsHighlighter;
-
+    private QuranSettings quranSettings;
 
 
     @Override
@@ -70,9 +70,11 @@ public class QuranActivity extends AppCompatActivity implements Observer {
             setShowWhenLocked(true);
         else
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED);
+
+        quranSettings = QuranSettings.getInstance();
         
-        isSmoothVolumeKeyNavigation = QuranSettings.getInstance().getIsSmoothKeyNavigation(this);
-        isForceDualPage = QuranSettings.getInstance().getIsForceDualPage(this);
+        isSmoothVolumeKeyNavigation = quranSettings.getIsSmoothKeyNavigation(this);
+        isForceDualPage = quranSettings.getIsForceDualPage(this);
 
         setupActionbar();
 
@@ -84,7 +86,7 @@ public class QuranActivity extends AppCompatActivity implements Observer {
 
         currentOrientation = getScreenRotation();
 
-        mushafMetadata = QuranSettings.getInstance().getMushafMetadata(this);
+        mushafMetadata = quranSettings.getMushafMetadata(this);
 
         setupInitialPager();
 
@@ -132,7 +134,7 @@ public class QuranActivity extends AppCompatActivity implements Observer {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        if (QuranSettings.getInstance().getIsDebugMode(this))
+        if (quranSettings.getIsDebugMode(this))
             getMenuInflater().inflate(R.menu.glyphplayback, menu);
         return true;
     }
@@ -289,7 +291,7 @@ public class QuranActivity extends AppCompatActivity implements Observer {
         pager = findViewById(R.id.pager);
 
         pagerAdapter = new QuranPageAdapter(getSupportFragmentManager(),this, currentOrientation);
-        if (QuranSettings.getInstance().getNightMode(this))
+        if (quranSettings.getNightMode(this))
             pager.setBackgroundColor(Color.BLACK);
         pager.setAdapter(pagerAdapter);
         pager.setOffscreenPageLimit(1);
@@ -301,7 +303,7 @@ public class QuranActivity extends AppCompatActivity implements Observer {
     private void setupDualPager() {
         pager = findViewById(R.id.pager);
         pagerAdapter = new QuranPageAdapter(getSupportFragmentManager(),this, currentOrientation);
-        if (QuranSettings.getInstance().getNightMode(this))
+        if (quranSettings.getNightMode(this))
             pager.setBackgroundColor(Color.BLACK);
         pager.setAdapter(pagerAdapter);
         pager.setOffscreenPageLimit(1);

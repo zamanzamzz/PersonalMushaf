@@ -48,6 +48,7 @@ public class MushafStyleFragment extends Fragment {
 
     private AssetPackStateUpdateListener assetPackStateUpdateListener;
     private AssetPackManager assetPackManager;
+    private QuranSettings quranSettings;
 
     private DialogInterface.OnClickListener dialogClickListener = (dialog, which) -> {
         switch (which){
@@ -70,6 +71,8 @@ public class MushafStyleFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_startup, container, false);
+
+        quranSettings = QuranSettings.getInstance();
 
         mushafIndex = getArguments().getInt("mushaf", QuranSettings.CLASSICMADANI15);
 
@@ -94,7 +97,7 @@ public class MushafStyleFragment extends Fragment {
 
         FloatingActionButton fab = v.findViewById(R.id.fab);
 
-        if (QuranSettings.getInstance().isMushafAvailable(mushafIndex)) {
+        if (quranSettings.isMushafAvailable(mushafIndex)) {
             fab.setImageResource(R.drawable.ic_check_black_24dp);
             fab.setOnClickListener(v1 -> {
                 updateQuranSettings();
@@ -163,9 +166,9 @@ public class MushafStyleFragment extends Fragment {
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getContext());
         pref.edit().putBoolean("firststart", false).apply();
         pref.edit().putString("mushaf", Integer.toString(mushafIndex)).apply();
-        QuranSettings.getInstance().updateAvailableMushafs(getContext());
-        QuranSettings.getInstance().setMushafVersion(mushafIndex);
-        QuranSettings.getInstance().setMushafMetadata(mushafIndex);
+        quranSettings.updateAvailableMushafs(getContext());
+        quranSettings.setMushafVersion(mushafIndex);
+        quranSettings.setMushafMetadata(mushafIndex);
     }
 
     private void setupAssetPackStateUpdateListener() {

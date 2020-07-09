@@ -1,8 +1,10 @@
 package com.ammanz.personalmushaf.mushafmetadata;
 
+import com.ammanz.personalmushaf.QuranSettings;
 import com.ammanz.personalmushaf.navigation.NavigationData;
 
 public abstract class MushafMetadata {
+    protected QuranSettings quranSettings = QuranSettings.getInstance();
     protected String assetName;
     protected String assetPath;
     protected String id;

@@ -179,7 +179,7 @@ public class QuranSettings {
             if (currentMushafDirectory.exists() && currentMushafDirectory.isDirectory()) {
                 currentImagesDirectory = new File(FileUtils.ASSETSDIRECTORY + "/" + expectedMushafDirectories[i] + "/images");
                 if ((currentImagesDirectory.exists() && currentImagesDirectory.isDirectory()) && currentImagesDirectory.list().length > 500)
-                    getInstance().setAvailableMushaf(i, true);
+                    setAvailableMushaf(i, true);
                 rv = true;
             }
         }

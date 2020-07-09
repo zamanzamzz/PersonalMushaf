@@ -22,6 +22,7 @@ import static com.ammanz.personalmushaf.navigation.QuranConstants.surahsInJuz;
  * A simple {@link Fragment} subclass.
  */
 public class SurahFragment extends Fragment {
+    private QuranSettings quranSettings;
 
     public SurahFragment() {
         // Required empty public constructor
@@ -33,7 +34,9 @@ public class SurahFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         int juzNumber = getArguments().getInt("juz number");
-        MushafMetadata mushafMetadata = QuranSettings.getInstance().getMushafMetadata(getContext());
+        quranSettings = QuranSettings.getInstance();
+
+        MushafMetadata mushafMetadata = quranSettings.getMushafMetadata(getContext());
 
         View v = inflater.inflate(R.layout.fragment_tab, container, false);
         RecyclerView surahRecyclerView = v.findViewById(R.id.tab_recycler_view);
@@ -50,7 +53,7 @@ public class SurahFragment extends Fragment {
     private SurahAdapter getSurahAdapter(int juzNumber, MushafMetadata mushafMetadata) {
         int[][] surahInfo = getSurahInfoInJuz(juzNumber);
         int[] surahPageNumbersInJuz = getSurahPageNumbersinJuz(mushafMetadata.getNavigationData().getSurahPageNumbers(), juzNumber);
-        String[] surahNamesInJuz = QuranSettings.getInstance().getSimplifyInterface(getContext()) ?
+        String[] surahNamesInJuz = quranSettings.getSimplifyInterface(getContext()) ?
                 getSurahNamesInJuz(juzNumber, surahInfo.length, getResources().getStringArray(R.array.surah_names_english)) :
                 getSurahNamesInJuz(juzNumber, surahInfo.length, getResources().getStringArray(R.array.surah_names_arabic));
 

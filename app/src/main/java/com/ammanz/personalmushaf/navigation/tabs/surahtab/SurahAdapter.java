@@ -19,6 +19,7 @@ public class SurahAdapter extends RecyclerView.Adapter<SurahAdapter.SurahViewHol
     private int[] surahPageNumbers;
     private String[] prefixes;
     private double[] surahLengthsInJuz;
+    private QuranSettings quranSettings;
 
     public static class SurahViewHolder extends RecyclerView.ViewHolder {
         public LinearLayout linearLayout;
@@ -33,6 +34,7 @@ public class SurahAdapter extends RecyclerView.Adapter<SurahAdapter.SurahViewHol
         this.surahPageNumbers = surahPageNumbers;
         this.prefixes = prefixes;
         this.surahLengthsInJuz = surahLengthsInJuz;
+        quranSettings = QuranSettings.getInstance();
     }
 
     @Override
@@ -61,7 +63,7 @@ public class SurahAdapter extends RecyclerView.Adapter<SurahAdapter.SurahViewHol
 
         final int pageNumber = surahPageNumbers[position];
 
-        if (QuranSettings.getInstance().getSimplifyInterface(surahNumber.getContext())) {
+        if (quranSettings.getSimplifyInterface(surahNumber.getContext())) {
             surahNumber.setText(Integer.toString(surahInfo[position][0]));
             surahNumber.setTextSize(20);
             surahStart.setText("Surah " + prefixes[position]);

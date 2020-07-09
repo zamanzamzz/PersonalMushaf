@@ -17,6 +17,7 @@ public class RukuContentAdapter extends RecyclerView.Adapter<RukuContentAdapter.
     private int[] rukuPageNumbers;
     private double[] rukuLengths;
     private String[] prefixes;
+    private QuranSettings quranSettings;
 
     public static class JuzViewHolder extends RecyclerView.ViewHolder {
         public LinearLayout linearLayout;
@@ -31,6 +32,7 @@ public class RukuContentAdapter extends RecyclerView.Adapter<RukuContentAdapter.
         this.rukuPageNumbers = rukuPageNumbers;
         this.rukuLengths = rukuLengths;
         this.prefixes = prefixes;
+        quranSettings = QuranSettings.getInstance();
     }
 
     @Override
@@ -54,7 +56,7 @@ public class RukuContentAdapter extends RecyclerView.Adapter<RukuContentAdapter.
         TextView rukuLength = (TextView) ((LinearLayout) layout.getChildAt(1)).getChildAt(0);
         TextView rukuPrefix = (TextView) layout.getChildAt(2);
 
-        if (QuranSettings.getInstance().getSimplifyInterface(rukuNumber.getContext())) {
+        if (quranSettings.getSimplifyInterface(rukuNumber.getContext())) {
             rukuNumber.setText(Integer.toString(position + 1));
             rukuNumber.setTextSize(20);
         } else

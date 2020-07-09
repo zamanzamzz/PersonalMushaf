@@ -26,6 +26,7 @@ public class QuranPageFragment extends QuranPage {
     private PageData pageData;
     private float x;
     private float y;
+    private QuranSettings quranSettings;
 
     public static QuranPageFragment newInstance(int pageNumber, int position, Integer highlightedSurah, Integer highlightedAyah) {
         QuranPageFragment fragment = new QuranPageFragment();
@@ -51,6 +52,8 @@ public class QuranPageFragment extends QuranPage {
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_page, container, false);
 
+        quranSettings = QuranSettings.getInstance();
+
         int pageNumber = getArguments().getInt("page_number");
         int position = getArguments().getInt("position");
 
@@ -59,7 +62,7 @@ public class QuranPageFragment extends QuranPage {
 
         imageView = v.findViewById(R.id.page1);
 
-        MushafMetadata mushafMetadata = QuranSettings.getInstance().getMushafMetadata(getContext());
+        MushafMetadata mushafMetadata = quranSettings.getMushafMetadata(getContext());
         String path = getPagePath(pageNumber, mushafMetadata);
         pageData = getPageData(pageNumber, mushafMetadata);
 

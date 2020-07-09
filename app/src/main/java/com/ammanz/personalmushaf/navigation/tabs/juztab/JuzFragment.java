@@ -19,6 +19,7 @@ import com.ammanz.personalmushaf.mushafmetadata.MushafMetadata;
  * A simple {@link Fragment} subclass.
  */
 public class JuzFragment extends Fragment {
+    private QuranSettings quranSettings;
 
     public JuzFragment() {
         // Required empty public constructor
@@ -30,7 +31,9 @@ public class JuzFragment extends Fragment {
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_tab, container, false);
 
-        MushafMetadata mushafMetadata = QuranSettings.getInstance().getMushafMetadata(getContext());
+        quranSettings = QuranSettings.getInstance();
+
+        MushafMetadata mushafMetadata = quranSettings.getMushafMetadata(getContext());
 
 
         RecyclerView juzRecyclerView = v.findViewById(R.id.tab_recycler_view);

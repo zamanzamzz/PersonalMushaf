@@ -9,7 +9,7 @@ public class ModernNaskh13CroppedMushafMetadata extends MushafMetadata {
 
     public ModernNaskh13CroppedMushafMetadata() {
         assetName = "modernnaskh13croppedassets";
-        assetPath = QuranSettings.getInstance().getMushafLocation(QuranSettings.MODERNNASKH13CROPPED);
+        assetPath = quranSettings.getMushafLocation(QuranSettings.MODERNNASKH13CROPPED);
         id = "modernnaskh13cropped";
         databasePath = assetPath + "/databases/ayahinfo_modernnaskh13cropped.db";
         name = "Modern 13 Line Naskh Mushaf (Cropped)";

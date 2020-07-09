@@ -20,6 +20,8 @@ import com.ammanz.personalmushaf.navigation.QuranConstants;
  * A simple {@link Fragment} subclass.
  */
 public class RukuContentFragment extends Fragment {
+    private QuranSettings quranSettings;
+
     public RukuContentFragment() {
         // Required empty public constructor
     }
@@ -32,7 +34,9 @@ public class RukuContentFragment extends Fragment {
 
         int juzNumber = getArguments().getInt("juz number");
 
-        MushafMetadata mushafMetadata = QuranSettings.getInstance().getMushafMetadata(getContext());
+        quranSettings = QuranSettings.getInstance();
+
+        MushafMetadata mushafMetadata = quranSettings.getMushafMetadata(getContext());
 
         RecyclerView juzRecyclerView = v.findViewById(R.id.tab_recycler_view);
         juzRecyclerView.setHasFixedSize(true);

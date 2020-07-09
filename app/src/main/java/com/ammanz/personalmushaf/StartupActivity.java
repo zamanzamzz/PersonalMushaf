@@ -22,12 +22,14 @@ import org.jetbrains.annotations.NotNull;
 
 public class StartupActivity extends AppCompatActivity {
     private static final int  REQUEST_PERMISSION_CODE = 1111;
+    private QuranSettings quranSettings;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mushaftype);
-        QuranSettings.getInstance().initializeAvailableMushafs(getApplicationContext());
+        quranSettings = QuranSettings.getInstance();
+        quranSettings.initializeAvailableMushafs(getApplicationContext());
         if (checkPermission())
             checkDataFiles();
     }
@@ -50,8 +52,8 @@ public class StartupActivity extends AppCompatActivity {
     }
 
     private boolean isAnyMushafAvailable() {
-        QuranSettings.getInstance().updateAvailableMushafs(getApplicationContext());
-        return QuranSettings.getInstance().isAnyMushafAvailable();
+        quranSettings.updateAvailableMushafs(getApplicationContext());
+        return quranSettings.isAnyMushafAvailable();
     }
 
     private boolean checkPermission(){

@@ -103,14 +103,16 @@ public class SettingsActivity extends AppCompatActivity implements
         private Integer currentLandMarkSystem;
         private String currentMushaf;
         private Boolean isInterfaceSimplified;
+        private QuranSettings quranSettings;
 
         @Override
         public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
             setPreferencesFromResource(R.xml.header_preferences, rootKey);
+            quranSettings = QuranSettings.getInstance();
             mushaf = findPreference("mushaf");
-            currentLandMarkSystem = QuranSettings.getInstance().getLandMarkSystem(getContext());
-            currentMushaf = QuranSettings.getInstance().getMushafMetadata(getContext()).getId();
-            isInterfaceSimplified = QuranSettings.getInstance().getSimplifyInterface(getContext());
+            currentLandMarkSystem = quranSettings.getLandMarkSystem(getContext());
+            currentMushaf = quranSettings.getMushafMetadata(getContext()).getId();
+            isInterfaceSimplified = quranSettings.getSimplifyInterface(getContext());
             SwitchPreferenceCompat isNightMode = findPreference("night_mode");
             SwitchPreferenceCompat simplifyInterface = findPreference("simplify_interface");
             ListPreference landmarkSystem = findPreference("landmark");
@@ -118,42 +120,42 @@ public class SettingsActivity extends AppCompatActivity implements
             SwitchPreferenceCompat isSmoothKeyNavigation = findPreference("smoothpageturn");
             SwitchPreferenceCompat isDebugMode = findPreference("debugmodeswitch");
 
-            mushaf.setSummary(QuranSettings.getInstance().getMushafMetadata(getContext()).getName());
+            mushaf.setSummary(quranSettings.getMushafMetadata(getContext()).getName());
 
             isNightMode.setOnPreferenceChangeListener((preference, newValue) -> {
-                QuranSettings.getInstance().setNightMode((Boolean) newValue);
+                quranSettings.setNightMode((Boolean) newValue);
                 return true;
             });
 
             simplifyInterface.setOnPreferenceChangeListener((preference, newValue) -> {
-                QuranSettings.getInstance().setSimplifyInterface((Boolean) newValue);
+                quranSettings.setSimplifyInterface((Boolean) newValue);
                 if (isInterfaceSimplified != (Boolean) newValue)
-                    QuranSettings.getInstance().setShouldRestartNavigationActivity(true);
+                    quranSettings.setShouldRestartNavigationActivity(true);
                 return true;
             });
 
             landmarkSystem.setOnPreferenceChangeListener((preference, newValue) -> {
                 int landmarkSystem1 = Integer.parseInt((String) newValue);
-                QuranSettings.getInstance().setLandmarkSystem(landmarkSystem1);
+                quranSettings.setLandmarkSystem(landmarkSystem1);
                 if (landmarkSystem1 != currentLandMarkSystem) {
-                    QuranSettings.getInstance().setShouldRestartNavigationActivity(true);
+                    quranSettings.setShouldRestartNavigationActivity(true);
                 } else
-                    QuranSettings.getInstance().setShouldRestartNavigationActivity(false);
+                    quranSettings.setShouldRestartNavigationActivity(false);
                 return true;
             });
 
             isForceDualPages.setOnPreferenceChangeListener((preference, newValue) -> {
-                QuranSettings.getInstance().setForceDualPage((Boolean) newValue);
+                quranSettings.setForceDualPage((Boolean) newValue);
                 return true;
             });
 
             isSmoothKeyNavigation.setOnPreferenceChangeListener((preference, newValue) -> {
-                QuranSettings.getInstance().setSmoothKeyNavigation((Boolean) newValue);
+                quranSettings.setSmoothKeyNavigation((Boolean) newValue);
                 return true;
             });
 
             isDebugMode.setOnPreferenceChangeListener((preference, newValue) -> {
-                QuranSettings.getInstance().setDebugMode((Boolean) newValue);
+                quranSettings.setDebugMode((Boolean) newValue);
                 return true;
             });
         }
@@ -161,11 +163,11 @@ public class SettingsActivity extends AppCompatActivity implements
         @Override
         public void onResume() {
             super.onResume();
-            if (!QuranSettings.getInstance().getMushafMetadata(getContext()).getId().equals(currentMushaf)) {
-                mushaf.setSummary(QuranSettings.getInstance().getMushafMetadata(getContext()).getName());
-                QuranSettings.getInstance().setShouldRestartNavigationActivity(true);
+            if (!quranSettings.getMushafMetadata(getContext()).getId().equals(currentMushaf)) {
+                mushaf.setSummary(quranSettings.getMushafMetadata(getContext()).getName());
+                quranSettings.setShouldRestartNavigationActivity(true);
             } else {
-                QuranSettings.getInstance().setShouldRestartNavigationActivity(false);
+                quranSettings.setShouldRestartNavigationActivity(false);
             }
 
         }

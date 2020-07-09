@@ -50,16 +50,19 @@ public class HighlightingImageView extends AppCompatImageView {
 
     private List<AyahBounds> glyphs;
     private int currentGlyph = -1;
+    private QuranSettings quranSettings;
 
     public HighlightingImageView(Context context) {
         this(context, null);
-        if (QuranSettings.getInstance().getNightMode(getContext()))
+        quranSettings = QuranSettings.getInstance();
+        if (quranSettings.getNightMode(getContext()))
             setColorFilter(new ColorMatrixColorFilter(nightModeMatrix));
     }
 
     public HighlightingImageView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        if (QuranSettings.getInstance().getNightMode(getContext()))
+        quranSettings = QuranSettings.getInstance();
+        if (quranSettings.getNightMode(getContext()))
             setColorFilter(new ColorMatrixColorFilter(nightModeMatrix));
     }
 
