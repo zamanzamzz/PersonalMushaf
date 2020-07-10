@@ -1,63 +1,76 @@
 package com.ammanz.personalmushaf.quranpage;
 
 import android.util.SparseArray;
-import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentStatePagerAdapter;
+import androidx.lifecycle.Lifecycle;
+import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 import com.ammanz.personalmushaf.QuranActivity;
 import com.ammanz.personalmushaf.QuranSettings;
 import com.ammanz.personalmushaf.model.HighlightType;
 import com.ammanz.personalmushaf.mushafmetadata.MushafMetadata;
 
-public class QuranPageAdapter extends FragmentStatePagerAdapter {
+public class QuranPageAdapter extends FragmentStateAdapter {
 
     private SparseArray<QuranPage> registeredFragments = new SparseArray<>();
     private MushafMetadata mushafMetadata;
     private int numOfSinglePages;
     private int numOfDualPages;
 
-    private int orientation;
-    private boolean isForceDualPage;
     private QuranActivity quranActivity;
     private QuranSettings quranSettings;
 
-    public QuranPageAdapter(FragmentManager fm, QuranActivity context, int orientation) {
-        super(fm, FragmentStatePagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
+    public QuranPageAdapter(FragmentManager fm, QuranActivity context, Lifecycle lifecycle) {
+        super(fm, lifecycle);
         this.quranSettings = QuranSettings.getInstance();
         this.mushafMetadata = quranSettings.getMushafMetadata(context);
-        isForceDualPage = quranSettings.getIsForceDualPage(context);
-        this.orientation = orientation;
         this.quranActivity = context;
+        registerFragmentTransactionCallback(new FragmentTransactionCallback() {
+            @NonNull
+            @Override
+            public OnPostEventListener onFragmentPreAdded(@NonNull Fragment fragment) {
+                QuranPage page = (QuranPage) fragment;
+                registeredFragments.put(page.getPosition(), page);
+                return super.onFragmentPreAdded(fragment);
+            }
 
+            @NonNull
+            @Override
+            public OnPostEventListener onFragmentPreRemoved(@NonNull Fragment fragment) {
+                QuranPage page = (QuranPage) fragment;
+                registeredFragments.remove(page.getPosition());
+                return super.onFragmentPreRemoved(fragment);
+            }
+        });
         numOfSinglePages = mushafMetadata.getMaxPage() - mushafMetadata.getMinPage() + 1;
         numOfDualPages = numOfSinglePages % 2 == 0 ? numOfSinglePages / 2 : numOfSinglePages / 2 + 1;
     }
 
     @NonNull
     @Override
-    public Fragment getItem(int position) {
+    public Fragment createFragment(int position) {
         QuranPage fragment;
 
-        if (QuranActivity.isLandscape(orientation) || isForceDualPage) {
+        if (quranActivity.currentShouldUseDualPages) {
             fragment = QuranDualPageFragment.newInstance(position, quranActivity.highlightedSurah, quranActivity.highlightedAyah);
+            fragment.setPosition(position);
             fragment.addObserver(quranActivity);
         } else {
             int pageNumber = getPageNumberFromPagerPosition(position);
             fragment = QuranPageFragment.newInstance(pageNumber, position, quranActivity.highlightedSurah, quranActivity.highlightedAyah);
+            fragment.setPosition(position);
             fragment.addObserver(quranActivity);
         }
-
 
         return fragment;
     }
 
     @Override
-    public int getCount() {
-        if (!QuranActivity.isLandscape(orientation) && !isForceDualPage) {
+    public int getItemCount() {
+        if (!quranActivity.currentShouldUseDualPages) {
             return numOfSinglePages;
         } else {
             return numOfDualPages;
@@ -68,7 +81,7 @@ public class QuranPageAdapter extends FragmentStatePagerAdapter {
         getRegisteredFragment(position).highlightAyah(selectedSurah, selectedAyah, HighlightType.SELECTION);
         if (position > 0)
             getRegisteredFragment(position - 1).highlightAyah(selectedSurah, selectedAyah, HighlightType.SELECTION);
-        if (position < getCount() - 1)
+        if (position < getItemCount() - 1)
             getRegisteredFragment(position + 1).highlightAyah(selectedSurah, selectedAyah, HighlightType.SELECTION);
     }
 
@@ -76,7 +89,7 @@ public class QuranPageAdapter extends FragmentStatePagerAdapter {
         getRegisteredFragment(position).unhighlightAyah(selectedSurah, selectedAyah, HighlightType.SELECTION);
         if (position > 0)
             getRegisteredFragment(position - 1).unhighlightAyah(selectedSurah, selectedAyah, HighlightType.SELECTION);
-        if (position < getCount() - 1)
+        if (position < getItemCount() - 1)
             getRegisteredFragment(position + 1).unhighlightAyah(selectedSurah, selectedAyah, HighlightType.SELECTION);
     }
 
@@ -88,20 +101,6 @@ public class QuranPageAdapter extends FragmentStatePagerAdapter {
         return getRegisteredFragment(position).getNumOfGlyphs();
     }
 
-
-    @NonNull
-    @Override
-    public Object instantiateItem(ViewGroup container, int position) {
-        QuranPage fragment = (QuranPage) super.instantiateItem(container, position);
-        registeredFragments.put(position, fragment);
-        return fragment;
-    }
-
-    @Override
-    public void destroyItem(ViewGroup container, int position, Object object) {
-        registeredFragments.remove(position);
-        super.destroyItem(container, position, object);
-    }
 
     public QuranPage getRegisteredFragment(int position) {
         return registeredFragments.get(position);

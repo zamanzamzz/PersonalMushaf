@@ -8,8 +8,8 @@ android {
         applicationId 'com.ammanz.personalmushaf'
         minSdkVersion 24
         targetSdkVersion 29
-        versionCode 320
-        versionName "0.320"
+        versionCode 325
+        versionName "0.325"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -28,6 +28,7 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'com.google.android.material:material:1.2.0-beta01'
+    implementation "androidx.viewpager2:viewpager2:1.1.0-alpha01"
     implementation 'com.google.android.play:core:1.7.3'
     implementation "com.google.android.gms:play-services-instantapps:17.0.0"
     implementation 'com.google.firebase:firebase-analytics:17.4.2'

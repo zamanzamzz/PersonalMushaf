@@ -16,9 +16,13 @@ public class FileUtils {
     public static String ASSETSDIRECTORY;
 
     public static boolean checkRootDataDirectory(Context context) {
-        ASSETSDIRECTORY = context.getExternalFilesDir(null).getAbsolutePath();
+        ASSETSDIRECTORY = getAssetsDirectory(context);
         File dataDirectory = new File(ASSETSDIRECTORY);
         return dataDirectory.exists() && dataDirectory.isDirectory();
+    }
+
+    public static String getAssetsDirectory(Context context) {
+        return context.getExternalFilesDir(null).getAbsolutePath();
     }
 
     public static void unzip(File zipFile, File targetDirectory) throws IOException {

@@ -1,11 +1,14 @@
 package com.ammanz.personalmushaf.quranpage;
 
 import android.annotation.SuppressLint;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import com.ammanz.personalmushaf.QuranSettings;
 import com.ammanz.personalmushaf.R;
@@ -15,6 +18,8 @@ import com.ammanz.personalmushaf.model.PageData;
 import com.ammanz.personalmushaf.mushafmetadata.MushafMetadata;
 import com.ammanz.personalmushaf.util.ImageUtils;
 import com.ammanz.personalmushaf.widgets.HighlightingImageView;
+
+import java.util.concurrent.atomic.AtomicReference;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Observable;
@@ -52,6 +57,9 @@ public class QuranPageFragment extends QuranPage {
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_page, container, false);
 
+        ((LinearLayout) v.findViewById(R.id.pager_linear_layout)).setOrientation(LinearLayout.VERTICAL);
+        v.findViewById(R.id.page2).setVisibility(View.GONE);
+
         quranSettings = QuranSettings.getInstance();
 
         int pageNumber = getArguments().getInt("page_number");
@@ -66,11 +74,14 @@ public class QuranPageFragment extends QuranPage {
         String path = getPagePath(pageNumber, mushafMetadata);
         pageData = getPageData(pageNumber, mushafMetadata);
 
+        AtomicReference<Bitmap> bitmap = new AtomicReference<>();
         Observable.fromCallable(() -> {
             pageData.populateAyahBoundsAndGlyphs();
+            bitmap.set(BitmapFactory.decodeFile(path));
             return true;
         }).subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread()).subscribe((result) -> {
+                imageView.setImageBitmap(bitmap.get());
                 imageView.setAyahData(pageData.getAyahCoordinates());
                 imageView.setGlyphs(pageData.getGlyphs());
 
@@ -79,8 +90,6 @@ public class QuranPageFragment extends QuranPage {
                 if (highlightedSurah != 0 && highlightedAyah != 0)
                     highlightAyah(highlightedSurah, highlightedAyah, HighlightType.SELECTION);
         });
-
-        ImageUtils.loadBitmap(path, imageView);
 
         return v;
     }

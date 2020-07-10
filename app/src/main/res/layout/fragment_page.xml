@@ -3,6 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/pager_linear_layout"
     tools:context="com.ammanz.personalmushaf.QuranActivity"
     android:orientation="vertical">
 
@@ -10,13 +11,17 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/page1"
+        android:layout_weight="1"
         android:onClick="SystemUIListener"
         />
 
     <com.ammanz.personalmushaf.widgets.HighlightingImageView
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:id="@id/page2"
-        android:visibility="gone"/>
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/page2"
+        android:layout_weight="1"
+        android:onClick="SystemUIListener"
+        android:visibility="gone"
+        />
 
 </LinearLayout>

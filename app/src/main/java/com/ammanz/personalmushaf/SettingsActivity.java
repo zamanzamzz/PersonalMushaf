@@ -116,7 +116,6 @@ public class SettingsActivity extends AppCompatActivity implements
             SwitchPreferenceCompat isNightMode = findPreference("night_mode");
             SwitchPreferenceCompat simplifyInterface = findPreference("simplify_interface");
             ListPreference landmarkSystem = findPreference("landmark");
-            SwitchPreferenceCompat isForceDualPages = findPreference("force_dual_page");
             SwitchPreferenceCompat isSmoothKeyNavigation = findPreference("smoothpageturn");
             SwitchPreferenceCompat isDebugMode = findPreference("debugmodeswitch");
 
@@ -141,11 +140,6 @@ public class SettingsActivity extends AppCompatActivity implements
                     quranSettings.setShouldRestartNavigationActivity(true);
                 } else
                     quranSettings.setShouldRestartNavigationActivity(false);
-                return true;
-            });
-
-            isForceDualPages.setOnPreferenceChangeListener((preference, newValue) -> {
-                quranSettings.setForceDualPage((Boolean) newValue);
                 return true;
             });
 

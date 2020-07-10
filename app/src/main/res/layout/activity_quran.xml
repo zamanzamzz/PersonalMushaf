@@ -13,13 +13,13 @@
         tools:context="com.android.personalmushaf.com.ammanz.personalmushaf.QuranActivity"
         android:orientation="vertical">
 
-        <com.duolingo.open.rtlviewpager.RtlViewPager
+        <androidx.viewpager2.widget.ViewPager2
             android:layoutDirection="rtl"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="#FFF"
             android:id="@+id/pager">
-        </com.duolingo.open.rtlviewpager.RtlViewPager>
+        </androidx.viewpager2.widget.ViewPager2>
     </LinearLayout>
     <FrameLayout
         android:layout_width="match_parent"

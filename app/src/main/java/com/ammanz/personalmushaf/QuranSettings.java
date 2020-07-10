@@ -24,13 +24,13 @@ public class QuranSettings {
     public static final int HIZB = 2;
     private static boolean[] availableMushafs = {false, false, false, false};
     private String[] packNamesArray = {"modernnaskh13cropped", "modernnaskh13uncropped", "classicnaskh15", "classicmadani15"};
+    private String assetsDirectory;
     private AssetPackManager assetPackManager;
     private static QuranSettings quranSettings;
     private MushafMetadata mushafMetadata;
     private SharedPreferences preferences;
     private Integer mushafVersion;
     private Integer landmarkSystem;
-    private Boolean isForceDualPage;
     private Boolean isSmoothKeyNavigation;
     private Boolean isDebugMode;
     private Boolean nightMode;
@@ -63,7 +63,7 @@ public class QuranSettings {
 
     public String getMushafLocation(int mushafVersion) {
         if (BuildConfig.DEBUG)
-            return FileUtils.ASSETSDIRECTORY + "/" + packNamesArray[mushafVersion];
+            return assetsDirectory + "/" + packNamesArray[mushafVersion];
         else {
             AssetPackLocation location = assetPackManager.getPackLocation(packNamesArray[mushafVersion]);
             return location == null ? null : location.assetsPath();
@@ -124,17 +124,6 @@ public class QuranSettings {
         this.mushafMetadata = mushafMetadata;
     }
 
-
-
-    public Boolean getIsForceDualPage(Context context) {
-        if (isForceDualPage == null) {
-            setPreference(context);
-            isForceDualPage = preferences.getBoolean("force_dual_page", false);
-        }
-
-        return isForceDualPage;
-    }
-
     public void initializeAvailableMushafs(Context context) {
         assetPackManager = AssetPackManagerFactory.getInstance(context);
         for (int i = 0; i < availableMushafs.length; i++) {
@@ -176,23 +165,19 @@ public class QuranSettings {
         String[] expectedMushafDirectories = {"modernnaskh13cropped", "modernnaskh13uncropped", "classicnaskh15", "classicmadani15"};
         File currentMushafDirectory;
         File currentImagesDirectory;
+        assetsDirectory = FileUtils.getAssetsDirectory(context);
 
         initializeAvailableMushafs(context);
 
         for (int i = MODERNNASKH13CROPPED; i <= CLASSICNASKH15 + 1; i++) {
-            currentMushafDirectory = new File(FileUtils.ASSETSDIRECTORY + "/" + expectedMushafDirectories[i]);
+            currentMushafDirectory = new File( assetsDirectory + "/" + expectedMushafDirectories[i]);
             if (currentMushafDirectory.exists() && currentMushafDirectory.isDirectory()) {
-                currentImagesDirectory = new File(FileUtils.ASSETSDIRECTORY + "/" + expectedMushafDirectories[i] + "/images/");
+                currentImagesDirectory = new File(assetsDirectory + "/" + expectedMushafDirectories[i] + "/images/");
                 if ((currentImagesDirectory.exists() && currentImagesDirectory.isDirectory()) && currentImagesDirectory.listFiles().length > 500)
                     setAvailableMushaf(i, true);
             }
         }
 
-    }
-
-
-    public void setForceDualPage(Boolean forceDualPage) {
-        isForceDualPage = forceDualPage;
     }
 
     public Boolean getIsSmoothKeyNavigation(Context context) {

@@ -14,6 +14,7 @@ import com.ammanz.personalmushaf.util.FileUtils;
 
 public abstract class QuranPage extends Fragment {
     private FragmentObserver mObservers = new FragmentObserver();
+    private int position;
 
     public void addObserver(QuranActivity quranActivity) {
         mObservers.addObserver(quranActivity);
@@ -43,4 +44,11 @@ public abstract class QuranPage extends Fragment {
 
     public abstract int getNumOfGlyphs();
 
+    public void setPosition(int position) {
+        this.position = position;
+    }
+
+    public int getPosition() {
+        return position;
+    }
 }

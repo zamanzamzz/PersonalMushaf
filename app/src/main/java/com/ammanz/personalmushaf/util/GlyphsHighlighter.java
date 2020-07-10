@@ -1,17 +1,18 @@
 package com.ammanz.personalmushaf.util;
 
 import androidx.viewpager.widget.ViewPager;
+import androidx.viewpager2.widget.ViewPager2;
 
 import com.ammanz.personalmushaf.quranpage.QuranPageAdapter;
 
 public class GlyphsHighlighter {
-    private ViewPager pager;
+    private ViewPager2 pager;
     private QuranPageAdapter pagerAdapter;
     private Thread highlightGlyphsThread;
     private int currentGlyphIndex;
     private boolean isGlyphForward;
 
-    public GlyphsHighlighter(ViewPager pager, QuranPageAdapter pagerAdapter) {
+    public GlyphsHighlighter(ViewPager2 pager, QuranPageAdapter pagerAdapter) {
         this.pager = pager;
         this.pagerAdapter = pagerAdapter;
         currentGlyphIndex = 0;
@@ -22,7 +23,7 @@ public class GlyphsHighlighter {
         this.pagerAdapter = pagerAdapter;
     }
 
-    public void setPager(ViewPager pager) {
+    public void setPager(ViewPager2 pager) {
         this.pager = pager;
     }
 

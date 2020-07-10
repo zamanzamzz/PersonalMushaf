@@ -1,15 +1,15 @@
 package com.ammanz.personalmushaf;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.graphics.Color;
+import android.graphics.Point;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
+import android.view.Display;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -21,12 +21,11 @@ import android.view.WindowManager;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.viewpager.widget.ViewPager;
+import androidx.viewpager2.widget.ViewPager2;
 
 import com.ammanz.personalmushaf.mushafmetadata.MushafMetadata;
 import com.ammanz.personalmushaf.quranpage.QuranPageAdapter;
 import com.ammanz.personalmushaf.util.GlyphsHighlighter;
-import com.duolingo.open.rtlviewpager.RtlViewPager;
 
 import java.util.Observable;
 import java.util.Observer;
@@ -39,23 +38,21 @@ public class QuranActivity extends AppCompatActivity implements Observer {
     public Integer highlightedSurah = null;
     public Integer highlightedAyah = null;
     public boolean isHighlighted = false;
+    public boolean currentShouldUseDualPages;
 
     private int pageNumber;
     private int receivedPageNumber;
     private int pagesTurned;
 
-    private int currentOrientation;
+    private ViewPager2 pager;
 
-    private RtlViewPager pager;
-
-    private ViewPager.OnPageChangeListener singlePageChangeListener;
-    private ViewPager.OnPageChangeListener dualPageChangeListener;
+    private ViewPager2.OnPageChangeCallback singlePageChangeCallback;
+    private ViewPager2.OnPageChangeCallback dualPageChangeCallback;
 
 
     private QuranPageAdapter pagerAdapter;
 
     boolean isSmoothVolumeKeyNavigation;
-    boolean isForceDualPage;
     private MushafMetadata mushafMetadata;
 
     private GlyphsHighlighter glyphsHighlighter;
@@ -74,7 +71,6 @@ public class QuranActivity extends AppCompatActivity implements Observer {
         quranSettings = QuranSettings.getInstance();
         
         isSmoothVolumeKeyNavigation = quranSettings.getIsSmoothKeyNavigation(this);
-        isForceDualPage = quranSettings.getIsForceDualPage(this);
 
         setupActionbar();
 
@@ -84,7 +80,7 @@ public class QuranActivity extends AppCompatActivity implements Observer {
 
         setPageNumberAndPagesTurned(savedInstanceState);
 
-        currentOrientation = getScreenRotation();
+        currentShouldUseDualPages = shouldUseDualPage();
 
         mushafMetadata = quranSettings.getMushafMetadata(this);
 
@@ -117,14 +113,14 @@ public class QuranActivity extends AppCompatActivity implements Observer {
         super.onConfigurationChanged(newConfig);
         if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
             destroyPager();
-            currentOrientation = getScreenRotation();
+            currentShouldUseDualPages = shouldUseDualPage();
             setupSinglePager();
             glyphsHighlighter.setPager(pager);
             glyphsHighlighter.setPagerAdapter(pagerAdapter);
 
         } else if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
             destroyPager();
-            currentOrientation = getScreenRotation();
+            currentShouldUseDualPages = shouldUseDualPage();
             setupDualPager();
             glyphsHighlighter.setPager(pager);
             glyphsHighlighter.setPagerAdapter(pagerAdapter);
@@ -176,7 +172,7 @@ public class QuranActivity extends AppCompatActivity implements Observer {
         int keyCode = event.getKeyCode();
         Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 
-        if (isLandscape(currentOrientation) && action == KeyEvent.ACTION_DOWN) {
+        if (shouldUseDualPage() && action == KeyEvent.ACTION_DOWN) {
             switch (keyCode) {
                 case KeyEvent.KEYCODE_VOLUME_DOWN:
                     if (getScreenRotation() == Surface.ROTATION_90)
@@ -233,7 +229,7 @@ public class QuranActivity extends AppCompatActivity implements Observer {
 
     private void setupInitialPager() {
 
-        singlePageChangeListener = new ViewPager.OnPageChangeListener() {
+        singlePageChangeCallback = new ViewPager2.OnPageChangeCallback() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
@@ -255,7 +251,7 @@ public class QuranActivity extends AppCompatActivity implements Observer {
             }
         };
 
-        dualPageChangeListener = new ViewPager.OnPageChangeListener() {
+        dualPageChangeCallback = new ViewPager2.OnPageChangeCallback() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
@@ -278,7 +274,7 @@ public class QuranActivity extends AppCompatActivity implements Observer {
         };
 
         highlightAyahFromNavigation();
-        if (!isLandscape(currentOrientation) && !isForceDualPage) {
+        if (!currentShouldUseDualPages) {
             setupSinglePager();
         } else {
             setupDualPager();
@@ -289,36 +285,31 @@ public class QuranActivity extends AppCompatActivity implements Observer {
 
     private void setupSinglePager() {
         pager = findViewById(R.id.pager);
-
-        pagerAdapter = new QuranPageAdapter(getSupportFragmentManager(),this, currentOrientation);
+        pagerAdapter = new QuranPageAdapter(getSupportFragmentManager(),this, getLifecycle());
         if (quranSettings.getNightMode(this))
             pager.setBackgroundColor(Color.BLACK);
         pager.setAdapter(pagerAdapter);
         pager.setOffscreenPageLimit(1);
         pager.setCurrentItem(pageNumberToSinglePagerPosition(pageNumber), false);
-        pager.addOnPageChangeListener(singlePageChangeListener);
+        pager.registerOnPageChangeCallback(singlePageChangeCallback);
     }
 
-    @SuppressLint("SourceLockedOrientationActivity")
     private void setupDualPager() {
         pager = findViewById(R.id.pager);
-        pagerAdapter = new QuranPageAdapter(getSupportFragmentManager(),this, currentOrientation);
+        pagerAdapter = new QuranPageAdapter(getSupportFragmentManager(),this, getLifecycle());
         if (quranSettings.getNightMode(this))
             pager.setBackgroundColor(Color.BLACK);
         pager.setAdapter(pagerAdapter);
         pager.setOffscreenPageLimit(1);
         pager.setCurrentItem(pageNumberToDualPagerPosition(pageNumber), false);
-        pager.addOnPageChangeListener(dualPageChangeListener);
-        if (isForceDualPage)
-            this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-
+        pager.registerOnPageChangeCallback(dualPageChangeCallback);
     }
 
     private void destroyPager() {
-        if (isLandscape(currentOrientation))
-            pager.removeOnPageChangeListener(dualPageChangeListener);
+        if (currentShouldUseDualPages)
+            pager.unregisterOnPageChangeCallback(dualPageChangeCallback);
         else
-            pager.removeOnPageChangeListener(singlePageChangeListener);
+            pager.unregisterOnPageChangeCallback(singlePageChangeCallback);
         pagerAdapter = null;
         pager = null;
         System.gc();
@@ -335,10 +326,6 @@ public class QuranActivity extends AppCompatActivity implements Observer {
             result = getResources().getDimensionPixelSize(resourceId);
         }
         return result;
-    }
-
-    private int getScreenRotation() {
-        return ((WindowManager) this.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getRotation();
     }
 
     public void SystemUIListener(View view) {
@@ -377,8 +364,17 @@ public class QuranActivity extends AppCompatActivity implements Observer {
         }
     }
 
-    public static boolean isLandscape(int currentOrientation) {
-        return currentOrientation == Surface.ROTATION_90 || currentOrientation == Surface.ROTATION_270;
+    public boolean shouldUseDualPage() {
+        Display screensize = getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        screensize.getSize(size);
+        int width = size.x;
+        int height = size.y;
+        return width >= height;
+    }
+
+    private int getScreenRotation() {
+        return ((WindowManager) this.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getRotation();
     }
 
     private void vibrate(Vibrator v, int time) {
