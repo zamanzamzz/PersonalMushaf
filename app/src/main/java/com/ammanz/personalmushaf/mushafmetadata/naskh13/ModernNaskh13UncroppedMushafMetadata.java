@@ -10,7 +10,6 @@ public class ModernNaskh13UncroppedMushafMetadata extends MushafMetadata {
     public ModernNaskh13UncroppedMushafMetadata() {
         assetPath = quranSettings.getMushafLocation(QuranSettings.MODERNNASKH13UNCROPPED);
         id = "modernnaskh13uncropped";
-        databasePath = assetPath + "/databases/ayahinfo_modernnaskh13uncropped.db";
         name = "Modern 13 Line Naskh Mushaf (Uncropped)";
         description = "Popular with huffadh in the Indian Subcontinent and South Africa.";
         previewDrawableIDs = new int[2];

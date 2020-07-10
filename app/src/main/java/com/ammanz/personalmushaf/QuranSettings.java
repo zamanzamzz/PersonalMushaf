@@ -43,8 +43,6 @@ public class QuranSettings {
         return quranSettings;
     }
 
-
-
     private void setPreference(Context context) {
         if (preferences == null)
             preferences = PreferenceManager.getDefaultSharedPreferences(context);
@@ -64,8 +62,12 @@ public class QuranSettings {
     }
 
     public String getMushafLocation(int mushafVersion) {
-        AssetPackLocation location = assetPackManager.getPackLocation(packNamesArray[mushafVersion]);
-        return location == null ? null : location.assetsPath();
+        if (BuildConfig.DEBUG)
+            return FileUtils.ASSETSDIRECTORY + "/" + packNamesArray[mushafVersion];
+        else {
+            AssetPackLocation location = assetPackManager.getPackLocation(packNamesArray[mushafVersion]);
+            return location == null ? null : location.assetsPath();
+        }
     }
 
     public void setNightMode(Boolean nightMode) {
@@ -150,9 +152,13 @@ public class QuranSettings {
 
     public void updateAvailableMushafs(Context context) {
         initializeAvailableMushafs(context);
-        for (int i = MODERNNASKH13CROPPED; i <= CLASSICMADANI15; i++) {
-            if (assetPackManager.getPackLocation(packNamesArray[i]) != null)
-                setAvailableMushaf(i, true);
+        if (BuildConfig.DEBUG)
+            updateAvailableMushafsDebug(context);
+        else {
+            for (int i = MODERNNASKH13CROPPED; i <= CLASSICMADANI15; i++) {
+                if (assetPackManager.getPackLocation(packNamesArray[i]) != null)
+                    setAvailableMushaf(i, true);
+            }
         }
     }
 
@@ -163,9 +169,9 @@ public class QuranSettings {
         return false;
     }
 
-    public boolean updateAvailableMushafsDebug(Context context) {
-        if (!FileUtils.checkRootDataDirectory())
-            return false;
+    public void updateAvailableMushafsDebug(Context context) {
+        if (!FileUtils.checkRootDataDirectory(context))
+            return;
 
         String[] expectedMushafDirectories = {"modernnaskh13cropped", "modernnaskh13uncropped", "classicnaskh15", "classicmadani15"};
         File currentMushafDirectory;
@@ -173,18 +179,15 @@ public class QuranSettings {
 
         initializeAvailableMushafs(context);
 
-        boolean rv = false;
         for (int i = MODERNNASKH13CROPPED; i <= CLASSICNASKH15 + 1; i++) {
             currentMushafDirectory = new File(FileUtils.ASSETSDIRECTORY + "/" + expectedMushafDirectories[i]);
             if (currentMushafDirectory.exists() && currentMushafDirectory.isDirectory()) {
-                currentImagesDirectory = new File(FileUtils.ASSETSDIRECTORY + "/" + expectedMushafDirectories[i] + "/images");
-                if ((currentImagesDirectory.exists() && currentImagesDirectory.isDirectory()) && currentImagesDirectory.list().length > 500)
+                currentImagesDirectory = new File(FileUtils.ASSETSDIRECTORY + "/" + expectedMushafDirectories[i] + "/images/");
+                if ((currentImagesDirectory.exists() && currentImagesDirectory.isDirectory()) && currentImagesDirectory.listFiles().length > 500)
                     setAvailableMushaf(i, true);
-                rv = true;
             }
         }
 
-        return rv;
     }
 
 

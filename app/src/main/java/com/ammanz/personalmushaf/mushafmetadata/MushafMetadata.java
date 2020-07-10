@@ -7,7 +7,6 @@ public abstract class MushafMetadata {
     protected QuranSettings quranSettings = QuranSettings.getInstance();
     protected String assetPath;
     protected String id;
-    protected String databasePath;
     protected String name;
     protected String description;
     protected int[] previewDrawableIDs;
@@ -23,12 +22,12 @@ public abstract class MushafMetadata {
         return id;
     }
 
-    public String getAssetPath() {
-        return assetPath;
+    public String getDatabasePath() {
+        return assetPath + "/databases/ayahinfo_" + id + ".db";
     }
 
-    public String getDatabasePath() {
-        return databasePath;
+    public String getPagePath(int pageNumber) {
+        return assetPath + "/images/" + id + "_pg_" + pageNumber + ".png";
     }
 
     public String getName() {

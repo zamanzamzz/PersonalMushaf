@@ -1,5 +1,6 @@
 package com.ammanz.personalmushaf.util;
 
+import android.content.Context;
 import android.os.Environment;
 
 import java.io.BufferedInputStream;
@@ -12,9 +13,10 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
 public class FileUtils {
-    public static final String ASSETSDIRECTORY = Environment.getExternalStorageDirectory() + "/personal_mushaf";
+    public static String ASSETSDIRECTORY;
 
-    public static boolean checkRootDataDirectory() {
+    public static boolean checkRootDataDirectory(Context context) {
+        ASSETSDIRECTORY = context.getExternalFilesDir(null).getAbsolutePath();
         File dataDirectory = new File(ASSETSDIRECTORY);
         return dataDirectory.exists() && dataDirectory.isDirectory();
     }

@@ -10,7 +10,6 @@ public class ClassicMadani15MushafMetadata extends MushafMetadata {
     public ClassicMadani15MushafMetadata() {
         assetPath = quranSettings.getMushafLocation(QuranSettings.CLASSICMADANI15);
         id = "classicmadani15";
-        databasePath = assetPath + "/databases/ayahinfo_classicmadani15.db";
         name = "Classic 15 Line Madani Mushaf";
         description = "The classic standard mushaf from Saudi Arabia.";
         previewDrawableIDs = new int[2];
