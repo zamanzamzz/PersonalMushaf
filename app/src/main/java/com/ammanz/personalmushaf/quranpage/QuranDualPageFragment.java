@@ -88,8 +88,7 @@ public class QuranDualPageFragment extends QuranPage {
                 rightBitmap.set(BitmapFactory.decodeFile(rightPagePath));
                 leftBitmap.set(BitmapFactory.decodeFile(leftPagePath));
                 return true;
-            }).subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread()).subscribe((result) -> {
+            }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe((result) -> {
                 setupPage(leftImage, leftBitmap.get(), leftPageData, dualPagerPosition);
                 setupPage(rightImage, rightBitmap.get(), rightPageData, dualPagerPosition);
             });

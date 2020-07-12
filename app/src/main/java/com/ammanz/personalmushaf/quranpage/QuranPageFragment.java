@@ -16,7 +16,6 @@ import com.ammanz.personalmushaf.model.Ayah;
 import com.ammanz.personalmushaf.model.HighlightType;
 import com.ammanz.personalmushaf.model.PageData;
 import com.ammanz.personalmushaf.mushafmetadata.MushafMetadata;
-import com.ammanz.personalmushaf.util.ImageUtils;
 import com.ammanz.personalmushaf.widgets.HighlightingImageView;
 
 import java.util.concurrent.atomic.AtomicReference;

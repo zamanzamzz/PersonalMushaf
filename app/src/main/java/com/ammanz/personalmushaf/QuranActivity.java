@@ -34,6 +34,7 @@ import java.util.Observer;
 public class QuranActivity extends AppCompatActivity implements Observer {
 
     private Toolbar toolbar;
+    private View toolbarArea;
 
     public Integer highlightedSurah = null;
     public Integer highlightedAyah = null;
@@ -199,6 +200,7 @@ public class QuranActivity extends AppCompatActivity implements Observer {
 
     private void setupActionbar() {
         toolbar = findViewById(R.id.toolbar);
+        toolbarArea = findViewById(R.id.toolbar_parent);
         ViewGroup.LayoutParams params = toolbar.getLayoutParams();
         params.height = params.height + getStatusBarHeight();
         toolbar.setPadding(0, getStatusBarHeight(), 0, 0);
@@ -210,7 +212,6 @@ public class QuranActivity extends AppCompatActivity implements Observer {
         actionBar.setHomeAsUpIndicator(R.drawable.ic_keyboard_backspace_black_24dp);
         actionBar.setDisplayShowTitleEnabled(false);
         actionBar.setHomeButtonEnabled(true);
-        actionBar.hide();
     }
 
 
@@ -316,9 +317,6 @@ public class QuranActivity extends AppCompatActivity implements Observer {
     }
 
 
-
-
-
     private int getStatusBarHeight() {
         int result = 0;
         int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
@@ -354,12 +352,19 @@ public class QuranActivity extends AppCompatActivity implements Observer {
                         | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
     }
 
+    private void animateToolbar(boolean visible) {
+        toolbarArea.animate()
+                .translationY(visible ? 0 : -toolbarArea.getHeight())
+                .setDuration(250)
+                .start();
+    }
+
     private void actionOnSystemUIChange(int visibility) {
         if ((visibility & View.SYSTEM_UI_FLAG_FULLSCREEN) == 0) {
-            getSupportActionBar().show();
+            animateToolbar(true);
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
         } else {
-            getSupportActionBar().hide();
+            animateToolbar(false);
             getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
         }
     }
