@@ -1,8 +1,6 @@
 package com.ammanz.personalmushaf.quranpage;
 
 import android.annotation.SuppressLint;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -16,10 +14,8 @@ import com.ammanz.personalmushaf.model.Ayah;
 import com.ammanz.personalmushaf.model.HighlightType;
 import com.ammanz.personalmushaf.model.PageData;
 import com.ammanz.personalmushaf.mushafmetadata.MushafMetadata;
+import com.ammanz.personalmushaf.util.ImageUtils;
 import com.ammanz.personalmushaf.widgets.HighlightingImageView;
-
-import java.util.concurrent.atomic.AtomicReference;
-
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
@@ -30,7 +26,6 @@ public class QuranPageFragment extends QuranPage {
     private PageData pageData;
     private float x;
     private float y;
-    private QuranSettings quranSettings;
 
     public static QuranPageFragment newInstance(int pageNumber, int position, Integer highlightedSurah, Integer highlightedAyah) {
         QuranPageFragment fragment = new QuranPageFragment();
@@ -59,7 +54,7 @@ public class QuranPageFragment extends QuranPage {
         ((LinearLayout) v.findViewById(R.id.pager_linear_layout)).setOrientation(LinearLayout.VERTICAL);
         v.findViewById(R.id.page2).setVisibility(View.GONE);
 
-        quranSettings = QuranSettings.getInstance();
+        QuranSettings quranSettings = QuranSettings.getInstance();
 
         int pageNumber = getArguments().getInt("page_number");
         int position = getArguments().getInt("position");
@@ -73,14 +68,12 @@ public class QuranPageFragment extends QuranPage {
         String path = getPagePath(pageNumber, mushafMetadata);
         pageData = getPageData(pageNumber, mushafMetadata);
 
-        AtomicReference<Bitmap> bitmap = new AtomicReference<>();
+        ImageUtils.loadBitmap(path, imageView);
         Observable.fromCallable(() -> {
             pageData.populateAyahBoundsAndGlyphs();
-            bitmap.set(BitmapFactory.decodeFile(path));
             return true;
         }).subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread()).subscribe((result) -> {
-                imageView.setImageBitmap(bitmap.get());
                 imageView.setAyahData(pageData.getAyahCoordinates());
                 imageView.setGlyphs(pageData.getGlyphs());
 

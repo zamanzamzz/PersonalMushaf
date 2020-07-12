@@ -30,13 +30,10 @@ public class QuranDualPageFragment extends QuranPage {
 
     private HighlightingImageView rightImage;
     private HighlightingImageView leftImage;
-    private PageData leftPageData;
-    private PageData rightPageData;
     private int highlightedSurah;
     private int highlightedAyah;
     private float x;
     private float y;
-    private QuranSettings quranSettings;
 
     public static QuranDualPageFragment newInstance(int position, Integer highlightedSurah, Integer highlightedAyah) {
         QuranDualPageFragment fragment = new QuranDualPageFragment();
@@ -64,52 +61,51 @@ public class QuranDualPageFragment extends QuranPage {
 
         int dualPagerPosition = getArguments().getInt("dual_pager_position");
 
-        quranSettings = QuranSettings.getInstance();
+        QuranSettings quranSettings = QuranSettings.getInstance();
 
         highlightedSurah = getArguments().getInt("highlighted_surah", 0);
         highlightedAyah = getArguments().getInt("highlighted_ayah", 0);
 
         MushafMetadata mushafMetadata = quranSettings.getMushafMetadata(getContext());
 
-        rightImage = v.findViewById(R.id.page2);
+        rightImage = v.findViewById(R.id.page1);
         final String leftPagePath = getLeftPagePath(dualPagerPosition, mushafMetadata);
-        leftPageData = getLeftPageData(dualPagerPosition, mushafMetadata);
+        PageData leftPageData = getLeftPageData(dualPagerPosition, mushafMetadata);
 
-        leftImage = v.findViewById(R.id.page1);
+        leftImage = v.findViewById(R.id.page2);
         final String rightPagePath = getRightPagePath(dualPagerPosition, mushafMetadata);
-        rightPageData = getRightPageData(dualPagerPosition, mushafMetadata);
+        PageData rightPageData = getRightPageData(dualPagerPosition, mushafMetadata);
 
-        AtomicReference<Bitmap> rightBitmap = new AtomicReference<>();
-        AtomicReference<Bitmap> leftBitmap = new AtomicReference<>();
+
         if (!isDanglingPage(dualPagerPosition, mushafMetadata)) {
-            Observable.fromCallable(() -> {
-                rightPageData.populateAyahBoundsAndGlyphs();
-                leftPageData.populateAyahBoundsAndGlyphs();
-                rightBitmap.set(BitmapFactory.decodeFile(rightPagePath));
-                leftBitmap.set(BitmapFactory.decodeFile(leftPagePath));
-                return true;
-            }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe((result) -> {
-                setupPage(leftImage, leftBitmap.get(), leftPageData, dualPagerPosition);
-                setupPage(rightImage, rightBitmap.get(), rightPageData, dualPagerPosition);
-            });
+            loadImages(rightImage, leftImage, leftPagePath, rightPagePath);
+            setHighlightSingle(rightImage, leftPageData, dualPagerPosition);
+            setHighlightSingle(leftImage, rightPageData, dualPagerPosition);
         } else {
             leftImage.setVisibility(View.GONE);
-            Observable.fromCallable(() -> {
-                rightPageData.populateAyahBoundsAndGlyphs();
-                rightBitmap.set(BitmapFactory.decodeFile(rightPagePath));
-                return true;
-            }).subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread()).subscribe((result) -> {
-                setupPage(rightImage, rightBitmap.get(), rightPageData, dualPagerPosition);
-            });
+            ImageUtils.loadBitmap(leftPagePath, rightImage);
+            setHighlightSingle(rightImage, leftPageData, dualPagerPosition);
         }
 
         return v;
     }
 
+    private void loadImages(ImageView leftImage, ImageView rightImage, String leftPagePath, String rightPagePath) {
+        ImageUtils.loadBitmap(rightPagePath, rightImage);
+        ImageUtils.loadBitmap(leftPagePath, leftImage);
+    }
+
+
     @SuppressLint("ClickableViewAccessibility")
-    private void setupPage(HighlightingImageView imageView, Bitmap bitmap, PageData pageData, int dualPagerPosition) {
-            imageView.setImageBitmap(bitmap);
+    private void setHighlightSingle(final HighlightingImageView imageView, final PageData pageData, final int dualPagerPosition) {
+        imageView.setAyahData(pageData.getAyahCoordinates());
+        imageView.setGlyphs(pageData.getGlyphs());
+
+        Observable.fromCallable(() -> {
+            pageData.populateAyahBoundsAndGlyphs();
+            return true;
+        }).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread()).subscribe((result) -> {
             imageView.setAyahData(pageData.getAyahCoordinates());
             imageView.setGlyphs(pageData.getGlyphs());
 
@@ -135,6 +131,7 @@ public class QuranDualPageFragment extends QuranPage {
 
             if (highlightedSurah != 0 && highlightedAyah != 0)
                 highlightAyah(highlightedSurah, highlightedAyah, HighlightType.SELECTION);
+        });
     }
 
     public void highlightAyah(int sura, int ayah, HighlightType highlightType) {
