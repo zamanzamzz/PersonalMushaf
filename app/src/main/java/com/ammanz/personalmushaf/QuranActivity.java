@@ -291,8 +291,10 @@ public class QuranActivity extends AppCompatActivity implements Observer {
             pager.setBackgroundColor(Color.BLACK);
         pager.setAdapter(pagerAdapter);
         pager.setOffscreenPageLimit(1);
-        pager.setCurrentItem(pageNumberToSinglePagerPosition(pageNumber), false);
-        pager.registerOnPageChangeCallback(singlePageChangeCallback);
+        pager.post(() -> {
+            pager.setCurrentItem(pageNumberToSinglePagerPosition(pageNumber), false);
+            pager.registerOnPageChangeCallback(singlePageChangeCallback);
+        });
     }
 
     private void setupDualPager() {
@@ -302,8 +304,10 @@ public class QuranActivity extends AppCompatActivity implements Observer {
             pager.setBackgroundColor(Color.BLACK);
         pager.setAdapter(pagerAdapter);
         pager.setOffscreenPageLimit(1);
-        pager.setCurrentItem(pageNumberToDualPagerPosition(pageNumber), false);
-        pager.registerOnPageChangeCallback(dualPageChangeCallback);
+        pager.post(() -> {
+            pager.setCurrentItem(pageNumberToDualPagerPosition(pageNumber), false);
+            pager.registerOnPageChangeCallback(dualPageChangeCallback);
+        });
     }
 
     private void destroyPager() {
