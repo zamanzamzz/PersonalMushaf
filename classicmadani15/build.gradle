@@ -1,0 +1,10 @@
+// In the asset pack’s build.gradle file:
+apply plugin: 'com.android.asset-pack'
+
+assetPack {
+    packName = "classicmadani15" // Directory name for the asset pack
+    dynamicDelivery {
+        deliveryType = "on-demand"
+    }
+}
+ 
