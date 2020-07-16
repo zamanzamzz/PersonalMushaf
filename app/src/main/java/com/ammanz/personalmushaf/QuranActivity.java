@@ -58,6 +58,9 @@ public class QuranActivity extends AppCompatActivity implements Observer {
 
     private GlyphsHighlighter glyphsHighlighter;
     private QuranSettings quranSettings;
+    private static final String ARC_DEVICE_PATTERN = ".+_cheets|cheets_.+";
+    private boolean isChromebook;
+    private boolean isToolbarVisible = true;
 
 
     @Override
@@ -87,9 +90,17 @@ public class QuranActivity extends AppCompatActivity implements Observer {
 
         setupInitialPager();
 
+        isChromebook = Build.DEVICE != null && Build.DEVICE.matches(ARC_DEVICE_PATTERN);
         setOnSystemUiVisibilityChangeListener();
 
         hideSystemUI();
+        if (isChromebook) {
+            toolbarArea.post(() -> {
+                isToolbarVisible = false;
+                animateToolbar(false);
+            });
+        }
+
     }
 
 
@@ -104,6 +115,10 @@ public class QuranActivity extends AppCompatActivity implements Observer {
     protected void onResume() {
         super.onResume();
         hideSystemUI();
+        if (isChromebook) {
+            isToolbarVisible = false;
+            animateToolbar(false);
+        }
     }
 
     @Override
@@ -331,7 +346,10 @@ public class QuranActivity extends AppCompatActivity implements Observer {
     }
 
     public void SystemUIListener(View view) {
-        if (getWindow().getDecorView().getSystemUiVisibility() == (View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+        if (isChromebook) {
+            isToolbarVisible = !isToolbarVisible;
+            animateToolbar(isToolbarVisible);
+        } else if (getWindow().getDecorView().getSystemUiVisibility() == (View.SYSTEM_UI_FLAG_LAYOUT_STABLE
                 | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
                 | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN))
             hideSystemUI();
@@ -397,7 +415,7 @@ public class QuranActivity extends AppCompatActivity implements Observer {
 
     private void setOnSystemUiVisibilityChangeListener() {
         getWindow().getDecorView().setOnSystemUiVisibilityChangeListener
-                (visibility -> actionOnSystemUIChange(visibility));
+                (this::actionOnSystemUIChange);
     }
 
 
