@@ -3,13 +3,13 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 
 android {
-    compileSdkVersion 29
+    compileSdkVersion 30
     defaultConfig {
         applicationId 'com.ammanz.personalmushaf'
         minSdkVersion 24
-        targetSdkVersion 29
-        versionCode 327
-        versionName "0.327"
+        targetSdkVersion 30
+        versionCode 329
+        versionName "0.329"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
