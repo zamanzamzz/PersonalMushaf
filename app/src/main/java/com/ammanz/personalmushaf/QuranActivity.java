@@ -180,7 +180,25 @@ public class QuranActivity extends AppCompatActivity implements Observer {
         finish();
     }
 
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        switch (keyCode) {
+            case KeyEvent.KEYCODE_DPAD_RIGHT:
+                flipPageBackward(currentShouldUseDualPages ? 2 : 1);
+                break;
 
+            case KeyEvent.KEYCODE_DPAD_LEFT:
+                flipPageForward(currentShouldUseDualPages ? 2 : 1);
+                break;
+
+            case KeyEvent.KEYCODE_BACK:
+                destroyPager();
+                glyphsHighlighter.stopHighlight();
+                finish();
+                break;
+        }
+        return true;
+    }
 
     @Override
     public boolean dispatchKeyEvent(KeyEvent event) {
@@ -188,7 +206,7 @@ public class QuranActivity extends AppCompatActivity implements Observer {
         int keyCode = event.getKeyCode();
         Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 
-        if (shouldUseDualPage() && action == KeyEvent.ACTION_DOWN) {
+        if (currentShouldUseDualPages && action == KeyEvent.ACTION_DOWN) {
             switch (keyCode) {
                 case KeyEvent.KEYCODE_VOLUME_DOWN:
                     if (getScreenRotation() == Surface.ROTATION_90)
