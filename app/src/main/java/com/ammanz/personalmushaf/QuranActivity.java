@@ -91,15 +91,13 @@ public class QuranActivity extends AppCompatActivity implements Observer {
         setupInitialPager();
 
         isChromebook = Build.DEVICE != null && Build.DEVICE.matches(ARC_DEVICE_PATTERN);
-        setOnSystemUiVisibilityChangeListener();
 
         hideSystemUI();
-        if (isChromebook) {
-            toolbarArea.post(() -> {
-                isToolbarVisible = false;
-                animateToolbar(false);
-            });
-        }
+        toolbarArea.post(() -> {
+            isToolbarVisible = false;
+            animateToolbar(false);
+        });
+
 
     }
 
@@ -115,10 +113,8 @@ public class QuranActivity extends AppCompatActivity implements Observer {
     protected void onResume() {
         super.onResume();
         hideSystemUI();
-        if (isChromebook) {
-            isToolbarVisible = false;
-            animateToolbar(false);
-        }
+        isToolbarVisible = false;
+        animateToolbar(false);
     }
 
     @Override
@@ -384,6 +380,7 @@ public class QuranActivity extends AppCompatActivity implements Observer {
                         | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION // hide nav bar
                         | View.SYSTEM_UI_FLAG_FULLSCREEN // hide status bar
                         | View.SYSTEM_UI_FLAG_IMMERSIVE);
+        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
     }
 
     private void showSystemUI() {
@@ -391,6 +388,7 @@ public class QuranActivity extends AppCompatActivity implements Observer {
                 View.SYSTEM_UI_FLAG_LAYOUT_STABLE
                         | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
                         | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
     }
 
     private void animateToolbar(boolean visible) {
@@ -398,16 +396,6 @@ public class QuranActivity extends AppCompatActivity implements Observer {
                 .translationY(visible ? 0 : -toolbarArea.getHeight())
                 .setDuration(250)
                 .start();
-    }
-
-    private void actionOnSystemUIChange(int visibility) {
-        if ((visibility & View.SYSTEM_UI_FLAG_FULLSCREEN) == 0) {
-            animateToolbar(true);
-            getWindow().addFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
-        } else {
-            animateToolbar(false);
-            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
-        }
     }
 
     public boolean shouldUseDualPage() {
@@ -431,12 +419,6 @@ public class QuranActivity extends AppCompatActivity implements Observer {
             v.vibrate(time);
         }
     }
-
-    private void setOnSystemUiVisibilityChangeListener() {
-        getWindow().getDecorView().setOnSystemUiVisibilityChangeListener
-                (this::actionOnSystemUIChange);
-    }
-
 
     private int pageNumberToDualPagerPosition(int pageNumber) {
         if (pageNumber % 2 == 0)
