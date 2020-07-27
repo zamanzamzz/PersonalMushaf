@@ -11,6 +11,7 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ammanz.personalmushaf.QuranActivity;
+import com.ammanz.personalmushaf.QuranSettings;
 import com.ammanz.personalmushaf.R;
 
 public class JuzQuarterAdapter extends RecyclerView.Adapter<JuzQuarterAdapter.JuzViewHolder> {
@@ -18,6 +19,7 @@ public class JuzQuarterAdapter extends RecyclerView.Adapter<JuzQuarterAdapter.Ju
     private int[] quarterPageNumbers;
     private double[] lengths;
     private String[] prefixes;
+    private QuranSettings quranSettings;
 
     public static class JuzViewHolder extends RecyclerView.ViewHolder {
         public LinearLayout linearLayout;
@@ -32,6 +34,7 @@ public class JuzQuarterAdapter extends RecyclerView.Adapter<JuzQuarterAdapter.Ju
         this.quarterPageNumbers = quarterPageNumbers;
         this.prefixes = prefixes;
         this.lengths = lengths;
+        quranSettings = QuranSettings.getInstance();
     }
 
     @Override
@@ -100,13 +103,14 @@ public class JuzQuarterAdapter extends RecyclerView.Adapter<JuzQuarterAdapter.Ju
 
 
     private void juzContentProcedure(LinearLayout linearLayout, int position) {
-        final Intent goToJuz = new Intent(linearLayout.getContext(), QuranActivity.class);
+        /*final Intent goToJuz = new Intent(linearLayout.getContext(), QuranActivity.class);
 
         goToJuz.putExtra("surah", quarterInfo[position][1]);
         goToJuz.putExtra("ayah", quarterInfo[position][2]);
         goToJuz.putExtra("new page number", quarterPageNumbers[position]);
 
-        linearLayout.getContext().startActivity(goToJuz);
+        linearLayout.getContext().startActivity(goToJuz);*/
+        quranSettings.setQuranActivityPage(quarterPageNumbers[position], quarterInfo[position][1], quarterInfo[position][2]);
     }
 
 }

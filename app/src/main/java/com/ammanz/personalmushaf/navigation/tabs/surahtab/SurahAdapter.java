@@ -83,7 +83,7 @@ public class SurahAdapter extends RecyclerView.Adapter<SurahAdapter.SurahViewHol
         alternateBackgroundColor(layout, position);
 
         holder.linearLayout.setOnClickListener(v -> {
-            LinearLayout linearLayout = (LinearLayout) v;
+            /*LinearLayout linearLayout = (LinearLayout) v;
 
             final Intent goToSurah = new Intent(linearLayout.getContext(), QuranActivity.class);
 
@@ -91,7 +91,8 @@ public class SurahAdapter extends RecyclerView.Adapter<SurahAdapter.SurahViewHol
 
             goToSurah.putExtra("from", "NavigationActivity");
 
-            linearLayout.getContext().startActivity(goToSurah);
+            linearLayout.getContext().startActivity(goToSurah);*/
+            quranSettings.setQuranActivityPage(pageNumber, 0 , 0);
         });
     }
 

@@ -48,7 +48,9 @@ public class QuranActivity extends AppCompatActivity implements Observer {
 
     public Integer highlightedSurah = null;
     public Integer highlightedAyah = null;
+    public Integer highlightedPosition = null;
     public boolean isHighlighted = false;
+
     public boolean currentShouldUseDualPages;
 
     private int pageNumber;
@@ -72,8 +74,6 @@ public class QuranActivity extends AppCompatActivity implements Observer {
     private boolean isChromebook;
     private boolean isToolbarVisible = true;
 
-    private int juzNumber;
-    private int currentPagerPosition;
     private ViewPagerAdapter viewPagerAdapter;
     private View navigationDrawer;
     private boolean isDrawerVisible = false;
@@ -91,8 +91,9 @@ public class QuranActivity extends AppCompatActivity implements Observer {
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED);
 
         quranSettings = QuranSettings.getInstance();
+        quranSettings.setQuranActivity(this);
 
-        loadNavigationDrawer();
+        loadNavigationDrawer(-1);
         
         isSmoothVolumeKeyNavigation = quranSettings.getIsSmoothKeyNavigation(this);
 
@@ -114,7 +115,6 @@ public class QuranActivity extends AppCompatActivity implements Observer {
 
         hideSystemUI();
         toolbarArea.post(() -> {
-            isToolbarVisible = false;
             animateToolbar(false);
         });
     }
@@ -131,7 +131,6 @@ public class QuranActivity extends AppCompatActivity implements Observer {
     protected void onResume() {
         super.onResume();
         hideSystemUI();
-        isToolbarVisible = false;
         animateToolbar(false);
     }
 
@@ -325,7 +324,6 @@ public class QuranActivity extends AppCompatActivity implements Observer {
             }
         };
 
-        highlightAyahFromNavigation();
         if (!currentShouldUseDualPages) {
             setupSinglePager();
         } else {
@@ -393,8 +391,7 @@ public class QuranActivity extends AppCompatActivity implements Observer {
             animateDrawer(false);
 
         }
-        isToolbarVisible = !isToolbarVisible;
-        animateToolbar(isToolbarVisible);
+        animateToolbar(!isToolbarVisible);
         if (!isChromebook) {
             if (getWindow().getDecorView().getSystemUiVisibility() == (View.SYSTEM_UI_FLAG_LAYOUT_STABLE
                     | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
@@ -425,6 +422,7 @@ public class QuranActivity extends AppCompatActivity implements Observer {
     }
 
     private void animateToolbar(boolean visible) {
+        isToolbarVisible = visible;
         toolbarArea.animate()
                 .translationY(visible ? 0 : -toolbarArea.getHeight())
                 .setDuration(250)
@@ -493,66 +491,62 @@ public class QuranActivity extends AppCompatActivity implements Observer {
         if (!isHighlighted) {
             toolbar.setTitle(selectedSurah + ":" + selectedAyah);
             pagerAdapter.highlightVisiblePages(position, selectedSurah, selectedAyah);
+            highlightedPosition = position;
             highlightedSurah = selectedSurah;
             highlightedAyah = selectedAyah;
             isHighlighted = true;
         } else if (selectedSurah.equals(highlightedSurah) && selectedAyah.equals(highlightedAyah)) {
             toolbar.setTitle("");
             pagerAdapter.unhighlightVisiblePages(position, selectedSurah, selectedAyah);
+            highlightedPosition = null;
             highlightedSurah = null;
             highlightedAyah = null;
             isHighlighted = false;
         } else {
             toolbar.setTitle(selectedSurah + ":" + selectedAyah);
             pagerAdapter.highlightVisiblePages(position, selectedSurah, selectedAyah);
+            highlightedPosition = position;
             highlightedSurah = selectedSurah;
             highlightedAyah = selectedAyah;
             isHighlighted = true;
         }
     }
 
-    private void highlightAyahFromNavigation() {
-        highlightedSurah = getIntent().getIntExtra("surah", 0);
-        highlightedAyah = getIntent().getIntExtra("ayah", 0);
-
+    private void highlightAyahFromNavigation(int highlightedSurah, int highlightedAyah) {
         if (highlightedSurah != 0) {
-            isHighlighted = true;
+            this.highlightedSurah = highlightedSurah;
+            this.highlightedAyah = highlightedAyah;
+            this.highlightedPosition = currentShouldUseDualPages ?
+                                    pageNumberToDualPagerPosition(pageNumber) :
+                                    pageNumberToSinglePagerPosition(pageNumber);
+            this.isHighlighted = true;
             toolbar.setTitle(highlightedSurah + ":" + highlightedAyah);
         }
     }
 
-    private void loadNavigationDrawer() {
+    public void setPageNumber(int pageNumber, int highlightedSurah, int highlightedAyah) {
+        this.pageNumber = pageNumber;
+        highlightAyahFromNavigation(highlightedSurah, highlightedAyah);
+        if (currentShouldUseDualPages)
+            pager.setCurrentItem(pageNumberToDualPagerPosition(pageNumber), true);
+        else
+            pager.setCurrentItem(pageNumberToSinglePagerPosition(pageNumber), true);
+        animateDrawer(false);
+        hideSystemUI();
+        animateToolbar(false);
+    }
+
+    public void loadNavigationDrawer(int juzNumber) {
         Toolbar navigationToolbar = findViewById(R.id.navigation_toolbar);
         setSupportActionBar(navigationToolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         mushafMetadata = quranSettings.getMushafMetadata(this);
 
-        Intent intent = getIntent();
-
-        juzNumber = intent.getIntExtra("juz number", -1);
-        currentPagerPosition = 0;
 
         TabLayout tabLayout = findViewById(R.id.tab_layout);
         ViewPager viewPager = findViewById(R.id.viewpager);
         viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
-
-        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-                currentPagerPosition = position;
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-
-            }
-        });
 
 
         TextView title = findViewById(R.id.juz_title_toolbar);
@@ -571,6 +565,8 @@ public class QuranActivity extends AppCompatActivity implements Observer {
             viewPagerAdapter.addFragment(juzFragment, "Juz");
             viewPagerAdapter.addFragment(surahFragment, "Surah");
         } else {
+
+            viewPager.invalidate();
 
             setJuzTitle(title, juzNumber);
 
@@ -600,10 +596,11 @@ public class QuranActivity extends AppCompatActivity implements Observer {
         }
 
         navigationDrawer = findViewById(R.id.side_panel);
-        navigationDrawer.post(() -> {
-            navigationDrawer.setTranslationX(-navigationDrawer.getWidth());
-            isDrawerVisible = false;
-        });
+        if (juzNumber == -1)
+            navigationDrawer.post(() -> {
+                navigationDrawer.setTranslationX(-navigationDrawer.getWidth());
+                isDrawerVisible = false;
+            });
         viewPager.setAdapter(viewPagerAdapter);
         viewPager.setOffscreenPageLimit(3);
         tabLayout.setupWithViewPager(viewPager);
