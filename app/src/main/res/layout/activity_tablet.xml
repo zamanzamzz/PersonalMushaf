@@ -4,74 +4,80 @@
     android:layout_height="match_parent"
     android:keepScreenOn="true"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    <LinearLayout
+    <FrameLayout
         android:layout_width="300dp"
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:id="@+id/side_panel"
-        android:elevation="10dp"
+        android:elevation="5dp"
+        android:paddingTop="?attr/actionBarSize"
         android:background="@color/colorPrimary">
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/navigation_toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
-            android:elevation="4dp"
-            app:titleTextColor="#FFF"
-            android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
-            app:popupTheme="@style/ThemeOverlay.AppCompat.Dark">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:id="@+id/juz_title_toolbar"
-                    android:textColor="#FFF"
-                    android:textSize="20sp"
-                    android:gravity="center_vertical|start"
-                    android:textDirection="ltr"
-                    />
-                <TextView
-                    android:layout_width="fill_parent"
-                    android:layout_height="match_parent"
-                    android:textSize="24sp"
-                    android:paddingRight="30dp"
-                    android:id="@+id/juz_start_toolbar"
-                    android:textColor="#FFF"
-                    android:gravity="center_vertical|end"
-                    android:textDirection="ltr"
-                    />
-            </LinearLayout>
-
-        </androidx.appcompat.widget.Toolbar>
-
-        <com.google.android.material.tabs.TabLayout
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent"
-            android:background="@color/colorAccent"
-            app:tabMode="fixed"
-            app:tabGravity="fill"
-            app:tabMaxWidth="0dp"
-            app:tabIndicatorColor="#FFF"
-            android:id="@+id/tab_layout"
-            app:tabTextColor="#FFF"
-            >
-
-        </com.google.android.material.tabs.TabLayout>
-
-        <androidx.viewpager.widget.ViewPager
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/viewpager">
-        </androidx.viewpager.widget.ViewPager>
+            android:orientation="vertical"
+            android:background="@color/colorPrimary">
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/navigation_toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="?attr/colorPrimary"
+                android:elevation="4dp"
+                app:titleTextColor="#FFF"
+                android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Dark">
 
-    </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:id="@+id/juz_title_toolbar"
+                        android:textColor="#FFF"
+                        android:textSize="20sp"
+                        android:gravity="center_vertical|start"
+                        android:textDirection="ltr"
+                        />
+                    <TextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="match_parent"
+                        android:textSize="24sp"
+                        android:paddingRight="30dp"
+                        android:id="@+id/juz_start_toolbar"
+                        android:textColor="#FFF"
+                        android:gravity="center_vertical|end"
+                        android:textDirection="ltr"
+                        />
+                </LinearLayout>
+
+            </androidx.appcompat.widget.Toolbar>
+
+            <com.google.android.material.tabs.TabLayout
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:background="@color/colorAccent"
+                app:tabMode="fixed"
+                app:tabGravity="fill"
+                app:tabMaxWidth="0dp"
+                app:tabIndicatorColor="#FFF"
+                android:id="@+id/tab_layout"
+                app:tabTextColor="#FFF"
+                >
+
+            </com.google.android.material.tabs.TabLayout>
+
+            <androidx.viewpager.widget.ViewPager
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/viewpager">
+            </androidx.viewpager.widget.ViewPager>
+
+        </LinearLayout>
+    </FrameLayout>
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
         <LinearLayout
             xmlns:tools="http://schemas.android.com/tools"
             android:layout_width="match_parent"
@@ -87,21 +93,20 @@
                 android:id="@+id/pager">
             </androidx.viewpager2.widget.ViewPager2>
         </LinearLayout>
-        <FrameLayout
+    </FrameLayout>
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:elevation="10dp"
+        android:id="@+id/toolbar_parent">
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:animateLayoutChanges="true"
-            android:id="@+id/toolbar_parent">
-            <androidx.appcompat.widget.Toolbar
-                android:id="@+id/toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                android:background="@color/colorPrimary"
-                android:elevation="4dp"
-                app:titleTextColor="@android:color/white"
-                android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
-                app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
-            </androidx.appcompat.widget.Toolbar>
-        </FrameLayout>
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/colorPrimary"
+            app:titleTextColor="@android:color/white"
+            android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+        </androidx.appcompat.widget.Toolbar>
     </FrameLayout>
 </FrameLayout>
