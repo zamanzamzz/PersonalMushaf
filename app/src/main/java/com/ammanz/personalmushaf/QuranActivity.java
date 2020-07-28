@@ -14,11 +14,13 @@ import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.KeyEvent;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.Surface;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.ActionBar;
@@ -93,7 +95,7 @@ public class QuranActivity extends AppCompatActivity implements Observer {
         quranSettings = QuranSettings.getInstance();
         quranSettings.setQuranActivity(this);
 
-        loadNavigationDrawer(-1);
+        loadNavigationDrawer(-1, true, false);
         
         isSmoothVolumeKeyNavigation = quranSettings.getIsSmoothKeyNavigation(this);
 
@@ -159,10 +161,15 @@ public class QuranActivity extends AppCompatActivity implements Observer {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
+
         if (quranSettings.getIsDebugMode(this))
             getMenuInflater().inflate(R.menu.glyphplayback, menu);
+        else
+            getMenuInflater().inflate(R.menu.settings, menu);
+
         return true;
     }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -179,6 +186,12 @@ public class QuranActivity extends AppCompatActivity implements Observer {
         } else if (id == R.id.glyph_backward) {
             glyphsHighlighter.reverseHighlight();
             return true;
+        } else if (id == R.id.go_to_settings_navigation) {
+            Intent goToSettings = new Intent(this, SettingsActivity.class);
+
+            this.startActivity(goToSettings);
+
+            return true;
         }
 
         return super.onOptionsItemSelected(item);
@@ -193,22 +206,26 @@ public class QuranActivity extends AppCompatActivity implements Observer {
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        switch (keyCode) {
-            case KeyEvent.KEYCODE_DPAD_RIGHT:
-                flipPageBackward(currentShouldUseDualPages ? 2 : 1);
-                break;
+        if (isDrawerVisible && keyCode != KeyEvent.KEYCODE_BACK)
+            return super.onKeyDown(keyCode, event);
+        else {
+            switch (keyCode) {
+                case KeyEvent.KEYCODE_DPAD_RIGHT:
+                    flipPageBackward(currentShouldUseDualPages ? 2 : 1);
+                    break;
 
-            case KeyEvent.KEYCODE_DPAD_LEFT:
-                flipPageForward(currentShouldUseDualPages ? 2 : 1);
-                break;
+                case KeyEvent.KEYCODE_DPAD_LEFT:
+                    flipPageForward(currentShouldUseDualPages ? 2 : 1);
+                    break;
 
-            case KeyEvent.KEYCODE_BACK:
-                destroyPager();
-                glyphsHighlighter.stopHighlight();
-                finish();
-                break;
+                case KeyEvent.KEYCODE_BACK:
+                    destroyPager();
+                    glyphsHighlighter.stopHighlight();
+                    finish();
+                    break;
+            }
+            return true;
         }
-        return true;
     }
 
     @Override
@@ -536,21 +553,35 @@ public class QuranActivity extends AppCompatActivity implements Observer {
         animateToolbar(false);
     }
 
-    public void loadNavigationDrawer(int juzNumber) {
+    public void loadNavigationDrawer(int juzNumber, boolean shouldHide, boolean shouldAnimate) {
+        View sidePanelLinearLayout = findViewById(R.id.side_panel_linear_layout);
+
+        if (shouldAnimate) {
+            sidePanelLinearLayout.animate().alpha(0f).setDuration(100).withEndAction(() -> {
+               loadNavigationDrawerContents(juzNumber, shouldHide, true, sidePanelLinearLayout);
+            });
+        } else {
+            loadNavigationDrawerContents(juzNumber, shouldHide, false, sidePanelLinearLayout);
+        }
+
+
+    }
+
+    private void loadNavigationDrawerContents(int juzNumber, boolean shouldHide, boolean shouldAnimate, View sidePanelLinearLayout) {
         Toolbar navigationToolbar = findViewById(R.id.navigation_toolbar);
-        setSupportActionBar(navigationToolbar);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
-
         mushafMetadata = quranSettings.getMushafMetadata(this);
-
-
         TabLayout tabLayout = findViewById(R.id.tab_layout);
         ViewPager viewPager = findViewById(R.id.viewpager);
         viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
 
 
         TextView title = findViewById(R.id.juz_title_toolbar);
+        TextView juzStart = findViewById(R.id.juz_start_toolbar);
+        ImageView backButton = findViewById(R.id.navigation_button);
+
         if (juzNumber < 0) {
+            backButton.setVisibility(View.GONE);
+            juzStart.setVisibility(View.GONE);
             title.setText("Qur'an Contents");
 
             JuzFragment juzFragment = new JuzFragment();
@@ -570,13 +601,12 @@ public class QuranActivity extends AppCompatActivity implements Observer {
 
             setJuzTitle(title, juzNumber);
 
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_keyboard_backspace_black_24dp);
-            getSupportActionBar().setDisplayShowTitleEnabled(false);
-            getSupportActionBar().setHomeButtonEnabled(true);
+            backButton.setVisibility(View.VISIBLE);
+            backButton.setOnClickListener((view) -> {
+                quranSettings.loadJuzInNavigationDrawer(-1, false, true);
+            });
 
-            TextView juzStart = findViewById(R.id.juz_start_toolbar);
-
+            juzStart.setVisibility(View.VISIBLE);
             juzStart.setText(juzStart.getResources().getStringArray(R.array.juz_names)[juzNumber - 1]);
 
             JuzQuarterFragment juzQuarterFragment = new JuzQuarterFragment();
@@ -596,7 +626,7 @@ public class QuranActivity extends AppCompatActivity implements Observer {
         }
 
         navigationDrawer = findViewById(R.id.side_panel);
-        if (juzNumber == -1)
+        if (shouldHide)
             navigationDrawer.post(() -> {
                 navigationDrawer.setTranslationX(-navigationDrawer.getWidth());
                 isDrawerVisible = false;
@@ -607,6 +637,8 @@ public class QuranActivity extends AppCompatActivity implements Observer {
         navigationToolbar.post(() -> {
             navigationDrawer.setPadding(0, navigationDrawerPadding + navigationToolbar.getHeight(), 0, 0);
         });
+        if (shouldAnimate)
+            sidePanelLinearLayout.animate().alpha(1f).setDuration(100);
     }
 
     private void animateDrawer(boolean visible) {
