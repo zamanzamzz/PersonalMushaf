@@ -30,19 +30,13 @@ public class QuranDualPageFragment extends QuranPage {
 
     private HighlightingImageView rightImage;
     private HighlightingImageView leftImage;
-    private int highlightedSurah;
-    private int highlightedAyah;
     private float x;
     private float y;
 
-    public static QuranDualPageFragment newInstance(int position, Integer highlightedSurah, Integer highlightedAyah) {
+    public static QuranDualPageFragment newInstance(int position) {
         QuranDualPageFragment fragment = new QuranDualPageFragment();
         Bundle bundle = new Bundle();
         bundle.putInt("dual_pager_position", position);
-        if (highlightedSurah != null && highlightedAyah != null) {
-            bundle.putInt("highlighted_surah", highlightedSurah);
-            bundle.putInt("highlighted_ayah", highlightedAyah);
-        }
         fragment.setArguments(bundle);
 
         return fragment;
@@ -62,9 +56,6 @@ public class QuranDualPageFragment extends QuranPage {
         int dualPagerPosition = getArguments().getInt("dual_pager_position");
 
         QuranSettings quranSettings = QuranSettings.getInstance();
-
-        highlightedSurah = getArguments().getInt("highlighted_surah", 0);
-        highlightedAyah = getArguments().getInt("highlighted_ayah", 0);
 
         MushafMetadata mushafMetadata = quranSettings.getMushafMetadata(getContext());
 
@@ -129,7 +120,7 @@ public class QuranDualPageFragment extends QuranPage {
                 return true;
             });
 
-            if (highlightedSurah != 0 && highlightedAyah != 0)
+            if (highlightedSurah != null)
                 highlightAyah(highlightedSurah, highlightedAyah, HighlightType.SELECTION);
         });
     }
@@ -144,6 +135,11 @@ public class QuranDualPageFragment extends QuranPage {
     public void unhighlightAyah(int sura, int ayah, HighlightType highlightType) {
         leftImage.unHighlight(sura, ayah, HighlightType.SELECTION);
         rightImage.unHighlight(sura, ayah, HighlightType.SELECTION);
+    }
+
+    public void unhighlightAll() {
+        leftImage.unHighlight(HighlightType.SELECTION);
+        rightImage.unHighlight(HighlightType.SELECTION);
     }
 
     private String getLeftPagePath(int dualPagerPosition, MushafMetadata mushafMetadata) {

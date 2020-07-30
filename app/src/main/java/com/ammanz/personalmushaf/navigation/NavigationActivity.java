@@ -79,8 +79,8 @@ public class NavigationActivity extends AppCompatActivity {
         });
 
 
+        TextView title = findViewById(R.id.juz_title_toolbar);
         if (juzNumber < 0) {
-            TextView title = findViewById(R.id.juz_title_toolbar);
             title.setText("Qur'an Contents");
 
             JuzFragment juzFragment = new JuzFragment();
@@ -96,8 +96,7 @@ public class NavigationActivity extends AppCompatActivity {
             viewPagerAdapter.addFragment(surahFragment, "Surah");
         } else {
 
-            TextView juzTitle = findViewById(R.id.juz_title_toolbar);
-            setJuzTitle(juzTitle, juzNumber);
+            setJuzTitle(title, juzNumber);
 
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_keyboard_backspace_black_24dp);
@@ -171,7 +170,6 @@ public class NavigationActivity extends AppCompatActivity {
     public void setJuzTitle(TextView juzTitle, int juzNumber) {
         String length = String.format("%.2f", getJuzLength(juzNumber));
         String title = getResources().getStringArray(R.array.arabic_numerals)[juzNumber - 1] + "  | " + length + " pages";
-
         juzTitle.setText(title);
     }
 

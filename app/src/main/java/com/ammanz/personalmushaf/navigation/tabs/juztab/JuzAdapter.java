@@ -8,10 +8,10 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.ammanz.personalmushaf.QuranActivity;
+
 import com.ammanz.personalmushaf.QuranSettings;
 import com.ammanz.personalmushaf.R;
-import com.ammanz.personalmushaf.navigation.NavigationActivity;
+
 
 public class JuzAdapter extends RecyclerView.Adapter<JuzAdapter.JuzViewHolder> {
     private int[] juzPageNumbers;
@@ -70,7 +70,7 @@ public class JuzAdapter extends RecyclerView.Adapter<JuzAdapter.JuzViewHolder> {
 
         holder.linearLayout.setOnClickListener(view -> {
             LinearLayout linearLayout = (LinearLayout) view;
-            juzToJuzContentProcedure(linearLayout, position + 1);
+            juzToJuzContentProcedure(position + 1);
 
         });
 
@@ -95,22 +95,19 @@ public class JuzAdapter extends RecyclerView.Adapter<JuzAdapter.JuzViewHolder> {
             textView.setBackgroundColor(textView.getResources().getColor(R.color.colorAccent, textView.getContext().getTheme()));
     }
 
-    private void juzToJuzContentProcedure(LinearLayout linearLayout, int juzNumber) {
-        final Intent goToJuzContent = new Intent(linearLayout.getContext(), NavigationActivity.class);
-
-        goToJuzContent.putExtra("juz number", juzNumber);
-
-        linearLayout.getContext().startActivity(goToJuzContent);
+    private void juzToJuzContentProcedure(int juzNumber) {
+        quranSettings.loadJuzInNavigationDrawer(juzNumber, false, true);
     }
 
 
 
     private boolean juzToPage(LinearLayout linearLayout, int juzNumber) {
-        final Intent goToJuz = new Intent(linearLayout.getContext(), QuranActivity.class);
+        /*final Intent goToJuz = new Intent(linearLayout.getContext(), QuranActivity.class);
 
         goToJuz.putExtra("new page number", Integer.valueOf(juzPageNumbers[juzNumber]));
 
-        linearLayout.getContext().startActivity(goToJuz);
+        linearLayout.getContext().startActivity(goToJuz);*/
+        quranSettings.setQuranActivityPage(juzPageNumbers[juzNumber], 0 ,0);
 
         return true;
     }

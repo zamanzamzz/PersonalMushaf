@@ -34,6 +34,9 @@ public class QuranPageAdapter extends FragmentStateAdapter {
             public OnPostEventListener onFragmentPreAdded(@NonNull Fragment fragment) {
                 QuranPage page = (QuranPage) fragment;
                 registeredFragments.put(page.getPosition(), page);
+                if (quranActivity.isHighlighted && shouldHighlightFragment(page.getPosition())) {
+                    page.setHighlightedSurahAndAyah(quranActivity.highlightedSurah, quranActivity.highlightedAyah);
+                }
                 return super.onFragmentPreAdded(fragment);
             }
 
@@ -55,12 +58,12 @@ public class QuranPageAdapter extends FragmentStateAdapter {
         QuranPage fragment;
 
         if (quranActivity.currentShouldUseDualPages) {
-            fragment = QuranDualPageFragment.newInstance(position, quranActivity.highlightedSurah, quranActivity.highlightedAyah);
+            fragment = QuranDualPageFragment.newInstance(position);
             fragment.setPosition(position);
             fragment.addObserver(quranActivity);
         } else {
             int pageNumber = getPageNumberFromPagerPosition(position);
-            fragment = QuranPageFragment.newInstance(pageNumber, position, quranActivity.highlightedSurah, quranActivity.highlightedAyah);
+            fragment = QuranPageFragment.newInstance(pageNumber, position);
             fragment.setPosition(position);
             fragment.addObserver(quranActivity);
         }
@@ -77,20 +80,36 @@ public class QuranPageAdapter extends FragmentStateAdapter {
         }
     }
 
+    public boolean shouldHighlightFragment(int position) {
+        if (position == quranActivity.highlightedPosition)
+            return true;
+
+        if (quranActivity.highlightedPosition > 0 && position == quranActivity.highlightedPosition - 1)
+            return true;
+
+        return quranActivity.highlightedPosition < getItemCount() - 1 && position == quranActivity.highlightedPosition + 1;
+    }
+
     public void highlightVisiblePages(int position, int selectedSurah, int selectedAyah) {
-        getRegisteredFragment(position).highlightAyah(selectedSurah, selectedAyah, HighlightType.SELECTION);
-        if (position > 0)
-            getRegisteredFragment(position - 1).highlightAyah(selectedSurah, selectedAyah, HighlightType.SELECTION);
-        if (position < getItemCount() - 1)
-            getRegisteredFragment(position + 1).highlightAyah(selectedSurah, selectedAyah, HighlightType.SELECTION);
+        QuranPage registeredFragment = getRegisteredFragment(position);
+        if (registeredFragment != null) {
+            registeredFragment.highlightAyah(selectedSurah, selectedAyah, HighlightType.SELECTION);
+            if (position > 0)
+                getRegisteredFragment(position - 1).highlightAyah(selectedSurah, selectedAyah, HighlightType.SELECTION);
+            if (position < getItemCount() - 1)
+                getRegisteredFragment(position + 1).highlightAyah(selectedSurah, selectedAyah, HighlightType.SELECTION);
+        }
     }
 
     public void unhighlightVisiblePages(int position, int selectedSurah, int selectedAyah) {
-        getRegisteredFragment(position).unhighlightAyah(selectedSurah, selectedAyah, HighlightType.SELECTION);
-        if (position > 0)
-            getRegisteredFragment(position - 1).unhighlightAyah(selectedSurah, selectedAyah, HighlightType.SELECTION);
-        if (position < getItemCount() - 1)
-            getRegisteredFragment(position + 1).unhighlightAyah(selectedSurah, selectedAyah, HighlightType.SELECTION);
+        QuranPage registeredFragment = getRegisteredFragment(position);
+        if (registeredFragment != null) {
+            getRegisteredFragment(position).unhighlightAyah(selectedSurah, selectedAyah, HighlightType.SELECTION);
+            if (position > 0)
+                getRegisteredFragment(position - 1).unhighlightAyah(selectedSurah, selectedAyah, HighlightType.SELECTION);
+            if (position < getItemCount() - 1)
+                getRegisteredFragment(position + 1).unhighlightAyah(selectedSurah, selectedAyah, HighlightType.SELECTION);
+        }
     }
 
     public void highlightGlyph(int position, int glyphIndex) {

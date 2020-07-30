@@ -43,7 +43,7 @@ public class StartupActivity extends AppCompatActivity {
         if (!isAnyMushafAvailable() || pref.getBoolean("firststart", true)){
             startActivity(new Intent(this, MushafTypeActivity.class));
         } else {
-            startActivity(new Intent(this, NavigationActivity.class));
+            startActivity(new Intent(this, QuranActivity.class));
         }
         finish();
     }
