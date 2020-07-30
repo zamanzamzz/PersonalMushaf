@@ -20,6 +20,8 @@ import com.ammanz.personalmushaf.mushafmetadata.MushafMetadata;
  */
 public class JuzFragment extends Fragment {
     private QuranSettings quranSettings;
+    private RecyclerView juzRecyclerView;
+    private LinearLayoutManager juzLayoutManager;
 
     public JuzFragment() {
         // Required empty public constructor
@@ -35,15 +37,33 @@ public class JuzFragment extends Fragment {
 
         MushafMetadata mushafMetadata = quranSettings.getMushafMetadata(getContext());
 
-
-        RecyclerView juzRecyclerView = v.findViewById(R.id.tab_recycler_view);
+        juzRecyclerView = v.findViewById(R.id.tab_recycler_view);
         juzRecyclerView.setHasFixedSize(true);
-        LinearLayoutManager juzLayoutManager = new LinearLayoutManager(getContext());
+        juzLayoutManager = new LinearLayoutManager(getContext());
         JuzAdapter adapter = getJuzAdapter(mushafMetadata);
 
         juzRecyclerView.setAdapter(adapter);
         juzRecyclerView.setLayoutManager(juzLayoutManager);
+
+        Bundle arguments = getArguments();
+        int juzPosition = arguments.getInt("juz_position", -1);
+        int juzOffset = arguments.getInt("juz_offset", -1);
+
+        if (juzPosition != -1 && juzOffset != -1)
+            juzRecyclerView.post(() -> {
+                juzLayoutManager.scrollToPositionWithOffset(juzPosition, juzOffset);
+            });
+
         return v;
+    }
+
+    public int getJuzPosition() {
+        return juzLayoutManager.findFirstVisibleItemPosition();
+    }
+
+    public int getJuzOffset() {
+        View v = juzLayoutManager.getChildAt(0);
+        return (v == null) ? 0 : (v.getTop() - juzLayoutManager.getPaddingTop());
     }
 
     private JuzAdapter getJuzAdapter(MushafMetadata mushafMetadata) {

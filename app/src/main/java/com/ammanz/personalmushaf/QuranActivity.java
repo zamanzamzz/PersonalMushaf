@@ -82,6 +82,11 @@ public class QuranActivity extends AppCompatActivity implements Observer {
 
     private int navigationDrawerPadding;
 
+    private Integer juzPosition = null;
+    private Integer juzOffset = null;
+    private JuzFragment juzFragment;
+    private SurahFragment surahFragment;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -563,8 +568,6 @@ public class QuranActivity extends AppCompatActivity implements Observer {
         } else {
             loadNavigationDrawerContents(juzNumber, shouldHide, false, sidePanelLinearLayout);
         }
-
-
     }
 
     private void loadNavigationDrawerContents(int juzNumber, boolean shouldHide, boolean shouldAnimate, View sidePanelLinearLayout) {
@@ -584,11 +587,16 @@ public class QuranActivity extends AppCompatActivity implements Observer {
             juzStart.setVisibility(View.GONE);
             title.setText("Qur'an Contents");
 
-            JuzFragment juzFragment = new JuzFragment();
-            SurahFragment surahFragment = new SurahFragment();
+            juzFragment = new JuzFragment();
+            surahFragment = new SurahFragment();
 
             Bundle arguments = new Bundle();
             arguments.putInt("juz number", juzNumber);
+
+            if (juzPosition != null) {
+                arguments.putInt("juz_position", juzPosition);
+                arguments.putInt("juz_offset", juzOffset);
+            }
 
             juzFragment.setArguments(arguments);
             surahFragment.setArguments(arguments);
@@ -596,6 +604,9 @@ public class QuranActivity extends AppCompatActivity implements Observer {
             viewPagerAdapter.addFragment(juzFragment, "Juz");
             viewPagerAdapter.addFragment(surahFragment, "Surah");
         } else {
+
+            juzPosition = juzFragment.getJuzPosition();
+            juzOffset = juzFragment.getJuzOffset();
 
             viewPager.invalidate();
 
