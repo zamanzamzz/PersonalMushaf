@@ -104,7 +104,7 @@ public class QuranPageAdapter extends FragmentStateAdapter {
     public void unhighlightVisiblePages(int position, int selectedSurah, int selectedAyah) {
         QuranPage registeredFragment = getRegisteredFragment(position);
         if (registeredFragment != null) {
-            getRegisteredFragment(position).unhighlightAyah(selectedSurah, selectedAyah, HighlightType.SELECTION);
+            registeredFragment.unhighlightAyah(selectedSurah, selectedAyah, HighlightType.SELECTION);
             if (position > 0)
                 getRegisteredFragment(position - 1).unhighlightAyah(selectedSurah, selectedAyah, HighlightType.SELECTION);
             if (position < getItemCount() - 1)
