@@ -16,7 +16,6 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.preference.PreferenceManager;
 
-import com.ammanz.personalmushaf.QuranActivity;
 import com.ammanz.personalmushaf.QuranSettings;
 import com.ammanz.personalmushaf.R;
 import com.ammanz.personalmushaf.mushafmetadata.MushafMetadata;
@@ -103,7 +102,7 @@ public class MushafStyleFragment extends Fragment {
             fab.setOnClickListener(v1 -> {
                 updateQuranSettings();
                 if (!fromSettings)
-                    startActivity(new Intent(getContext(), QuranActivity.class));
+                    startActivity(new Intent(getContext(), NavigationActivity.class));
                 getActivity().finishAffinity();
             });
         } else {
