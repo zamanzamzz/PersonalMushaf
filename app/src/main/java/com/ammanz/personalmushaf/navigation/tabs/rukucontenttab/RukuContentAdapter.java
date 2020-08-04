@@ -91,7 +91,7 @@ public class RukuContentAdapter extends RecyclerView.Adapter<RukuContentAdapter.
 
 
     private void rukuContentToPage(LinearLayout linearLayout, int selectedRuku) {
-        /*final Intent goToRukuAyah = new Intent(linearLayout.getContext(), QuranActivity.class);
+        final Intent goToRukuAyah = new Intent(linearLayout.getContext(), QuranActivity.class);
 
         goToRukuAyah.putExtra("from", "NavigationActivity");
 
@@ -101,8 +101,7 @@ public class RukuContentAdapter extends RecyclerView.Adapter<RukuContentAdapter.
         goToRukuAyah.putExtra("ayah", rukuInfo[selectedRuku][1]);
         goToRukuAyah.putExtra("new page number", pageNumber);
 
-        linearLayout.getContext().startActivity(goToRukuAyah);*/
-        quranSettings.setQuranActivityPage(rukuPageNumbers[selectedRuku], rukuInfo[selectedRuku][0], rukuInfo[selectedRuku][1]);
+        linearLayout.getContext().startActivity(goToRukuAyah);
     }
 
 }

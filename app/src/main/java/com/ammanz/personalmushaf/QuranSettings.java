@@ -27,7 +27,6 @@ public class QuranSettings {
     private String assetsDirectory;
     private AssetPackManager assetPackManager;
     private static QuranSettings quranSettings;
-    private QuranActivity quranActivity;
     private MushafMetadata mushafMetadata;
     private SharedPreferences preferences;
     private Integer mushafVersion;
@@ -47,18 +46,6 @@ public class QuranSettings {
     private void setPreference(Context context) {
         if (preferences == null)
             preferences = PreferenceManager.getDefaultSharedPreferences(context);
-    }
-
-    public void setQuranActivity(QuranActivity quranActivity) {
-        this.quranActivity = quranActivity;
-    }
-
-    public void loadJuzInNavigationDrawer(int juzNumber) {
-        this.quranActivity.loadNavigationDrawer(juzNumber);
-    }
-
-    public void setQuranActivityPage(int pageNumber, int highlightedSurah, int highlightedAyah) {
-        this.quranActivity.setPageNumber(pageNumber, highlightedSurah, highlightedAyah);
     }
 
     public int getMushafVersion(Context context) {

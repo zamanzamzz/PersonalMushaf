@@ -27,11 +27,16 @@ public class QuranPageFragment extends QuranPage {
     private float x;
     private float y;
 
-    public static QuranPageFragment newInstance(int pageNumber, int position) {
+    public static QuranPageFragment newInstance(int pageNumber, int position, Integer highlightedSurah, Integer highlightedAyah) {
         QuranPageFragment fragment = new QuranPageFragment();
         Bundle bundle = new Bundle();
         bundle.putInt("page_number", pageNumber);
         bundle.putInt("position", position);
+
+        if (highlightedSurah != null && highlightedAyah != null) {
+            bundle.putInt("highlighted_surah", highlightedSurah);
+            bundle.putInt("highlighted_ayah", highlightedAyah);
+        }
 
         fragment.setArguments(bundle);
 
@@ -54,6 +59,9 @@ public class QuranPageFragment extends QuranPage {
         int pageNumber = getArguments().getInt("page_number");
         int position = getArguments().getInt("position");
 
+        int highlightedSurah = getArguments().getInt("highlighted_surah", 0);
+        int highlightedAyah = getArguments().getInt("highlighted_ayah", 0);
+
         imageView = v.findViewById(R.id.page1);
 
         MushafMetadata mushafMetadata = quranSettings.getMushafMetadata(getContext());
@@ -70,6 +78,9 @@ public class QuranPageFragment extends QuranPage {
                 imageView.setGlyphs(pageData.getGlyphs());
 
                 setHighlight(imageView, position);
+
+                if (highlightedSurah != 0 && highlightedAyah != 0)
+                    highlightAyah(highlightedSurah, highlightedAyah, HighlightType.SELECTION);
         });
 
         return v;
@@ -96,9 +107,6 @@ public class QuranPageFragment extends QuranPage {
             updateQuranActivity(ayah, position);
             return true;
         });
-
-        if (highlightedSurah != null)
-            highlightAyah(highlightedSurah, highlightedAyah, HighlightType.SELECTION);
     }
 
     @Override

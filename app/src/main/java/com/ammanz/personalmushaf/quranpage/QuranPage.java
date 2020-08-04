@@ -15,8 +15,6 @@ import com.ammanz.personalmushaf.util.FileUtils;
 public abstract class QuranPage extends Fragment {
     private FragmentObserver mObservers = new FragmentObserver();
     private int position;
-    protected Integer highlightedSurah = null;
-    protected Integer highlightedAyah = null;
 
     public void addObserver(QuranActivity quranActivity) {
         mObservers.addObserver(quranActivity);
@@ -28,11 +26,6 @@ public abstract class QuranPage extends Fragment {
         bundle.putInt("position", position);
         mObservers.setChanged();
         mObservers.notifyObservers(bundle);
-    }
-
-    public void setHighlightedSurahAndAyah(int highlightedSurah, int highlightedAyah) {
-        this.highlightedSurah = highlightedSurah;
-        this.highlightedAyah = highlightedAyah;
     }
 
     public abstract void highlightAyah(int sura, int ayah, HighlightType highlightType);
