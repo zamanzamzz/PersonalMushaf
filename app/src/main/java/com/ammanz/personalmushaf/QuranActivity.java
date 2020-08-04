@@ -3,12 +3,14 @@ package com.ammanz.personalmushaf;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
+import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -235,8 +237,11 @@ public class QuranActivity extends AppCompatActivity implements Observer {
         toolbar = findViewById(R.id.toolbar);
         toolbarArea = findViewById(R.id.toolbar_parent);
         ViewGroup.LayoutParams params = toolbar.getLayoutParams();
-        params.height = params.height + getStatusBarHeight();
-        toolbar.setPadding(0, getStatusBarHeight(), 0, 0);
+        int statusBarHeight = getStatusBarHeight();
+        if (statusBarHeight <= convertDpToPixel(24)) {
+            params.height = params.height + statusBarHeight;
+            toolbar.setPadding(0, statusBarHeight, 0, 0);
+        }
 
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
@@ -361,6 +366,12 @@ public class QuranActivity extends AppCompatActivity implements Observer {
             result = getResources().getDimensionPixelSize(resourceId);
         }
         return result;
+    }
+
+    public int convertDpToPixel (float dp){
+        DisplayMetrics metrics = Resources.getSystem().getDisplayMetrics();
+        float px = dp * (metrics.densityDpi / 160f);
+        return Math.round(px);
     }
 
     public void SystemUIListener(View view) {
