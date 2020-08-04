@@ -113,11 +113,6 @@ public class QuranPageFragment extends QuranPage {
     }
 
     @Override
-    public void unhighlightAll() {
-        imageView.unHighlight(HighlightType.SELECTION);
-    }
-
-    @Override
     public void highlightGlyph(int glyphIndex) {
         imageView.drawGlyph(glyphIndex);
     }

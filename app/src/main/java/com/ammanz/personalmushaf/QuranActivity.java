@@ -536,29 +536,13 @@ public class QuranActivity extends AppCompatActivity implements Observer {
 
     private void highlightAyahFromNavigation(int highlightedSurah, int highlightedAyah) {
         if (highlightedSurah != 0) {
-            Integer previousHighlightedPosition = highlightedPosition;
-            Integer previousAyah = this.highlightedAyah;
-            Integer previousSurah = this.highlightedSurah;
-
             this.highlightedSurah = highlightedSurah;
             this.highlightedAyah = highlightedAyah;
             this.highlightedPosition = currentShouldUseDualPages ?
                                     pageNumberToDualPagerPosition(pageNumber) :
                                     pageNumberToSinglePagerPosition(pageNumber);
-
-            if (previousHighlightedPosition != null && Math.abs(previousHighlightedPosition - highlightedPosition) < 2) {
-                pagerAdapter.unhighlightVisiblePages(previousHighlightedPosition, previousSurah, previousAyah);
-                pagerAdapter.highlightVisiblePages(highlightedPosition, highlightedSurah, highlightedAyah);
-            }
-
             this.isHighlighted = true;
             toolbar.setTitle(highlightedSurah + ":" + highlightedAyah);
-        } else {
-            this.highlightedSurah = null;
-            this.highlightedAyah = null;
-            this.highlightedPosition = null;
-            this.isHighlighted = false;
-            toolbar.setTitle("");
         }
     }
 

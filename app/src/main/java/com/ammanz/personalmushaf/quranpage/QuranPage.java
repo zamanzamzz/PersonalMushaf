@@ -39,8 +39,6 @@ public abstract class QuranPage extends Fragment {
 
     public abstract void unhighlightAyah(int sura, int ayah, HighlightType highlightType);
 
-    public abstract void unhighlightAll();
-
     protected String getPagePath(int pageNumber, MushafMetadata mushafMetadata) {
         return mushafMetadata.getPagePath(pageNumber);
     }

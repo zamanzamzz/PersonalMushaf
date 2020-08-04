@@ -137,11 +137,6 @@ public class QuranDualPageFragment extends QuranPage {
         rightImage.unHighlight(sura, ayah, HighlightType.SELECTION);
     }
 
-    public void unhighlightAll() {
-        leftImage.unHighlight(HighlightType.SELECTION);
-        rightImage.unHighlight(HighlightType.SELECTION);
-    }
-
     private String getLeftPagePath(int dualPagerPosition, MushafMetadata mushafMetadata) {
         return getPagePath(dualPagerPositionToPageNumber(dualPagerPosition, mushafMetadata), mushafMetadata);
     }
