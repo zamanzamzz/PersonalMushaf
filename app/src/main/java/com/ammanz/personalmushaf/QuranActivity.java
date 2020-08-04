@@ -546,7 +546,7 @@ public class QuranActivity extends AppCompatActivity implements Observer {
                                     pageNumberToDualPagerPosition(pageNumber) :
                                     pageNumberToSinglePagerPosition(pageNumber);
 
-            if (previousHighlightedPosition != null && Math.abs(previousHighlightedPosition - highlightedPosition) < 3) {
+            if (previousHighlightedPosition != null && Math.abs(previousHighlightedPosition - highlightedPosition) < 2) {
                 pagerAdapter.unhighlightVisiblePages(previousHighlightedPosition, previousSurah, previousAyah);
                 pagerAdapter.highlightVisiblePages(highlightedPosition, highlightedSurah, highlightedAyah);
             }
