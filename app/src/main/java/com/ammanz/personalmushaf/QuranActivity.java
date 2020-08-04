@@ -101,10 +101,14 @@ public class QuranActivity extends AppCompatActivity implements Observer {
         quranSettings.setQuranActivity(this);
 
         loadNavigationDrawer(-1, true, false);
-        
+        loadQuranPager(savedInstanceState, true);
+    }
+
+    public void loadQuranPager(Bundle savedInstanceState, boolean shouldSetupActionbar) {
         isSmoothVolumeKeyNavigation = quranSettings.getIsSmoothKeyNavigation(this);
 
-        setupActionbar();
+        if (shouldSetupActionbar)
+            setupActionbar();
 
         Intent activityThatCalled = getIntent();
 
@@ -137,6 +141,11 @@ public class QuranActivity extends AppCompatActivity implements Observer {
     @Override
     protected void onResume() {
         super.onResume();
+        if (quranSettings.getShouldRestartNavigationActivity()) {
+            quranSettings.setShouldRestartNavigationActivity(false);
+            loadNavigationDrawer(-1, true, false);
+            loadQuranPager(null, false);
+        }
         hideSystemUI();
         animateToolbar(false);
     }
