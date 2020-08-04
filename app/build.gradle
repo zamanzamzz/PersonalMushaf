@@ -8,8 +8,8 @@ android {
         applicationId 'com.ammanz.personalmushaf'
         minSdkVersion 24
         targetSdkVersion 30
-        versionCode 332
-        versionName "0.332"
+        versionCode 331
+        versionName "0.331"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
