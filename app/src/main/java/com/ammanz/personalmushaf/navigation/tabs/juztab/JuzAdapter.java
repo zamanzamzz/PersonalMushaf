@@ -96,7 +96,7 @@ public class JuzAdapter extends RecyclerView.Adapter<JuzAdapter.JuzViewHolder> {
     }
 
     private void juzToJuzContentProcedure(int juzNumber) {
-        quranSettings.loadJuzInNavigationDrawer(juzNumber, false, true);
+        quranSettings.loadJuzInNavigationDrawer(juzNumber);
     }
 
 

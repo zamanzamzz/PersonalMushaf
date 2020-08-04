@@ -53,8 +53,8 @@ public class QuranSettings {
         this.quranActivity = quranActivity;
     }
 
-    public void loadJuzInNavigationDrawer(int juzNumber, boolean shouldHide, boolean shouldAnimate) {
-        this.quranActivity.loadNavigationDrawer(juzNumber, shouldHide, shouldAnimate);
+    public void loadJuzInNavigationDrawer(int juzNumber) {
+        this.quranActivity.loadNavigationDrawer(juzNumber);
     }
 
     public void setQuranActivityPage(int pageNumber, int highlightedSurah, int highlightedAyah) {
