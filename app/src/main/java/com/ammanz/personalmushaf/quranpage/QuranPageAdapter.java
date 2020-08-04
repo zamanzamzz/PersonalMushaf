@@ -10,7 +10,6 @@ import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 import com.ammanz.personalmushaf.QuranActivity;
 import com.ammanz.personalmushaf.QuranSettings;
-import com.ammanz.personalmushaf.TabletActivity;
 import com.ammanz.personalmushaf.model.HighlightType;
 import com.ammanz.personalmushaf.mushafmetadata.MushafMetadata;
 
@@ -22,7 +21,6 @@ public class QuranPageAdapter extends FragmentStateAdapter {
     private int numOfDualPages;
 
     private QuranActivity quranActivity;
-    private TabletActivity tabletActivity;
     private QuranSettings quranSettings;
 
     public QuranPageAdapter(FragmentManager fm, QuranActivity context, Lifecycle lifecycle) {
@@ -30,32 +28,6 @@ public class QuranPageAdapter extends FragmentStateAdapter {
         this.quranSettings = QuranSettings.getInstance();
         this.mushafMetadata = quranSettings.getMushafMetadata(context);
         this.quranActivity = context;
-        registerFragmentTransactionCallback(new FragmentTransactionCallback() {
-            @NonNull
-            @Override
-            public OnPostEventListener onFragmentPreAdded(@NonNull Fragment fragment) {
-                QuranPage page = (QuranPage) fragment;
-                registeredFragments.put(page.getPosition(), page);
-                return super.onFragmentPreAdded(fragment);
-            }
-
-            @NonNull
-            @Override
-            public OnPostEventListener onFragmentPreRemoved(@NonNull Fragment fragment) {
-                QuranPage page = (QuranPage) fragment;
-                registeredFragments.remove(page.getPosition());
-                return super.onFragmentPreRemoved(fragment);
-            }
-        });
-        numOfSinglePages = mushafMetadata.getMaxPage() - mushafMetadata.getMinPage() + 1;
-        numOfDualPages = numOfSinglePages % 2 == 0 ? numOfSinglePages / 2 : numOfSinglePages / 2 + 1;
-    }
-
-    public QuranPageAdapter(FragmentManager fm, TabletActivity context, Lifecycle lifecycle) {
-        super(fm, lifecycle);
-        this.quranSettings = QuranSettings.getInstance();
-        this.mushafMetadata = quranSettings.getMushafMetadata(context);
-        this.tabletActivity = context;
         registerFragmentTransactionCallback(new FragmentTransactionCallback() {
             @NonNull
             @Override

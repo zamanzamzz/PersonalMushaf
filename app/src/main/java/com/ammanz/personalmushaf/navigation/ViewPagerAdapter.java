@@ -29,11 +29,6 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
         return fragments.size();
     }
 
-    @Override
-    public float getPageWidth(int position) {
-        return super.getPageWidth(position);
-    }
-
     @Nullable
     public CharSequence getPageTitle(int position) {
         return titles.get(position);
